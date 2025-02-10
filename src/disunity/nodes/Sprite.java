@@ -22,8 +22,9 @@ public class Sprite extends Node2D {
 
     @Override
     public void update() {
-        for (Node node : children)
-        node.update();
+        for (Node node : children) {
+            node.update();
+        }
     }
     
     @Override
