@@ -21,17 +21,18 @@ public class Sprite extends Node2D {
     /* ================ [ METHODS ] ================ */
 
     @Override
+    public void update() {
+        for (Node node : children)
+        node.update();
+    }
+    
+    @Override
     public void draw(Graphics2D g, int dx, int dy) {
         g.drawImage(((Image) Resources.loadResource(image)).getImage(), x + dx, y + dy, null);
 
-        for (Node node : children)
+        for (Node node : children) {
             node.draw(g, x + dx, y + dy);
+        }
     }
 
-    @Override
-    public void update() {
-        for (Node node : children)
-            node.update();
-    }
-    
 }

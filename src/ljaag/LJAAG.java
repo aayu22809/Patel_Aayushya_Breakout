@@ -4,7 +4,6 @@ import disunity.App;
 import disunity.Game;
 import disunity.nodes.Node2D;
 import disunity.nodes.Sprite;
-import disunity.resources.Image;
 import disunity.resources.Resource;
 import disunity.resources.Resources;
 import disunity.scenes.Scene;
@@ -22,14 +21,12 @@ public class LJAAG {
     public static void main(String[] args) {
         
         // Setup resources
-        Resources.addResource("player", new Resource(Resource.Type.IMAGE, "assets/player.png"));
+        Resources.scanFolder("assets", true);
 
         // Setup scenes
         Scenes.addScene("test", new Scene(
             new Node2D(
-                new Sprite(
-                    "player"
-                )
+                new Sprite("templayer")
             )
         ));
 

@@ -37,14 +37,16 @@ public class Scene extends Node {
 
     @Override
     public void update() {
-        for (Node node : nodes)
+        for (Node node : nodes) {
             node.update();
+        }
     }
 
     @Override
     public void draw(Graphics2D g, int dx, int dy) {
-        for (Node node : nodes)
+        for (Node node : nodes) {
             node.draw(g, x + dx, y + dy);
+        }
     }
     
 }
