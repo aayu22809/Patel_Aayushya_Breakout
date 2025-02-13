@@ -2,16 +2,15 @@ package ljaag;
 
 import disunity.App;
 import disunity.Game;
-import disunity.input.Action;
-import disunity.input.ActionSet;
+import disunity.input.Input;
 import disunity.input.Inputs;
+import disunity.input.actions.Action;
+import disunity.input.actions.ActionSet;
 import disunity.nodes.Node2D;
 import disunity.nodes.Sprite;
 import disunity.resources.Resources;
 import disunity.scenes.Scene;
 import disunity.scenes.Scenes;
-
-import java.awt.event.KeyEvent;
 
 /**
  * Literally Just Another APCS Game
@@ -28,7 +27,7 @@ public class LJAAG {
         Resources.scanFolder("assets", true);
 
         // Setup keybinds
-        Inputs.addAction("test", new ActionSet(new Action(KeyEvent.VK_META, KeyEvent.VK_A), new Action(KeyEvent.VK_D)));
+        Inputs.addAction("test", new ActionSet(new Action(Input.KEY_COMMAND, Input.KEY_A), new Action(Input.KEY_D)));
 
         // Setup scenes
         Scenes.addScene("test", new Scene(

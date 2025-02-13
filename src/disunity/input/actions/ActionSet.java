@@ -1,4 +1,4 @@
-package disunity.input;
+package disunity.input.actions;
 
 /**
  * A set of keybinds for an action

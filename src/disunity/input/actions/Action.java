@@ -1,4 +1,6 @@
-package disunity.input;
+package disunity.input.actions;
+
+import disunity.input.Input;
 
 /**
  * Any multi-key keybind
@@ -10,14 +12,14 @@ public class Action {
     /* ================ [ FIELDS ] ================ */
 
     // Keys
-    private final int[] keys;
+    private final Input[] inputs;
 
     // Constructor
-    public Action(int... keys) { this.keys = keys; }
+    public Action(Input... inputs) { this.inputs = inputs; }
 
     /* ================ [ METHODS ] ================ */
 
     // Get keys
-    public int[] getKeys() { return keys; }
+    public Input[] getInputs() { return inputs; }
     
 }

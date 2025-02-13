@@ -45,7 +45,8 @@ public class Game extends JPanel implements Runnable {
         bufferG = buffer.createGraphics();
         setDoubleBuffered(true);
 
-        bufferG.setBackground(Color.WHITE); // TODO: Remove
+        // White background
+        bufferG.setBackground(Color.WHITE);
 
         // Focus window for input
         setFocusable(true);
