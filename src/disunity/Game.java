@@ -55,6 +55,8 @@ public class Game extends JPanel implements Runnable {
         // Attach input handler
         input = new InputHandler();
         addKeyListener(input);
+        addMouseListener(input);
+        addMouseMotionListener(input);
 
         // Set current scene
         Scenes.setScene(scene);

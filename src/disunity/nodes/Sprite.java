@@ -2,6 +2,7 @@ package disunity.nodes;
 
 import java.awt.Graphics2D;
 
+import disunity.input.Inputs;
 import disunity.resources.Image;
 import disunity.resources.Resources;
 
@@ -24,6 +25,10 @@ public class Sprite extends Node2D {
     public void update() {
         for (Node node : children) {
             node.update();
+        }
+
+        if (Inputs.getAction("test")) {
+            System.out.println("new");
         }
     }
     

@@ -27,7 +27,7 @@ public class LJAAG {
         Resources.scanFolder("assets", true);
 
         // Setup keybinds
-        Inputs.addAction("test", new ActionSet(new Action(Input.KEY_COMMAND, Input.KEY_A), new Action(Input.KEY_D)));
+        Inputs.addAction("test", new ActionSet(new Action(Input.KEY_COMMAND, Input.KEY_A), new Action(Input.MOUSE_LEFT)));
 
         // Setup scenes
         Scenes.addScene("test", new Scene(
