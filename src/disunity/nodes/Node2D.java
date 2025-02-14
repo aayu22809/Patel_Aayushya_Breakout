@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import disunity.math.Vector2;
+
 /**
  * A base class for 2D nodes with position and children
  * 
@@ -18,13 +20,13 @@ public class Node2D extends Node {
     protected final List<Node> children;
     
     // Node position
-    protected int x = 0, y = 0;
+    protected Vector2 pos = new Vector2();
 
     // Constructors
     public Node2D() { this.children = new ArrayList<>(); }
     public Node2D(Node... children) { this.children = Arrays.asList(children); }
-    public Node2D(int x, int y) { this.x = x; this.y = y; this.children = new ArrayList<>(); }
-    public Node2D(int x, int y, Node... children) { this.x = x; this.y = y; this.children = Arrays.asList(children); }
+    public Node2D(Vector2 pos) { this.pos = pos; this.children = new ArrayList<>(); }
+    public Node2D(Vector2 pos, Node... children) { this.pos = pos; this.children = Arrays.asList(children); }
 
     /* ================ [ METHODS ] ================ */
 
@@ -46,7 +48,7 @@ public class Node2D extends Node {
     @Override
     public void draw(Graphics2D g, int dx, int dy) {
         for (Node node : children) {
-            node.draw(g, x + dx, y + dy);
+            node.draw(g, pos.xi + dx, pos.yi + dy);
         }
     }
     
