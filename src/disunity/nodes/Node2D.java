@@ -1,6 +1,5 @@
 package disunity.nodes;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,16 +39,14 @@ public class Node2D extends Node {
 
     @Override
     public void update() {
-        for (Node node : children) {
-            node.update();
-        }
+        // Update children
+        for (Node node : children) node.update();
     }
 
     @Override
-    public void draw(Graphics2D g, int dx, int dy) {
-        for (Node node : children) {
-            node.draw(g, pos.xi + dx, pos.yi + dy);
-        }
+    public void draw(double dx, double dy) {
+        // Draw children
+        for (Node node : children) node.draw(pos.x + dx, pos.y + dy);
     }
     
 }

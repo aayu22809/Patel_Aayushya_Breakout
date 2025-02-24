@@ -1,6 +1,11 @@
 package disunity;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import javax.swing.JFrame;
+
+import disunity.math.Vector2;
 
 /**
  * Creates an app window with a game
@@ -18,6 +23,15 @@ public class App extends JFrame {
         setTitle(title);
         setSize(width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Window resize listener
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                game.updateBuffer(
+                    Vector2.of(getWidth(), getHeight())
+                );
+            }
+        });
 
         // Add game
         add(game);

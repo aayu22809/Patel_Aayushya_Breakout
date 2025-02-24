@@ -2,11 +2,12 @@ package disunity;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+
 import javax.swing.JPanel;
 
 import disunity.input.InputHandler;
+import disunity.math.Vector2;
+import disunity.rendering.ScalableBuffer;
 import disunity.scenes.Scenes;
 
 /**
@@ -18,35 +19,32 @@ public class Game extends JPanel implements Runnable {
 
     /* ================ [ FIELDS ] ================ */
 
+    // Singleton instance
+    private static Game instance;
+
     // Game thread
     private Thread game;
 
     // Game dimensions
-    private int width, height;
+    private Vector2 dimensions;
 
     // Buffer for scaling the game
-    private BufferedImage buffer;
-    private Graphics2D bufferG;
+    private ScalableBuffer buffer;
 
     // Input handler
     private InputHandler input;
 
     // Constructor
-    public Game(int width, int height, String scene) {
+    public Game(Vector2 dimensions, String scene) {
         // Game dimensions
-        this.width = width;
-        this.height = height;
+        this.dimensions = dimensions;
 
         // Panel background
         setBackground(Color.BLACK);
         
         // Double buffering
-        buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        bufferG = buffer.createGraphics();
+        buffer = new ScalableBuffer(dimensions, dimensions);
         setDoubleBuffered(true);
-
-        // White background
-        bufferG.setBackground(Color.WHITE);
 
         // Focus window for input
         setFocusable(true);
@@ -60,6 +58,9 @@ public class Game extends JPanel implements Runnable {
 
         // Set current scene
         Scenes.setScene(scene);
+
+        // Set singleton instance
+        instance = this;
     }
 
     /* ================ [ METHODS ] ================ */
@@ -70,6 +71,15 @@ public class Game extends JPanel implements Runnable {
         game.start();
     }
 
+    // Update buffer
+    public void updateBuffer(Vector2 target) { buffer.refresh(target); }
+
+    // Get buffer
+    public ScalableBuffer getBuffer() { return buffer; }
+
+    // Get instance
+    public static Game getInstance() { return instance; }
+
     /* ================ [ JPANEL ] ================ */
 
     @Override
@@ -78,11 +88,11 @@ public class Game extends JPanel implements Runnable {
 
         // Fix window stretching
         int w = getWidth(), h = getHeight();
-        w = Math.min(w, h * width / height);
-        h = Math.min(h, w * height / width);
+        w = (int) Math.min(w, h * dimensions.x / dimensions.y);
+        h = (int) Math.min(h, w * dimensions.y / dimensions.x);
 
         // Draw to screen
-        g.drawImage(buffer, (getWidth()-w) / 2, (getHeight()-h) / 2, w, h, null);
+        g.drawImage(buffer.getImage(), (getWidth()-w) / 2, (getHeight()-h) / 2, w, h, null);
     }
 
     /* ================ [ RUNNABLE ] ================ */
@@ -106,11 +116,11 @@ public class Game extends JPanel implements Runnable {
             while (delta >= Options.getMSPF()) {
                 
                 // Clear buffer
-                bufferG.clearRect(0, 0, width, height);
+                buffer.clear();
                 
                 // Update scene
                 Scenes.updateScene();
-                Scenes.drawScene(bufferG);
+                Scenes.drawScene(0, 0);
 
                 // Draw buffer to screen
                 repaint();

@@ -1,7 +1,6 @@
 package disunity.nodes;
 
-import java.awt.Graphics2D;
-
+import disunity.Game;
 import disunity.input.Inputs;
 import disunity.math.Vector2;
 import disunity.resources.Image;
@@ -24,27 +23,29 @@ public class Sprite extends Node2D {
 
     @Override
     public void update() {
-        for (Node node : children) {
-            node.update();
-        }
-
+        // TODO: Remove
         Vector2 input = new Vector2(
             (Inputs.getAction("left") ? -1 : 0) + (Inputs.getAction("right") ? 1 : 0),
             (Inputs.getAction("up") ? -1 : 0) + (Inputs.getAction("down") ? 1 : 0)
         ).normalized();
 
         pos = pos.add(input.mul(2));
+        // TODO: Remove
 
-        System.out.println(input.x + ", " + input.y);
+        // Update children
+        for (Node node : children) node.update();
     }
     
     @Override
-    public void draw(Graphics2D g, int dx, int dy) {
-        g.drawImage(((Image) Resources.loadResource(image)).getImage(), pos.xi + dx, pos.yi + dy, null);
+    public void draw(double dx, double dy) {
+        Game.getInstance().getBuffer().drawImage(
+            Resources.loadResource(image, Image.class).getImage(),
+            pos.x + dx, pos.y + dy,
+            null
+        );
 
-        for (Node node : children) {
-            node.draw(g, pos.xi + dx, pos.yi + dy);
-        }
+        // Draw children
+        for (Node node : children) node.draw(pos.x + dx, pos.y + dy);
     }
 
 }

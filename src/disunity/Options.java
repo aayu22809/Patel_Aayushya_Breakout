@@ -10,7 +10,7 @@ public class Options {
     /* ================ [ FIELDS ] ================ */
 
     // Frame rate
-    public static double FPS = 60.0;
+    public static double FPS = 120.0;
 
     /* ================ [ METHODS ] ================ */
 

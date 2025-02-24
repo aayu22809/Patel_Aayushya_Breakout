@@ -41,6 +41,7 @@ public class Resources {
 
     // Load resource
     public static Object loadResource(String name) { return resources.get(name).load(); }
+    public static <T> T loadResource(String name, Class<T> type) { return type.cast(resources.get(name).load()); }
 
     // Scan folder
     public static void scanFolder(String path) { scanFolder(path, false); }

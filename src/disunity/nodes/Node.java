@@ -1,7 +1,5 @@
 package disunity.nodes;
 
-import java.awt.Graphics2D;
-
 /**
  * The base class for all nodes in the game
  * 
@@ -15,6 +13,6 @@ public abstract class Node {
     public abstract void update();
     
     // Draw node
-    public abstract void draw(Graphics2D g, int dx, int dy);
+    public abstract void draw(double dx, double dy);
     
 }

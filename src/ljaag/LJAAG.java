@@ -6,6 +6,7 @@ import disunity.input.Input;
 import disunity.input.Inputs;
 import disunity.input.actions.Action;
 import disunity.input.actions.ActionSet;
+import disunity.math.Vector2;
 import disunity.nodes.Node2D;
 import disunity.nodes.Sprite;
 import disunity.resources.Resources;
@@ -43,7 +44,10 @@ public class LJAAG {
         new App(
             "Literally Just Another APCS Game", 
             800, 450,
-            new Game(320, 180, "test")
+            new Game(
+                Vector2.of(320, 180),
+                "test"
+            )
         );
 
     }

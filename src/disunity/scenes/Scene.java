@@ -1,10 +1,10 @@
 package disunity.scenes;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import disunity.math.Vector2;
 import disunity.nodes.Node;
 
 /** 
@@ -20,13 +20,13 @@ public class Scene extends Node {
     private final List<Node> nodes;
 
     // Scene position
-    private int x = 0, y = 0;
+    protected Vector2 pos = new Vector2();
 
     // Constructors
     public Scene() { this.nodes = new ArrayList<>(); }
     public Scene(Node... nodes) { this.nodes = Arrays.asList(nodes); }
-    public Scene(int x, int y) { this.x = x; this.y = y; this.nodes = new ArrayList<>(); }
-    public Scene(int x, int y, Node... nodes) { this.x = x; this.y = y; this.nodes = Arrays.asList(nodes); }
+    public Scene(Vector2 pos) { this.pos = pos; this.nodes = new ArrayList<>(); }
+    public Scene(Vector2 pos, Node... nodes) { this.pos = pos; this.nodes = Arrays.asList(nodes); }
 
     /* ================ [ METHODS ] ================ */
 
@@ -37,16 +37,14 @@ public class Scene extends Node {
 
     @Override
     public void update() {
-        for (Node node : nodes) {
-            node.update();
-        }
+        // Update nodes
+        for (Node node : nodes) node.update();
     }
 
     @Override
-    public void draw(Graphics2D g, int dx, int dy) {
-        for (Node node : nodes) {
-            node.draw(g, x + dx, y + dy);
-        }
+    public void draw(double dx, double dy) {
+        // Draw nodes
+        for (Node node : nodes) node.draw(pos.x + dx, pos.y + dy);
     }
     
 }

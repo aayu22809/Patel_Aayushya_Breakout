@@ -1,6 +1,5 @@
 package disunity.scenes;
 
-import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +33,6 @@ public class Scenes {
     public static void updateScene() { getScene().update(); }
 
     // Draw current scene
-    public static void drawScene(Graphics2D g) { getScene().draw(g, 0, 0); }
+    public static void drawScene(double dx, double dy) { getScene().draw(dx, dy); }
 
 }
