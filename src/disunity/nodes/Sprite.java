@@ -1,5 +1,7 @@
 package disunity.nodes;
 
+import java.awt.image.BufferedImage;
+
 import disunity.Game;
 import disunity.input.Inputs;
 import disunity.math.Vector2;
@@ -11,7 +13,7 @@ public class Sprite extends Node2D {
     /* ================ [ FIELDS ] ================ */
 
     // Sprite image
-    private String image;
+    protected String image;
 
     // Constructors
     public Sprite(String image) { this.image = image; }
@@ -29,7 +31,7 @@ public class Sprite extends Node2D {
             (Inputs.getAction("up") ? -1 : 0) + (Inputs.getAction("down") ? 1 : 0)
         ).normalized();
 
-        pos = pos.add(input.mul(2));
+        move(input.mul(2));
         // TODO: Remove
 
         // Update children
@@ -37,15 +39,17 @@ public class Sprite extends Node2D {
     }
     
     @Override
-    public void draw(double dx, double dy) {
+    public void draw(Vector2 offset) {
+        BufferedImage img = Resources.loadResource(image, Image.class).getImage();
+
         Game.getInstance().getBuffer().drawImage(
-            Resources.loadResource(image, Image.class).getImage(),
-            pos.x + dx, pos.y + dy,
+            img,
+            pos.add(offset).add(Vector2.of(img.getWidth(), img.getHeight()).mul(-0.5)),
             null
         );
 
         // Draw children
-        for (Node node : children) node.draw(pos.x + dx, pos.y + dy);
+        for (Node node : children) node.draw(pos.add(offset));
     }
 
 }

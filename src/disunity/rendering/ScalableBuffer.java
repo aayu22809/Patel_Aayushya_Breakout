@@ -68,10 +68,11 @@ public class ScalableBuffer {
     /* ================ [ GRAPHICS ] ================ */
 
     // Draw image
-    public void drawImage(Image img, double x, double y, ImageObserver observer) {
+    public void drawImage(Image img, Vector2 pos, ImageObserver observer) {
         graphics.drawImage(img,
-            (int) (x * scale), (int) (y * scale),
-            (int) (img.getHeight(observer) * scale), (int) (img.getWidth(observer) * scale),
+            (int) (pos.x * scale), (int) (pos.y * scale),
+            (int) (img.getHeight(observer) * scale),
+            (int) (img.getWidth(observer) * scale),
             observer
         );
     }

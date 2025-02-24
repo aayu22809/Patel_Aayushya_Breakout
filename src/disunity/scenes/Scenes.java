@@ -3,6 +3,8 @@ package disunity.scenes;
 import java.util.HashMap;
 import java.util.Map;
 
+import disunity.math.Vector2;
+
 /**
  * Manages the scenes in the game
  * 
@@ -33,6 +35,6 @@ public class Scenes {
     public static void updateScene() { getScene().update(); }
 
     // Draw current scene
-    public static void drawScene(double dx, double dy) { getScene().draw(dx, dy); }
+    public static void drawScene(Vector2 offset) { getScene().draw(offset); }
 
 }

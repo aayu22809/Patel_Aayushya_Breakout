@@ -2,6 +2,7 @@ package ljaag;
 
 import disunity.App;
 import disunity.Game;
+import disunity.camera.Camera;
 import disunity.input.Input;
 import disunity.input.Inputs;
 import disunity.input.actions.Action;
@@ -46,7 +47,8 @@ public class LJAAG {
             800, 450,
             new Game(
                 Vector2.of(320, 180),
-                "test"
+                "test",
+                new Camera()
             )
         );
 

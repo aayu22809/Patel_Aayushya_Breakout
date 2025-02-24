@@ -34,6 +34,12 @@ public class Node2D extends Node {
 
     // Remove child
     public void removeChild(Node node) { children.remove(node); }
+
+    // Move
+    public void move(Vector2 amt) { pos = pos.add(amt); }
+
+    // Get position
+    public Vector2 getPos() { return pos; }
     
     /* ================ [ NODE ] ================ */
 
@@ -44,9 +50,9 @@ public class Node2D extends Node {
     }
 
     @Override
-    public void draw(double dx, double dy) {
-        // Draw children
-        for (Node node : children) node.draw(pos.x + dx, pos.y + dy);
+    public void draw(Vector2 offset) {
+        // Draw nodes
+        for (Node node : children) node.draw(pos.add(offset));
     }
     
 }

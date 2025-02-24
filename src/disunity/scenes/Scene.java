@@ -17,7 +17,7 @@ public class Scene extends Node {
     /* ================ [ FIELDS ] ================ */
 
     // List of nodes
-    private final List<Node> nodes;
+    protected final List<Node> nodes;
 
     // Scene position
     protected Vector2 pos = new Vector2();
@@ -42,9 +42,9 @@ public class Scene extends Node {
     }
 
     @Override
-    public void draw(double dx, double dy) {
+    public void draw(Vector2 offset) {
         // Draw nodes
-        for (Node node : nodes) node.draw(pos.x + dx, pos.y + dy);
+        for (Node node : nodes) node.draw(pos.add(offset));
     }
     
 }

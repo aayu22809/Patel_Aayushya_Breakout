@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import disunity.camera.Camera;
 import disunity.input.InputHandler;
 import disunity.math.Vector2;
 import disunity.rendering.ScalableBuffer;
@@ -31,11 +32,14 @@ public class Game extends JPanel implements Runnable {
     // Buffer for scaling the game
     private ScalableBuffer buffer;
 
+    // Camera to control viewport
+    private Camera camera;
+
     // Input handler
     private InputHandler input;
 
-    // Constructor
-    public Game(Vector2 dimensions, String scene) {
+    // Constructors
+    public Game(Vector2 dimensions, String scene, Camera camera) {
         // Game dimensions
         this.dimensions = dimensions;
 
@@ -59,6 +63,9 @@ public class Game extends JPanel implements Runnable {
         // Set current scene
         Scenes.setScene(scene);
 
+        // Set camera
+        this.camera = camera;
+
         // Set singleton instance
         instance = this;
     }
@@ -76,6 +83,9 @@ public class Game extends JPanel implements Runnable {
 
     // Get buffer
     public ScalableBuffer getBuffer() { return buffer; }
+
+    // Get camera
+    public Camera getCamera() { return camera; }
 
     // Get instance
     public static Game getInstance() { return instance; }
@@ -120,7 +130,10 @@ public class Game extends JPanel implements Runnable {
                 
                 // Update scene
                 Scenes.updateScene();
-                Scenes.drawScene(0, 0);
+                Scenes.drawScene(
+                    camera.getPos().mul(-1)
+                        .add(dimensions.mul(0.5)) // Center camera
+                );
 
                 // Draw buffer to screen
                 repaint();
