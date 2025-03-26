@@ -44,9 +44,9 @@ public class Node2D extends Node {
     /* ================ [ NODE ] ================ */
 
     @Override
-    public void update() {
+    public void update(double delta) {
         // Update children
-        for (Node node : children) node.update();
+        for (Node node : children) node.update(delta);
     }
 
     @Override

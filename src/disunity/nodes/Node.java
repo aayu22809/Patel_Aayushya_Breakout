@@ -12,7 +12,7 @@ public abstract class Node {
     /* ================ [ METHODS ] ================ */
 
     // Update node
-    public abstract void update();
+    public abstract void update(double delta);
     
     // Draw node
     public abstract void draw(Vector2 offset);

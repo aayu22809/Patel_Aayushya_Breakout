@@ -15,7 +15,7 @@ import disunity.scenes.Scene;
 import disunity.scenes.Scenes;
 
 /**
- * Literally Just Another APCS Game
+ * Untitled game
  * 
  * @author Qinzhao Li
  */
@@ -29,6 +29,7 @@ public class LJAAG {
         Resources.scanFolder("assets", true);
 
         // Setup keybinds
+        // TODO: json this
         Inputs.addAction("up", new ActionSet(new Action(Input.KEY_W), new Action(Input.KEY_UP)));
         Inputs.addAction("down", new ActionSet(new Action(Input.KEY_S), new Action(Input.KEY_DOWN)));
         Inputs.addAction("left", new ActionSet(new Action(Input.KEY_A), new Action(Input.KEY_LEFT)));
@@ -43,7 +44,7 @@ public class LJAAG {
 
         // Create app
         new App(
-            "Literally Just Another APCS Game", 
+            "Title", 
             800, 450,
             new Game(
                 Vector2.of(320, 180),

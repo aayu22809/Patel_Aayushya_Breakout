@@ -36,9 +36,9 @@ public class Scene extends Node {
     /* ================ [ NODE ] ================ */
 
     @Override
-    public void update() {
+    public void update(double delta) {
         // Update nodes
-        for (Node node : nodes) node.update();
+        for (Node node : nodes) node.update(delta);
     }
 
     @Override

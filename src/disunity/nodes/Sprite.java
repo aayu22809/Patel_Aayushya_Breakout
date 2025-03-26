@@ -24,22 +24,23 @@ public class Sprite extends Node2D {
     /* ================ [ METHODS ] ================ */
 
     @Override
-    public void update() {
+    public void update(double delta) {
         // TODO: Remove
         Vector2 input = new Vector2(
             (Inputs.getAction("left") ? -1 : 0) + (Inputs.getAction("right") ? 1 : 0),
             (Inputs.getAction("up") ? -1 : 0) + (Inputs.getAction("down") ? 1 : 0)
         ).normalized();
 
-        move(input.mul(2));
+        move(input.mul(delta).mul(100));
         // TODO: Remove
 
         // Update children
-        for (Node node : children) node.update();
+        super.update(delta);
     }
     
     @Override
     public void draw(Vector2 offset) {
+        // Draw sprite
         BufferedImage img = Resources.loadResource(image, Image.class).getImage();
 
         Game.getInstance().getBuffer().drawImage(
@@ -49,7 +50,7 @@ public class Sprite extends Node2D {
         );
 
         // Draw children
-        for (Node node : children) node.draw(pos.add(offset));
+        super.draw(offset);
     }
 
 }

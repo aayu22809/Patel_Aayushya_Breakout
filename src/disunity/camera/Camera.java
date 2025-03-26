@@ -30,15 +30,15 @@ public class Camera extends Node2D {
     /* ================ [ NODE ] ================ */
 
     @Override
-    public void update() {
+    public void update(double delta) {
         // Update children
-        for (Node node : children) node.update();
+        super.update(delta);
     }
 
     @Override
     public void draw(Vector2 offset) {
         // Draw children
-        for (Node node : children) node.draw(pos.add(offset));
+        super.draw(offset);
     }
     
 }

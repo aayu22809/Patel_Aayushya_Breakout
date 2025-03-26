@@ -129,7 +129,7 @@ public class Game extends JPanel implements Runnable {
                 buffer.clear();
                 
                 // Update scene
-                Scenes.updateScene();
+                Scenes.updateScene(Options.getSPF());
                 Scenes.drawScene(
                     camera.getPos().mul(-1)
                         .add(dimensions.mul(0.5)) // Center camera
