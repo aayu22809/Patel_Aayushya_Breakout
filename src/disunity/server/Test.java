@@ -3,32 +3,33 @@ package disunity.server;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Test {
+class Test {
 
     public static void main(String[] args) {
-        try(Host h = new Host()) {
-            ByteStore temp = new ByteStore();
-            h.supply(() -> temp.getBytes());
-            h.recieve((bytes) -> temp.setBytes(bytes));
-
-            try (Client c = new Client()) {
+        ByteStore temp = new ByteStore();
+        try(@SuppressWarnings("unused")
+        Host h = new Host((s) -> temp.getBytes(), (b) -> temp.setBytes(b))) {
+            h.start();
+            try (Client c = new Client(h.getAddress(), h.getPort())) {
                 try (Scanner in = new Scanner(System.in)) {
                     do {
-                        System.out.println("CLIENT: Initiating a SEND request:");
-                        System.out.print("CLIENT: Send something to the server: ");
+                        System.out.print("[CLIENT] Sending (enter something): ");
                         String input = in.nextLine();
-                        System.out.println();
                         c.send(input.getBytes());
-                        System.out.println("\nCLIENT: Sending a GET request.\n");
-                        String output = new String(c.recieve());
-                        System.out.printf("\nCLIENT: Recieved: %s\n\n", output);
-                        System.out.print("CLIENT: Continue? (y/n): ");
+                        System.out.println("[CLIENT] Sent.");
+                        byte[] recieved = h.recieve(c.id());
+                        System.out.println("[SERVER] Recieved: " + new String(recieved));
+                        System.out.print("[SERVER] Sending (enter something): ");
+                        input = in.nextLine();
+                        h.send(c.id(), input.getBytes());
+                        System.out.println("[SERVER] Sent.");
+                        recieved = c.recieve();
+                        System.out.println("[CLIENT] Recieved: " + new String(recieved));
+                        System.out.print("Continue? (y/n): ");
                     } while (in.nextLine().trim().equalsIgnoreCase("y"));
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Error: "+e.getMessage());
-        }
+        } catch (IOException ex) { }
     }
 
     static class ByteStore {

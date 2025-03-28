@@ -1,97 +1,84 @@
 package disunity.server;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class Host implements Closeable {
 
-    private static final int BACKLOG_SIZE = 100;
-    private static final int DEFAULT_PORT = 3000;
+    public static final int DEFAULT_PORT = 3000;
+    public static final long DELAY_MS = 20;
 
-    private int port;
-    private byte[] enqueuedBuffer = null;
-    private byte[] recievedBuffer = null;
-    private Consumer<byte[]> onPost;
-    private Supplier<byte[]> onGet;
-
-    private HttpServer server;
+    private final ServerSocket server;
+    private final Map<String, PayloadTransciever> clientTranscievers = new ConcurrentHashMap<>();
+    private final Queue<Socket> sockets = new ConcurrentLinkedQueue<>();
+    private final Thread listenerThread;
 
     public Host() throws IOException {
-        this(DEFAULT_PORT);
+        this(DEFAULT_PORT, null, null);
     }
 
-    public Host(int port) throws IOException {
-        this.port = port;
-        server = HttpServer.create(new InetSocketAddress(port),BACKLOG_SIZE, "/", (HttpExchange exchange) -> {
-            System.out.printf("SERVER: Exchange Recieved with method %s\n",exchange.getRequestMethod());
-            switch (exchange.getRequestMethod()) {
-                case "GET" -> {
-                    if (onGet != null) {
-                        enqueuedBuffer = onGet.get();
-                        System.out.printf("SERVER: Enqueued \"%s\" due to attached supplier\n",new String(enqueuedBuffer));
-                    }
-                    try (exchange) {
-                        if (enqueuedBuffer == null) {
-                            exchange.sendResponseHeaders(500, -1);
-                            System.out.println("SERVER: Unable to respond to GET request as the enqueued buffer was null\n");
-                            break;
-                        }
-                        exchange.sendResponseHeaders(200, enqueuedBuffer.length);
-                        exchange.getResponseBody().write(enqueuedBuffer);
-                        System.out.printf("SERVER: Responded \"%s\" to GET request\n",new String(enqueuedBuffer));
-                    }
-                }
-
-                case "POST" -> {
-                    try (exchange) {
-                        InputStream in = exchange.getRequestBody();
-                        recievedBuffer = in.readAllBytes();
-                        exchange.sendResponseHeaders(200, -1);
-                        if (onPost != null) {
-                            onPost.accept(recievedBuffer);
-                            System.out.printf("SERVER: Dispatched \"%s\" to attached reciever\n", new String(recievedBuffer));
-                        }
-                        System.out.printf("SERVER: Recieved \"%s\" from POST request\n",new String(recievedBuffer));
-                    }
-                }
-
+    public Host(Function<String, byte[]> onSupplyRequest, Consumer<byte[]> onNewBytes) throws IOException {
+        this(DEFAULT_PORT, onSupplyRequest, onNewBytes);
+    }
+    
+    public Host(int port, Function<String, byte[]> onSupplyRequest, Consumer<byte[]> onNewBytes) throws IOException {
+        server = new ServerSocket(port);
+        listenerThread = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Socket socket = server.accept();
+                    sockets.add(socket);
+                    PayloadTransciever clientTransciever = new PayloadTransciever(socket.getInputStream(), socket.getOutputStream());
+                    String clientIdentifier = id(socket);
+                    System.out.printf("[SERVER] Client at %s connected, creating handler\n", clientIdentifier);
+                    clientTranscievers.put(clientIdentifier, clientTransciever);
+                } catch (IOException ioe) { }
             }
+            System.out.println("[SERVER] Listener thread terminated");
         });
-        server.start();
     }
 
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public void enqueueBytes(byte[] enqueuedBuffer) {
-        this.enqueuedBuffer = enqueuedBuffer;
-    }
-
-    public byte[] getRecievedBytes() {
-        return recievedBuffer;
-    }
-
-    public void supply(Supplier<byte[]> supplier) {
-        onGet = supplier;
-    }
-
-    public void recieve(Consumer<byte[]> consumer) {
-        onPost = consumer;
+    public void start() {
+        listenerThread.start();
     }
 
     @Override
-    public void close() {
-        server.stop(0);
+    @SuppressWarnings("ConvertToTryWithResources")
+    public void close() throws IOException {
+        listenerThread.interrupt();
+        for (Socket socket : sockets) {
+            socket.close();
+            System.out.printf("[SERVER] Client %s handler socket closed\n", id(socket));
+        }
+        server.close();
+        System.out.println("[SERVER] Server socket closed");
+    }
+
+    public byte[] recieve(String clientIdentifier) {
+        return clientTranscievers.get(clientIdentifier).recieve();
+    }
+
+    public void send(String clientIdentifier, byte[] bytes) {
+        clientTranscievers.get(clientIdentifier).send(bytes);
+    }
+
+    public String getAddress() {
+        return server.getInetAddress().getHostAddress();
+    }
+
+    public int getPort() {
+        return server.getLocalPort();
+    }
+
+    public String id(Socket socket) {
+        return String.format("%s:%d", socket.getInetAddress(), socket.getPort());
     }
 }

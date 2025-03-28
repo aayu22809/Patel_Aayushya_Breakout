@@ -2,50 +2,37 @@ package disunity.server;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse.BodyHandlers;
+import java.net.Socket;
 
 public class Client implements Closeable {
 
-    HttpClient client;
+    private final Socket socket;
+    private final PayloadTransciever transciever;
+    private final String identifier;
 
+    public Client(String host, int port) throws IOException {
+        socket = new Socket(host, port);
+        transciever = new PayloadTransciever(socket.getInputStream(), socket.getOutputStream());
+        identifier = String.format("%s:%d", socket.getLocalAddress(), socket.getLocalPort());
+        System.out.println("[CLIENT] Connected to server. My identifier is: "+identifier);
+    }
 
-    public Client() {
-        client = HttpClient.newHttpClient();
+    public void send(byte[] bytes) {
+        transciever.send(bytes);
     }
 
     public byte[] recieve() {
-        try {
-            return client.send(
-                HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:3000"))
-                    .GET()
-                    .build(), 
-                BodyHandlers.ofString()).body()
-                .getBytes();
-        } catch (URISyntaxException | IOException | InterruptedException ix) {
-            return null;
-        }
-    }
-
-    public void send(byte[] buffer) {
-        try {
-            client.send(
-                HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:3000"))
-                    .POST(HttpRequest.BodyPublishers.ofByteArray(buffer))
-                    .build(),
-                BodyHandlers.ofString()
-            );
-        } catch (URISyntaxException | IOException | InterruptedException e) { }
+        return transciever.recieve();
     }
 
     @Override
-    public void close() {
-        client.close();
-    }
+    public void close() throws IOException {
+        socket.close();
+        System.out.println("[CLIENT] Socket closed");
+    }  
 
+    public String id() {
+        return identifier;
+    }
+      
 }
