@@ -10,6 +10,11 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
+    <properties>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
+    </properties>
+
     <groupId>com.apcs</groupId>
     <artifactId>ljaag</artifactId>
 
