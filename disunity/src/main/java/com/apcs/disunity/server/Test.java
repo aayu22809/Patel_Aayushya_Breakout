@@ -6,9 +6,7 @@ import java.util.Scanner;
 class Test {
 
     public static void main(String[] args) {
-        ByteStore temp = new ByteStore();
-        try(@SuppressWarnings("unused")
-        Host h = new Host((s) -> temp.getBytes(), (b) -> temp.setBytes(b))) {
+        try(Host h = new Host()) {
             h.start();
             try (Client c = new Client(h.getAddress(), h.getPort())) {
                 try (Scanner in = new Scanner(System.in)) {
@@ -31,19 +29,4 @@ class Test {
             }
         } catch (IOException ex) { }
     }
-
-    static class ByteStore {
-        private byte[] bytes = new byte[0];
-
-        public byte[] getBytes() {
-            return bytes;
-        }
-
-        public void setBytes(byte[] bytes) {
-            this.bytes = bytes;
-        }
-
-
-    }
-
 }

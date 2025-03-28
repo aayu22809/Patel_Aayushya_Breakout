@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class Host implements Closeable {
 
@@ -17,26 +15,22 @@ public class Host implements Closeable {
     public static final long DELAY_MS = 20;
 
     private final ServerSocket server;
-    private final Map<String, PayloadTransceiver> clientTransceivers = new ConcurrentHashMap<>();
+    private final Map<String, PacketTransceiver> clientTransceivers = new ConcurrentHashMap<>();
     private final Queue<Socket> sockets = new ConcurrentLinkedQueue<>();
     private final Thread listenerThread;
 
     public Host() throws IOException {
-        this(DEFAULT_PORT, null, null);
-    }
-
-    public Host(Function<String, byte[]> onSupplyRequest, Consumer<byte[]> onNewBytes) throws IOException {
-        this(DEFAULT_PORT, onSupplyRequest, onNewBytes);
+        this(DEFAULT_PORT);
     }
     
-    public Host(int port, Function<String, byte[]> onSupplyRequest, Consumer<byte[]> onNewBytes) throws IOException {
+    public Host(int port) throws IOException {
         server = new ServerSocket(port);
         listenerThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Socket socket = server.accept();
                     sockets.add(socket);
-                    PayloadTransceiver clientTransceiver = new PayloadTransceiver(socket.getInputStream(), socket.getOutputStream());
+                    PacketTransceiver clientTransceiver = new PacketTransceiver(socket.getInputStream(), socket.getOutputStream());
                     String clientIdentifier = id(socket);
                     System.out.printf("[SERVER] Client at %s connected, creating handler\n", clientIdentifier);
                     clientTransceivers.put(clientIdentifier, clientTransceiver);

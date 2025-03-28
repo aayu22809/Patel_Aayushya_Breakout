@@ -8,27 +8,27 @@ import static java.lang.Integer.BYTES;
 import java.util.Arrays;
 
 
-public class PayloadTransceiver {
+public class PacketTransceiver {
     
     private final OutputStream out;
     private final InputStream in;
 
-    public PayloadTransceiver(InputStream in, OutputStream out) {
+    public PacketTransceiver(InputStream in, OutputStream out) {
         this.in = in;
         this.out = out;
     }
 
     public void send(byte[] bytes) {
         try {
-            System.out.println("Making payload for bytes: "+Arrays.toString(bytes));
+            System.out.println("Making packet for bytes: "+Arrays.toString(bytes));
             // for convenience header bytes are sent reverse order
-            byte[] payload = new byte[BYTES + bytes.length];
+            byte[] packet = new byte[BYTES + bytes.length];
             for (int i = 0; i < BYTES; i++) {
-                payload[i] = (byte) ((bytes.length & (0b11111111 << (i * SIZE))) >> (i * SIZE));
+                packet[i] = (byte) ((bytes.length & (0b11111111 << (i * SIZE))) >> (i * SIZE));
             }
-            System.arraycopy(bytes, 0, payload, BYTES, bytes.length);
-            System.out.println("Sending payload: "+Arrays.toString(payload));
-            out.write(payload);
+            System.arraycopy(bytes, 0, packet, BYTES, bytes.length);
+            System.out.println("Sending packet: "+Arrays.toString(packet));
+            out.write(packet);
             System.out.println("Sent");
         } catch (IOException e) { }
     }
@@ -38,14 +38,14 @@ public class PayloadTransceiver {
             System.out.printf("expecting header of size %d...\n", BYTES);
             byte[] header = in.readNBytes(BYTES);
             System.out.println("Recieved header: "+Arrays.toString(header));
-            int payloadSize = 0;
+            int packetSize = 0;
             for (int i = 0; i < BYTES; i++) {
-                payloadSize += header[i] << (i * SIZE);
+                packetSize += header[i] << (i * SIZE);
             }
-            System.out.printf("expecting payload of size %d...\n", payloadSize);
-            byte[] payload = in.readNBytes(payloadSize);
-            System.out.println("Recieved payload: "+Arrays.toString(payload));
-            return payload;
+            System.out.printf("expecting packet of size %d...\n", packetSize);
+            byte[] packet = in.readNBytes(packetSize);
+            System.out.println("Recieved packet: "+Arrays.toString(packet));
+            return packet;
         } catch (IOException e) {
             return null;
         }

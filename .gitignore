@@ -1,24 +1,94 @@
-# Compiled class file
-*.class
+### Maven ###
+**/target/
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/release.properties
+**/dependency-reduced-pom.xml
+**/buildNumber.properties
+**/.mvn/timing.properties
 
-# Log file
-*.log
+# Keep Maven Wrapper files
+!mvnw
+!mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
 
-# BlueJ files
-*.ctxt
+### IDE ###
+# IntelliJ
+**/.idea/
+**/*.iml
+**/out/
+**/*.ipr
+**/*.iws
+**/*.ids
+**/*.orig
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Eclipse
+**/.classpath
+**/.project
+**/.settings/
+**/.metadata/
+**/bin/
+**/tmp/
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+# VS Code
+**/.vscode/
+**/.factorypath
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# NetBeans
+**/nbproject/private/
+**/build/
+**/nbbuild/
+**/dist/
+**/nbdist/
+**/.nb-gradle/
+
+### Build Artifacts ###
+**/*.class
+**/*.jar
+**/*.war
+**/*.ear
+**/lib/
+**/libs/
+
+### Logs & Reports ###
+**/*.log
+**/logs/
+**/surefire-reports/
+**/failsafe-reports/
+**/test-output/
+**/coverage/
+**/*.exec
+
+### AWT/Swing Temporary Files ###
+**/applet.tmp
+**/applet.cache
+
+### OS & Editor Temp Files ###
+**/.DS_Store
+**/.DS_Store?
+**/._*
+**/.Spotlight-V100
+**/.Trashes
+**/ehthumbs.db
+**/Thumbs.db
+**/*~
+**/*.tmp
+**/*.bak
+**/*.swp
+**/*.swo
+**/.directory
+
+### Environment Files ###
+.env
+**/.env*
+**/*.env
+**/local.properties
+**/local-*.properties
+
+### Archives ###
+**/*.zip
+**/*.tar.gz
+**/*.7z
