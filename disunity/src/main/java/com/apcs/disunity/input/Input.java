@@ -3,8 +3,11 @@ package com.apcs.disunity.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
- * Handles input types from any source
+ * An enum containing all input types
  * 
  * @author Qinzhao Li
  */
@@ -212,11 +215,13 @@ public enum Input {
     private String name;
 
     // Constructor
+    @JsonCreator
     Input(String name) { this.name = name; }
 
     /* ================ [ METHODS ] ================ */
 
     // Get name
+    @JsonValue
     public String getName() { return name; }
 
     // Get action by name

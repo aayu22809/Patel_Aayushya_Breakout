@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.nodes.Node;
 
 /**
  * Manages the scenes in the game
@@ -14,22 +15,22 @@ public class Scenes {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Current scene
+    // Current scene id
     private static String scene = "";
 
-    // Scene map
-    private static final Map<String, Scene> scenes = new HashMap<>();
+    // Maps scene ids to scenes
+    private static final Map<String, Node> scenes = new HashMap<>();
 
     /* ================ [ METHODS ] ================ */
 
-    // Add scene
-    public static void addScene(String name, Scene scene) { scenes.put(name, scene); }
+    // Add a scene
+    public static void addScene(String name, Node scene) { scenes.put(name, scene); }
 
     // Set current scene
     public static void setScene(String scene) { Scenes.scene = scene; }
     
     // Get current scene
-    public static Scene getScene() { return scenes.get(scene); }
+    public static Node getScene() { return scenes.get(scene); }
 
     // Update current scene
     public static void updateScene(double delta) { getScene().update(delta); }

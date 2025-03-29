@@ -7,24 +7,28 @@ import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.resources.Image;
 import com.apcs.disunity.resources.Resources;
 
+/**
+ * A 2d node that renders an image
+ * 
+ * @author Qinzhao Li
+ */
 public class Sprite extends Node2D {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Sprite image
+    // Sprite image id
     protected String image;
 
     // Constructors
-    public Sprite(String image) { this.image = image; }
+    public Sprite(String image) { super(); this.image = image; }
     public Sprite(String image, Node... children) { super(children); this.image = image; }
-    public Sprite(String image, Vector2 pos) { super(pos); this.image = image; }
     public Sprite(String image, Vector2 pos, Node... children) { super(pos, children); this.image = image; }
 
     /* ================ [ METHODS ] ================ */
     
     @Override
     public void draw(Vector2 offset) {
-        // Draw sprite
+        // Draw sprite image
         BufferedImage img = Resources.loadResource(image, Image.class).getImage();
 
         Game.getInstance().getBuffer().drawImage(

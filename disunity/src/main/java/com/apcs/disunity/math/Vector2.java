@@ -3,7 +3,7 @@ package com.apcs.disunity.math;
 import com.apcs.disunity.server.Util;
 
 /**
- * A 2D vector
+ * A 2D vector with x and y components
  * 
  * @author Qinzhao Li
  */
@@ -11,15 +11,14 @@ public class Vector2 {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Components
+    // X and Y components
     public final double x, y;
 
-    // Integer components
+    // X and Y rounded to integers
     public final int xi, yi;
 
-    // Constructors
+    // Constructor
     public Vector2() { this(0, 0); }
-
     public Vector2(double x, double y) {
         this.x = x;
         this.y = y;
@@ -29,27 +28,28 @@ public class Vector2 {
 
     /* ================ [ METHODS ] ================ */
 
-    // Of
+    // Create a vector2 given values
     public static Vector2 of(double x, double y) { return new Vector2(x, y); }
 
-    // Add
+    // Add two vectors
     public Vector2 add(Vector2 v) { return new Vector2(x + v.x, y + v.y); }
 
-    // Mul
+    // Multiply by a scalar
     public Vector2 mul(double v) { return new Vector2(x * v, y * v); }
 
-    // Dot
+    // Dot product with another vector
     public double dot(Vector2 v) { return x * v.x + y * v.y; }
 
-    // Length
+    // Magnitude of the vector
     public double length() { return Math.sqrt(x * x + y * y); }
     
-    // Normalized
+    // Return the normalized vector
     public Vector2 normalized() {
         double l = length();
         return l == 0 ? this : new Vector2(x / l, y / l);
     }
 
+    // Convert to bytes
     public byte[] getBytes() {
         byte[] bytes = new byte[Integer.BYTES * 2];
         System.arraycopy(Util.getBytes(xi), 0, bytes, 0, Integer.BYTES);

@@ -1,5 +1,9 @@
 package com.apcs.disunity.nodes;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.apcs.disunity.math.Vector2;
 
 /**
@@ -9,12 +13,33 @@ import com.apcs.disunity.math.Vector2;
  */
 public abstract class Node {
 
+    /* ================ [ FIELDS ] ================ */
+
+    // List of children
+    protected final List<Node> children;
+
+    // Constructor
+    public Node() { this.children = new ArrayList<>(); }
+    public Node(Node... children) { this.children = Arrays.asList(children); }
+
     /* ================ [ METHODS ] ================ */
 
+    // Add child
+    public void addChild(Node node) { children.add(node); }
+
+    // Remove child
+    public void removeChild(Node node) { children.remove(node); }
+
     // Update node
-    public abstract void update(double delta);
+    public void update(double delta) {
+        // Update children
+        for (Node node : children) node.update(delta);
+    }
     
     // Draw node
-    public abstract void draw(Vector2 offset);
+    public void draw(Vector2 offset) {
+        // Draw nodes
+        for (Node node : children) node.draw(offset);
+    }
     
 }
