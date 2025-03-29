@@ -8,7 +8,6 @@ import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.Sprite;
 import com.apcs.disunity.resources.Resources;
-import com.apcs.disunity.scenes.Scene;
 import com.apcs.disunity.scenes.Scenes;
 
 /**
@@ -32,8 +31,8 @@ public class LJAAG {
         Inputs.fromJSON("ljaag/keybinds.json");
 
         // Create the game scenes
-        Scenes.addScene("test", new Scene(
-            new Node2D(
+        Scenes.addScene("test", new Node2D( // Represents the scene
+            new Node2D( // Represents the player (temp)
                 new Sprite("templayer")
             )
         ));

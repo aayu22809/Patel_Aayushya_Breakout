@@ -20,10 +20,10 @@ public class Inputs {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Stores all actions and their respective bindings
+    // Maps actions to their respective bindings
     private static Map<String, ActionSet> actions = new HashMap<>();
 
-    // Stores all inputs and their pressed state
+    // Maps inputs to their pressed state
     private static final Map<Input, Boolean> inputs = new HashMap<>();
 
     // Mouse position on the screen

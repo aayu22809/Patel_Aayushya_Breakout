@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Any multi-key keybind
+ * A single or multi-key binding
  * 
  * @author Qinzhao Li
  */

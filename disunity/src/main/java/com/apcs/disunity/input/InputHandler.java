@@ -7,7 +7,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * Listens for keyboard inputs
+ * Listens for inputs and updates them
  * 
  * @author Qinzhao Li
  */

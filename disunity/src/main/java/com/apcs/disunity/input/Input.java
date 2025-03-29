@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Handles input types from any source
+ * An enum containing all input types
  * 
  * @author Qinzhao Li
  */
