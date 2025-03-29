@@ -9,6 +9,13 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * 
+ * Listens for incoming clients sockets and sends and recieves packets to/from clients.
+ * 
+ * @author Sharvil Phadke
+ * 
+ */
 public class Host implements Closeable {
 
     public static final int DEFAULT_PORT = 3000;

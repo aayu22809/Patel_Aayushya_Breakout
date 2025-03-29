@@ -8,7 +8,6 @@ import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.input.actions.Action;
 import com.apcs.disunity.input.actions.ActionSet;
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.Sprite;
 import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scene;
@@ -39,10 +38,12 @@ public class LJAAG {
         Inputs.addAction("right", new ActionSet(new Action(Input.KEY_D), new Action(Input.KEY_RIGHT)));
 
         // Setup scenes
+
+        Sprite player = new Sprite("templayer");
+        player.addChild(new Movement(player));
+        
         Scenes.addScene("test", new Scene(
-            new Node2D(
-                new Sprite("templayer")
-            )
+            player
         ));
 
         // Create app

@@ -4,6 +4,12 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * 
+ * Sends and recieves packets from/to a socket at a known ip and port.
+ * 
+ * @author Sharvil Phadke
+ */
 public class Client implements Closeable {
 
     private final Socket socket;

@@ -5,7 +5,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-
+/**
+ * 
+ * A helper class that sends and recieves packets with a size header and body over an input and output stream.
+ * 
+ * @author Sharvil Phadke
+ * 
+ */
 public class PacketTransceiver {
     
     private final OutputStream out;
