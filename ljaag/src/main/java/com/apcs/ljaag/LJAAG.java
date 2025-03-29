@@ -5,6 +5,7 @@ import com.apcs.disunity.Game;
 import com.apcs.disunity.camera.Camera;
 import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.Sprite;
 import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scenes;

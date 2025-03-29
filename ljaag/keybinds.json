@@ -1,6 +1,6 @@
 {
   "left" : [ [ "A" ], [ "Left" ] ],
-  "up" : [ [ "Shift", "W" ], [ "Up" ] ],
+  "up" : [ [ "W" ], [ "Up" ] ],
   "right" : [ [ "D" ], [ "Right" ] ],
   "down" : [ [ "S" ], [ "Down" ] ]
 }
