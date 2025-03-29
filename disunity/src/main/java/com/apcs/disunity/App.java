@@ -26,6 +26,7 @@ public class App extends JFrame {
 
         // Window resize listener
         addComponentListener(new ComponentAdapter() {
+            @Override
             public void componentResized(ComponentEvent e) {
                 game.updateBuffer(
                     Vector2.of(getWidth(), getHeight())

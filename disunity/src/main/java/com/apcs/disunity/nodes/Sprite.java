@@ -53,4 +53,13 @@ public class Sprite extends Node2D {
         super.draw(offset);
     }
 
+    public byte[] getBytes() {
+        byte[] imgBytes = image.getBytes();
+        byte[] bytes = new byte[imgBytes.length + Integer.BYTES * 2];
+        System.arraycopy(imgBytes, 0, bytes, 0, imgBytes.length);
+        byte[] posBytes = pos.getBytes();
+        System.arraycopy(posBytes, 0, bytes, imgBytes.length, posBytes.length);
+        return bytes;
+    }
+
 }

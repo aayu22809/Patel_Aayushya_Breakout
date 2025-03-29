@@ -1,5 +1,7 @@
 package com.apcs.disunity.math;
 
+import com.apcs.disunity.server.Util;
+
 /**
  * A 2D vector
  * 
@@ -46,6 +48,13 @@ public class Vector2 {
     public Vector2 normalized() {
         double l = length();
         return l == 0 ? this : new Vector2(x / l, y / l);
+    }
+
+    public byte[] getBytes() {
+        byte[] bytes = new byte[Integer.BYTES * 2];
+        System.arraycopy(Util.getBytes(xi), 0, bytes, 0, Integer.BYTES);
+        System.arraycopy(Util.getBytes(yi), 0, bytes, Integer.BYTES, Integer.BYTES);
+        return bytes;
     }
 
     /* ================ [ OBJECT ] ================ */
