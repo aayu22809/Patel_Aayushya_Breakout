@@ -3,10 +3,7 @@ package com.apcs.ljaag;
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
 import com.apcs.disunity.camera.Camera;
-import com.apcs.disunity.input.Input;
 import com.apcs.disunity.input.Inputs;
-import com.apcs.disunity.input.actions.Action;
-import com.apcs.disunity.input.actions.ActionSet;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.Sprite;
@@ -28,24 +25,20 @@ public class LJAAG {
 
     public static void main(String[] args) {
         
-        // Setup resources
+        // Import resources from the assets folder
         Resources.scanFolder("ljaag/assets", true);
 
-        // Setup keybinds
-        // TODO: json this
-        Inputs.addAction("up", new ActionSet(new Action(Input.KEY_W), new Action(Input.KEY_UP)));
-        Inputs.addAction("down", new ActionSet(new Action(Input.KEY_S), new Action(Input.KEY_DOWN)));
-        Inputs.addAction("left", new ActionSet(new Action(Input.KEY_A), new Action(Input.KEY_LEFT)));
-        Inputs.addAction("right", new ActionSet(new Action(Input.KEY_D), new Action(Input.KEY_RIGHT)));
+        // Import keybinds from a JSON file
+        Inputs.fromJSON("ljaag/keybinds.json");
 
-        // Setup scenes
+        // Create the game scenes
         Scenes.addScene("test", new Scene(
             new Node2D(
                 new Sprite("templayer")
             )
         ));
 
-        // Create app
+        // Create game application
         new App(
             "Title", 
             800, 450,

@@ -1,5 +1,8 @@
 package com.apcs.disunity.input.actions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * A set of keybinds for an action
  * 
@@ -13,11 +16,13 @@ public class ActionSet {
     private final Action[] actions;
 
     // Constructor
+    @JsonCreator
     public ActionSet(Action... actions) { this.actions = actions; }
 
     /* ================ [ METHODS ] ================ */
 
     // Get actions
+    @JsonValue
     public Action[] getActions() { return actions; }
     
 }
