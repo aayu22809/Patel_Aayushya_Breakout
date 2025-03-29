@@ -2,6 +2,8 @@ package com.apcs.disunity.server;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.net.Inet6Address;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
@@ -31,7 +33,8 @@ public class Host implements Closeable {
     }
     
     public Host(int port) throws IOException {
-        server = new ServerSocket(port);
+        server = new ServerSocket();
+        server.bind(new InetSocketAddress(Inet6Address.ofLiteral("::"), port));
         listenerThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
