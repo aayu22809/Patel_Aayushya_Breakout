@@ -11,27 +11,27 @@ import com.apcs.disunity.math.Vector2;
  * 
  * @author Qinzhao Li
  */
-public abstract class Node {
+public abstract class Node<T extends Node> {
 
     /* ================ [ FIELDS ] ================ */
 
     // List of children
-    private final List<Node> children;
+    private final List<T> children;
 
     // Constructor
     public Node() { this.children = new ArrayList<>(); }
-    public Node(Node... children) { this.children = Arrays.asList(children); }
+    public Node(T... children) { this.children = Arrays.asList(children); }
 
     /* ================ [ METHODS ] ================ */
 
     // Add child
-    public void addChild(Node node) { children.add(node); }
+    public void addChild(T node) { children.add(node); }
 
     // Remove child
-    public void removeChild(Node node) { children.remove(node); }
+    public void removeChild(T node) { children.remove(node); }
 
     // Get children
-    public List<Node> getChildren() { return children; }
+    public List<T> getChildren() { return children; }
 
     // Clear children
     public void clearChildren() { children.clear(); }
@@ -41,13 +41,6 @@ public abstract class Node {
     // Update node
     public void update(double delta) {
         // Update children
-        for (Node node : children) node.update(delta);
+        for (T node : children) node.update(delta);
     }
-    
-    // Draw node
-    public void draw(Vector2 offset) {
-        // Draw nodes
-        for (Node node : children) node.draw(offset);
-    }
-    
 }
