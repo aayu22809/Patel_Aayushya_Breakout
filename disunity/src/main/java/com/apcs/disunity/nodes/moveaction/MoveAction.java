@@ -1,20 +1,20 @@
 package com.apcs.disunity.nodes.moveaction;
 
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.nodes.Node;
+import com.apcs.disunity.nodes.NonDrawingNode;
 
 /**
  * A node that performs a movement action
  * 
  * @author Qinzhao Li
  */
-public class MoveAction extends Node {
+public class MoveAction extends NonDrawingNode {
 
     /* ================ [ FIELDS ] ================ */
 
     // Constructors
     public MoveAction() { super(); }
-    public MoveAction(Node... children) { super(children); }
+    public MoveAction(NonDrawingNode... children) { super(children); }
 
     /* ================ [ MOVEACTION ] ================ */
 
