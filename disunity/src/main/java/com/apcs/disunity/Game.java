@@ -5,7 +5,6 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import com.apcs.disunity.camera.Camera;
 import com.apcs.disunity.input.InputHandler;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.rendering.ScalableBuffer;
@@ -32,14 +31,14 @@ public class Game extends JPanel implements Runnable {
     // Buffer for scaling the game
     private ScalableBuffer buffer;
 
-    // Camera to control viewport
-    private Camera camera;
+    // Camera position to control viewport
+    private Vector2 cameraPos;
 
     // Input handler
     private InputHandler input;
 
     // Constructors
-    public Game(Vector2 dimensions, String scene, Camera camera) {
+    public Game(Vector2 dimensions, String scene) {
         // Game dimensions
         this.dimensions = dimensions;
 
@@ -63,9 +62,6 @@ public class Game extends JPanel implements Runnable {
         // Set current scene
         Scenes.setScene(scene);
 
-        // Set camera
-        this.camera = camera;
-
         // Set singleton instance
         instance = this;
     }
@@ -79,13 +75,13 @@ public class Game extends JPanel implements Runnable {
     }
 
     // Update buffer
-    public void updateBuffer(Vector2 target) { buffer.refresh(target); }
+    public void updateBuffer(Vector2 size) { buffer.refresh(size); }
 
     // Get buffer
     public ScalableBuffer getBuffer() { return buffer; }
 
-    // Get camera
-    public Camera getCamera() { return camera; }
+    // Set camera position
+    public void setCameraPos(Vector2 pos) { cameraPos = pos; }
 
     // Get instance
     public static Game getInstance() { return instance; }
@@ -139,8 +135,8 @@ public class Game extends JPanel implements Runnable {
                 
                 // Draw scene
                 Scenes.drawScene(
-                    camera.getPos().mul(-1)
-                        .add(dimensions.mul(0.5)) // Center camera
+                    cameraPos.mul(-1)
+                        .add(dimensions.mul(0.5)) // Center on camera
                 );
 
                 // Draw buffer to screen

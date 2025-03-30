@@ -2,7 +2,6 @@ package com.apcs.ljaag;
 
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
-import com.apcs.disunity.camera.Camera;
 import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node2D;
@@ -43,8 +42,7 @@ public class LJAAG {
             800, 450,
             new Game(
                 Vector2.of(320, 180),
-                "test",
-                new Camera()
+                "test"
             )
         );
 

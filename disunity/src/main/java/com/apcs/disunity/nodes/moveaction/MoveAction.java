@@ -8,7 +8,7 @@ import com.apcs.disunity.nodes.NonDrawingNode;
  * 
  * @author Qinzhao Li
  */
-public class MoveAction extends NonDrawingNode {
+public abstract class MoveAction extends NonDrawingNode{
 
     /* ================ [ FIELDS ] ================ */
 

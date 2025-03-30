@@ -37,22 +37,22 @@ public class ScalableBuffer {
     /* ================ [ METHODS ] ================ */
 
     // Refresh buffer
-    public void refresh(Vector2 target) {
+    public void refresh(Vector2 size) {
 
-        target = Vector2.of(
-            Math.min(target.x, target.y * ratio.x / ratio.y),
-            Math.min(target.y, target.x * ratio.y / ratio.x)
+        size = Vector2.of(
+            Math.min(size.x, size.y * ratio.x / ratio.y),
+            Math.min(size.y, size.x * ratio.y / ratio.x)
         );
 
         // Create buffer
         image = new BufferedImage(
-            target.xi, target.yi,
+            size.xi, size.yi,
             BufferedImage.TYPE_INT_ARGB
         );
         graphics = image.createGraphics();
 
         // Set scale
-        scale = target.x / ratio.x;
+        scale = size.x / ratio.x;
 
         // White background
         graphics.setBackground(Color.WHITE);
