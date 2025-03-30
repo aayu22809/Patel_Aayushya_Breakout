@@ -1,0 +1,45 @@
+package com.apcs.disunity.nodes;
+
+import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.nodes.moveaction.MoveAction;
+
+/**
+ * A 2d node that can handle movement and collision
+ * 
+ * @author Qinzhao Li
+ */
+public class Body extends Node2D {
+
+    /* ================ [ FIELDS ] ================ */
+
+    // Velocity
+    protected Vector2 vel = new Vector2();
+
+    // Constructors
+    public Body() { super(); }
+    public Body(Node... children) { super(children); }
+    public Body(Vector2 pos, Node... children) { super(pos, children); }
+
+    /* ================ [ METHODS ] ================ */
+
+    // Set velocity
+    public void setVel(Vector2 vel) { this.vel = vel; }
+
+    // Get velocity
+    public Vector2 getVel() { return vel; }
+
+    /* ================ [ NODE ] ================ */
+
+    @Override
+    public void update(double delta) {
+        // Apply movement nodes
+        for (Node node : getChildren()) {
+            if (node instanceof MoveAction)
+                vel = ((MoveAction) node).apply(vel, delta);
+        }
+
+        // Update children
+        super.update(delta);
+    }
+    
+}

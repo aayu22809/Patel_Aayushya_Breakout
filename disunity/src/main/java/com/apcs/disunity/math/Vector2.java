@@ -49,6 +49,9 @@ public class Vector2 {
         return l == 0 ? this : new Vector2(x / l, y / l);
     }
 
+    // Check if vectors are equal
+    public boolean equals(Vector2 v) { return x == v.x && y == v.y; }
+
     // Convert to bytes
     public byte[] getBytes() {
         byte[] bytes = new byte[Integer.BYTES * 2];

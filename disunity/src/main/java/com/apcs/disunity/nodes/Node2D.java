@@ -11,8 +11,8 @@ public class Node2D extends Node {
 
     /* ================ [ FIELDS ] ================ */
     
-    // Node position
-    protected Vector2 pos = new Vector2();
+    // Position
+    private Vector2 pos = new Vector2();
 
     // Constructors
     public Node2D() { super(); }
@@ -35,7 +35,7 @@ public class Node2D extends Node {
     @Override
     public void draw(Vector2 offset) {
         // Draw children relative to this
-        for (Node node : children) node.draw(pos.add(offset));
+        for (Node node : getChildren()) node.draw(pos.add(offset));
     }
     
 }

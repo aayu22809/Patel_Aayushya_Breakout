@@ -10,7 +10,10 @@ public class Options {
     /* ================ [ FIELDS ] ================ */
 
     // Frame rate
-    public static double FPS = 120.0;
+    public static double FPS = 60.0;
+
+    // Draw rate
+    public static double DPS = 60.0;
 
     /* ================ [ METHODS ] ================ */
 
@@ -19,5 +22,11 @@ public class Options {
 
     // Milliseconds per frame
     public static double getMSPF() { return 1000.0 / FPS; }
+
+    // Seconds per draw
+    public static double getSPD() { return 1.0 / DPS; }
+
+    // Milliseconds per draw
+    public static double getMSPD() { return 1000.0 / DPS; }
     
 }

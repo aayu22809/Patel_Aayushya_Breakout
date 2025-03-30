@@ -18,7 +18,7 @@ public class Sprite extends Node2D {
     /* ================ [ FIELDS ] ================ */
 
     // Sprite image id
-    protected String image;
+    private String image;
 
     // Constructors
     public Sprite(String image) { super(); this.image = image; }
@@ -49,7 +49,7 @@ public class Sprite extends Node2D {
 
         Game.getInstance().getBuffer().drawImage(
             img,
-            pos.add(offset).add(Vector2.of(img.getWidth(), img.getHeight()).mul(-0.5)),
+            getPos().add(offset).add(Vector2.of(img.getWidth(), img.getHeight()).mul(-0.5)),
             null
         );
 
@@ -61,7 +61,7 @@ public class Sprite extends Node2D {
         byte[] imgBytes = image.getBytes();
         byte[] bytes = new byte[imgBytes.length + Integer.BYTES * 2];
         System.arraycopy(imgBytes, 0, bytes, 0, imgBytes.length);
-        byte[] posBytes = pos.getBytes();
+        byte[] posBytes = getPos().getBytes();
         System.arraycopy(posBytes, 0, bytes, imgBytes.length, posBytes.length);
         return bytes;
     }

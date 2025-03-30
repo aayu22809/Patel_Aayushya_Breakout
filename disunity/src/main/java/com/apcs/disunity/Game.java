@@ -111,7 +111,7 @@ public class Game extends JPanel implements Runnable {
     public void run() {
 
         // Variables
-        double delta = 0;
+        double delta = 0, ddelta = 0;
         long prevTime = System.nanoTime(), curTime;
 
         // Game loop
@@ -120,16 +120,24 @@ public class Game extends JPanel implements Runnable {
             // Calculate delta
             curTime = System.nanoTime();
             delta += (curTime - prevTime) / 1000000.0;
+            ddelta += (curTime - prevTime) / 1000000.0;
             prevTime = curTime;
 
             // Update game
             while (delta >= Options.getMSPF()) {
-                
+                // Update scene
+                Scenes.updateScene(Options.getSPF());
+
+                // Decrease delta
+                delta -= Options.getMSPF();
+            }
+
+            // Draw game
+            while (ddelta >= Options.getMSPD()) {
                 // Clear buffer
                 buffer.clear();
                 
-                // Update scene
-                Scenes.updateScene(Options.getSPF());
+                // Draw scene
                 Scenes.drawScene(
                     camera.getPos().mul(-1)
                         .add(dimensions.mul(0.5)) // Center camera
@@ -139,8 +147,7 @@ public class Game extends JPanel implements Runnable {
                 repaint();
 
                 // Decrease delta
-                delta -= Options.getMSPF();
-
+                ddelta -= Options.getMSPD();
             }
 
         }

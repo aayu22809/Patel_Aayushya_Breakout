@@ -16,7 +16,7 @@ public abstract class Node {
     /* ================ [ FIELDS ] ================ */
 
     // List of children
-    protected final List<Node> children;
+    private final List<Node> children;
 
     // Constructor
     public Node() { this.children = new ArrayList<>(); }
@@ -29,6 +29,14 @@ public abstract class Node {
 
     // Remove child
     public void removeChild(Node node) { children.remove(node); }
+
+    // Get children
+    public List<Node> getChildren() { return children; }
+
+    // Clear children
+    public void clearChildren() { children.clear(); }
+
+    /* ================ [ NODE ] ================ */
 
     // Update node
     public void update(double delta) {
