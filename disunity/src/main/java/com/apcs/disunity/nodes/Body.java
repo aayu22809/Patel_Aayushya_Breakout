@@ -17,8 +17,8 @@ public class Body extends Node2D {
 
     // Constructors
     public Body() { super(); }
-    public Body(Node... children) { super(children); }
-    public Body(Vector2 pos, Node... children) { super(pos, children); }
+    public Body(Node<?>... children) { super(children); }
+    public Body(Vector2 pos, Node<?>... children) { super(pos, children); }
 
     /* ================ [ METHODS ] ================ */
 
@@ -33,7 +33,7 @@ public class Body extends Node2D {
     @Override
     public void update(double delta) {
         // Apply movement nodes
-        for (Node node : getChildren()) {
+        for (Node<?> node : getChildren()) {
             if (node instanceof MoveAction)
                 vel = ((MoveAction) node).apply(vel, delta);
         }

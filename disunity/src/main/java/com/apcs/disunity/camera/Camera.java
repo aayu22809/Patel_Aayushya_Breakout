@@ -18,9 +18,9 @@ public class Camera extends Node2D {
 
     // Constructors
     public Camera() { }
-    public Camera(Node... children) { super(children); }
+    public Camera(Node<?>... children) { super(children); }
     public Camera(Vector2 pos) { super(pos); }
-    public Camera(Vector2 pos, Node... children) { super(pos, children); }
+    public Camera(Vector2 pos, Node<?>... children) { super(pos, children); }
 
     /* ================ [ METHODS ] ================ */
 

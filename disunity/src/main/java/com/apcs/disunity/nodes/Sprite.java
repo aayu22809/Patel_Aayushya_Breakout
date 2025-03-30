@@ -22,8 +22,8 @@ public class Sprite extends Node2D {
 
     // Constructors
     public Sprite(String image) { super(); this.image = image; }
-    public Sprite(String image, Node... children) { super(children); this.image = image; }
-    public Sprite(String image, Vector2 pos, Node... children) { super(pos, children); this.image = image; }
+    public Sprite(String image, Node<?>... children) { super(children); this.image = image; }
+    public Sprite(String image, Vector2 pos, Node<?>... children) { super(pos, children); this.image = image; }
 
     /* ================ [ METHODS ] ================ */
 

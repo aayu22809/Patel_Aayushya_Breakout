@@ -7,7 +7,7 @@ import com.apcs.disunity.math.Vector2;
  * 
  * @author Qinzhao Li
  */
-public class Node2D extends DrawableNode {
+public class Node2D extends DrawnNode {
 
     /* ================ [ FIELDS ] ================ */
     
@@ -16,8 +16,8 @@ public class Node2D extends DrawableNode {
 
     // Constructors
     public Node2D() { super(); }
-    public Node2D(Node... children) { super(children); }
-    public Node2D(Vector2 pos, Node... children) { super(children); this.pos = pos; }
+    public Node2D(Node<?>... children) { super(children); }
+    public Node2D(Vector2 pos, Node<?>... children) { super(children); this.pos = pos; }
 
     /* ================ [ METHODS ] ================ */
 
@@ -35,9 +35,9 @@ public class Node2D extends DrawableNode {
     @Override
     public void draw(Vector2 offset) {
         // Draw children relative to this
-        for (Node node : getChildren()) {
-            if(node instanceof DrawableNode) {
-                ((DrawableNode) node).draw(pos.add(offset));
+        for (Node<?> node : getChildren()) {
+            if (node instanceof DrawnNode) {
+                ((DrawnNode) node).draw(pos.add(offset));
             }
         }
     }

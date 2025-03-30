@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.apcs.disunity.math.Vector2;
-
 /**
  * The base class for all nodes in the game
  * 
  * @author Qinzhao Li
+ * @author Toshiki Takeuchi
  */
-public abstract class Node<T extends Node> {
+public abstract class Node<T extends Node<?>> {
 
     /* ================ [ FIELDS ] ================ */
 
@@ -20,6 +19,7 @@ public abstract class Node<T extends Node> {
 
     // Constructor
     public Node() { this.children = new ArrayList<>(); }
+    @SafeVarargs
     public Node(T... children) { this.children = Arrays.asList(children); }
 
     /* ================ [ METHODS ] ================ */
@@ -43,4 +43,5 @@ public abstract class Node<T extends Node> {
         // Update children
         for (T node : children) node.update(delta);
     }
+    
 }
