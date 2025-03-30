@@ -14,7 +14,7 @@ public class Camera extends Node2D {
     /* ================ [ FIELDS ] ================ */
 
     // Camera scale
-    protected double scale = 1;
+    private double scale = 1;
 
     // Constructors
     public Camera() { }

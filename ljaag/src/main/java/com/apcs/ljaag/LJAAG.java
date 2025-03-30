@@ -8,6 +8,8 @@ import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.Sprite;
 import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scenes;
+import com.apcs.ljaag.nodes.body.PlayerBody;
+import com.apcs.ljaag.nodes.moveaction.WalkAction;
 
 /**
  * Untitled game
@@ -31,8 +33,9 @@ public class LJAAG {
 
         // Create the game scenes
         Scenes.addScene("test", new Node2D( // Represents the scene
-            new Node2D( // Represents the player (temp)
-                new Sprite("templayer")
+            new PlayerBody(
+                new Sprite("templayer"),
+                new WalkAction()
             )
         ));
 

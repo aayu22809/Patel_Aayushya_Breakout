@@ -28,11 +28,11 @@ public class Game extends JPanel implements Runnable {
     // Game dimensions
     private Vector2 dimensions;
 
-    // Buffer for scaling the game
-    private ScalableBuffer buffer;
-
     // Camera position to control viewport
     private Vector2 cameraPos;
+
+    // Buffer for scaling the game
+    private ScalableBuffer buffer;
 
     // Input handler
     private InputHandler input;
@@ -41,6 +41,9 @@ public class Game extends JPanel implements Runnable {
     public Game(Vector2 dimensions, String scene) {
         // Game dimensions
         this.dimensions = dimensions;
+
+        // Camera pos
+        this.cameraPos = Vector2.of(0, 0);
 
         // Panel background
         setBackground(Color.BLACK);

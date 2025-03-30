@@ -1,6 +1,8 @@
-package com.apcs.disunity.nodes;
+package com.apcs.disunity.nodes.body;
 
 import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.nodes.Node;
+import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.moveaction.MoveAction;
 
 /**
@@ -13,7 +15,7 @@ public class Body extends Node2D {
     /* ================ [ FIELDS ] ================ */
 
     // Velocity
-    protected Vector2 vel = new Vector2();
+    private Vector2 vel = new Vector2();
 
     // Constructors
     public Body() { super(); }
@@ -35,8 +37,11 @@ public class Body extends Node2D {
         // Apply movement nodes
         for (Node<?> node : getChildren()) {
             if (node instanceof MoveAction)
-                vel = ((MoveAction) node).apply(vel, delta);
+                vel = ((MoveAction<?>) node).apply(vel, delta);
         }
+
+        // Move with velocity
+        move(vel.mul(delta));
 
         // Update children
         super.update(delta);

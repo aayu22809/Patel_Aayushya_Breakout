@@ -8,7 +8,7 @@ import com.apcs.disunity.nodes.UndrawnNode;
  * 
  * @author Qinzhao Li
  */
-public abstract class MoveAction extends UndrawnNode{
+public abstract class MoveAction<T> extends UndrawnNode {
 
     /* ================ [ FIELDS ] ================ */
 
@@ -18,7 +18,10 @@ public abstract class MoveAction extends UndrawnNode{
 
     /* ================ [ MOVEACTION ] ================ */
 
-    // Apply action
+    // Trigger the node
+    public abstract void trigger(T data);
+
+    // Apply action to a velocity
     public Vector2 apply(Vector2 vel, double delta) { return vel; }
     
 }
