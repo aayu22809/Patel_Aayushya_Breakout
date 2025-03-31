@@ -21,6 +21,12 @@ public abstract class DrawnNode extends Node<Node<?>> {
     /// draws content of this node to buffer.
     /// use {@link Game#getInstance()} and {@link Game#getBuffer()} to access current buffer.
     /// @param offset where the node should be drawn
-    public abstract void draw(Vector2 offset);
+    public void draw(Vector2 offset) {
+        // Draw children
+        for (Node<?> node : getChildren()) {
+            if (node instanceof DrawnNode)
+                ((DrawnNode) node).draw(offset);
+        }
+    }
 
 }

@@ -2,6 +2,7 @@ package com.apcs.ljaag;
 
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
+import com.apcs.disunity.camera.Camera;
 import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node2D;
@@ -34,6 +35,7 @@ public class LJAAG {
         // Create the game scenes
         Scenes.addScene("test", new Node2D( // Represents the scene
             new PlayerBody(
+                new Camera(),
                 new Sprite("templayer"),
                 new WalkAction()
             )

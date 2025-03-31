@@ -77,14 +77,14 @@ public class Game extends JPanel implements Runnable {
         game.start();
     }
 
+    // Set camera position
+    public void setCameraPos(Vector2 pos) { this.cameraPos = pos; }
+
     // Update buffer
     public void updateBuffer(Vector2 size) { buffer.refresh(size); }
 
     // Get buffer
     public ScalableBuffer getBuffer() { return buffer; }
-
-    // Set camera position
-    public void setCameraPos(Vector2 pos) { cameraPos = pos; }
 
     // Get instance
     public static Game getInstance() { return instance; }

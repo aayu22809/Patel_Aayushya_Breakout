@@ -35,10 +35,6 @@ public class Node2D extends DrawnNode {
     @Override
     public void draw(Vector2 offset) {
         // Draw children relative to this
-        for (Node<?> node : getChildren()) {
-            if (node instanceof DrawnNode) {
-                ((DrawnNode) node).draw(pos.add(offset));
-            }
-        }
+        super.draw(pos.add(offset));
     }
 }
