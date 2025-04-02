@@ -12,8 +12,8 @@ public class Node2D extends DrawnNode {
     /* ================ [ FIELDS ] ================ */
     
     // Position
-    private Vector2 pos = new Vector2();
-    private Vector2 scale = Vector2.getCongruenceScaleFactor();
+    private Vector2 pos = Vector2.ZERO;
+    private Vector2 scale = Vector2.ONE;
 
     // Constructors
     public Node2D() { super(); }

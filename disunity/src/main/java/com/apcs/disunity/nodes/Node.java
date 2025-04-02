@@ -51,8 +51,10 @@ public abstract class Node<T extends Node<?>> {
         print(
           true,
           n -> "○ " + n.getClass().getSimpleName(),
-          new ArrayList<>());
+          new ArrayList<>()
+        );
     }
+
     /// method that prints information and children of node recursively in a tree format.
     /// @param isLast indicates if this node is last child of parent
     /// @param formatter function that formats provided node to printed string
@@ -62,16 +64,13 @@ public abstract class Node<T extends Node<?>> {
         System.out.print(isLast ? "└ " : "├ ");
         System.out.println(formatter.apply(this));
 
-        if(isLast) {
-            indent.add("  ");
-        } else {
-            indent.add("│ ");
-        }
+        if (isLast) indent.add("  ");
+        else indent.add("│ ");
 
-        for(int i=0; i<children.size()-1; i++) {
+        for (int i = 0; i < children.size() - 1; i++) {
             ((Node<?>) children.get(i)).print(false, formatter, indent);
         }
-        if(!children.isEmpty()) {
+        if (!children.isEmpty()) {
             ((Node<?>) children.getLast()).print(true, formatter, indent);
         }
 

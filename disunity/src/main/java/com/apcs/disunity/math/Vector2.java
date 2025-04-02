@@ -6,8 +6,17 @@ import com.apcs.disunity.server.Util;
  * A 2D vector with x and y components
  * 
  * @author Qinzhao Li
+ * @author Sharvil Phadke
  */
 public class Vector2 {
+
+    /* ================ [ CONSTANTS ] ================ */
+
+    // Zero vector
+    public static final Vector2 ZERO = new Vector2(0, 0);
+
+    // One vector
+    public static final Vector2 ONE = new Vector2(1, 1);
 
     /* ================ [ FIELDS ] ================ */
 
@@ -29,13 +38,8 @@ public class Vector2 {
     /* ================ [ METHODS ] ================ */
 
     // Create a vector2 given values
+    public static Vector2 of(double x) { return new Vector2(x, x); }
     public static Vector2 of(double x, double y) { return new Vector2(x, y); }
-
-    public static Vector2 getCongruenceScaleFactor() { return new Vector2(1, 1); };
-    
-    public static Vector2 getOrigin() { return new Vector2(); };
-
-    public static Vector2 ofScaleFactor(double scaleFactor) { return new Vector2(scaleFactor, scaleFactor); }
 
     // Add two vectors
     public Vector2 add(Vector2 v) { return new Vector2(x + v.x, y + v.y); }

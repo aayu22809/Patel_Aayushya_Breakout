@@ -14,7 +14,7 @@ public class Camera extends UndrawnNode {
     /* ================ [ FIELDS ] ================ */
 
     // Camera position
-    private Vector2 pos = new Vector2();
+    private Vector2 pos = Vector2.ZERO;
 
     // Camera scale
     private double scale = 1;

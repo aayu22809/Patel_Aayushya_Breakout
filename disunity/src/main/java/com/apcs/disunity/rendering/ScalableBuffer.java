@@ -78,7 +78,7 @@ public class ScalableBuffer {
 
     // Draw image
     public void drawImage(Image img, Vector2 pos) {
-        this.drawImage(img, pos, Vector2.getCongruenceScaleFactor());
+        this.drawImage(img, pos, Vector2.ONE);
     }
 
 }
