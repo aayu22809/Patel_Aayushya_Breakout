@@ -27,13 +27,13 @@ public class PlayerBody extends Body {
         // Trigger movement nodes
         for (Node<?> node : getChildren()) {
             // Walk action
-            if (node instanceof WalkAction) {
+            if (node instanceof WalkAction walkAction) {
                 Vector2 input = new Vector2(
                     (Inputs.getAction("left") ? -1 : 0) + (Inputs.getAction("right") ? 1 : 0),
                     (Inputs.getAction("up") ? -1 : 0) + (Inputs.getAction("down") ? 1 : 0)
                 ).normalized();
 
-                ((WalkAction) node).trigger(input.mul(100));
+                walkAction.trigger(input.mul(100));
             }
         }
 

@@ -28,20 +28,24 @@ public class Host implements Closeable {
     private final Queue<Socket> sockets = new ConcurrentLinkedQueue<>();
     private final Thread listenerThread;
 
+    private int clientId;
+
     public Host() throws IOException {
         this(DEFAULT_PORT);
     }
     
     public Host(int port) throws IOException {
         server = new ServerSocket();
+        clientId = 1;
         server.bind(new InetSocketAddress(Inet6Address.ofLiteral("::"), port));
         listenerThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Socket socket = server.accept();
                     sockets.add(socket);
+                    socket.getOutputStream().write(clientId++);
                     PacketTransceiver clientTransceiver = new PacketTransceiver(socket.getInputStream(), socket.getOutputStream());
-                    String clientIdentifier = id(socket);
+                    String clientIdentifier = identify(socket);
                     System.out.printf("[SERVER] Client at %s connected, creating handler\n", clientIdentifier);
                     clientTransceivers.put(clientIdentifier, clientTransceiver);
                 } catch (IOException ioe) { }
@@ -60,7 +64,7 @@ public class Host implements Closeable {
         listenerThread.interrupt();
         for (Socket socket : sockets) {
             socket.close();
-            System.out.printf("[SERVER] Client %s handler socket closed\n", id(socket));
+            System.out.printf("[SERVER] Client %s handler socket closed\n", identify(socket));
         }
         server.close();
         System.out.println("[SERVER] Server socket closed");
@@ -82,7 +86,7 @@ public class Host implements Closeable {
         return server.getLocalPort();
     }
 
-    public String id(Socket socket) {
+    public static String identify(Socket socket) {
         return String.format("%s:%d", socket.getInetAddress(), socket.getPort());
     }
 }

@@ -15,11 +15,11 @@ class Test {
                         String input = in.nextLine();
                         c.send(input.getBytes());
                         System.out.println("[CLIENT] Sent.");
-                        byte[] recieved = h.recieve(c.id());
+                        byte[] recieved = h.recieve(c.identify());
                         System.out.println("[SERVER] Recieved: " + new String(recieved));
                         System.out.print("[SERVER] Sending (enter something): ");
                         input = in.nextLine();
-                        h.send(c.id(), input.getBytes());
+                        h.send(c.identify(), input.getBytes());
                         System.out.println("[SERVER] Sent.");
                         recieved = c.recieve();
                         System.out.println("[CLIENT] Recieved: " + new String(recieved));

@@ -31,7 +31,7 @@ public class ScalableBuffer {
         this.ratio = ratio;
 
         // Refresh buffer
-        refresh(target);
+        this.refresh(target);
     }
 
     /* ================ [ METHODS ] ================ */

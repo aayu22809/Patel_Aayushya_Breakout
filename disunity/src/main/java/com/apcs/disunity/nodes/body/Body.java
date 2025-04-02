@@ -36,8 +36,9 @@ public class Body extends Node2D {
     public void update(double delta) {
         // Apply movement nodes
         for (Node<?> node : getChildren()) {
-            if (node instanceof MoveAction)
-                vel = ((MoveAction<?>) node).apply(vel, delta);
+            if (node instanceof MoveAction<?> action) {
+                vel = action.apply(vel, delta);
+            }
         }
 
         // Move with velocity

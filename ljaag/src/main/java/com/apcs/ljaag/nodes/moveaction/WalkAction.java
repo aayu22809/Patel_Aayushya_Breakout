@@ -5,8 +5,8 @@ import com.apcs.disunity.nodes.UndrawnNode;
 import com.apcs.disunity.nodes.moveaction.MoveAction;
 
 /**
- * A move action that allows directional movement
- * 
+ * A move action that allows directional movement.
+ *
  * @author Qinzhao Li
  */
 public class WalkAction extends MoveAction<Vector2> {

@@ -12,12 +12,15 @@ import java.net.Socket;
  */
 public class Client implements Closeable {
 
+    private final int id;
+
     private final Socket socket;
     private final PacketTransceiver transceiver;
     private final String identifier;
 
     public Client(String host, int port) throws IOException {
         socket = new Socket(host, port);
+        id = socket.getInputStream().read();
         transceiver = new PacketTransceiver(socket.getInputStream(), socket.getOutputStream());
         identifier = String.format("%s:%d", socket.getLocalAddress(), socket.getLocalPort());
         System.out.println("[CLIENT] Connected to server. My identifier is: "+identifier);
@@ -37,8 +40,47 @@ public class Client implements Closeable {
         System.out.println("[CLIENT] Socket closed");
     }  
 
-    public String id() {
+    public String identify() {
         return identifier;
     }
+
+    public byte id() {
+        return (byte) id;
+    }
       
+}
+
+class Base
+{
+
+    public void methodOne()
+    {
+        System.out.print("A");
+        methodTwo();
+    }
+
+    public void methodTwo()
+    {
+        System.out.print("B");
+    }
+}
+
+class Derived extends Base
+{
+    public static void main(String[] args) {
+        Base b = new Derived();
+        b.methodOne();
+    }
+
+    public void methodOne()
+    {
+        super.methodOne();
+        System.out.print("C");
+    }
+
+    public void methodTwo()
+    {
+        super.methodTwo();
+        System.out.print("D");
+    }
 }

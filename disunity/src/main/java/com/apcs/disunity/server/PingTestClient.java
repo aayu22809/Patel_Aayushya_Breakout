@@ -14,7 +14,7 @@ public class PingTestClient {
             port = s.nextInt();
         }
         try (Client c = new Client(host, port)) {
-            System.out.printf("Identifier: ",c.id());
+            System.out.printf("Identifier: ",c.identify());
             for (int i = 0; i < 100; i++) {
                 
                 //synchronize
