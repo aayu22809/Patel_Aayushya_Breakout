@@ -36,7 +36,7 @@ public class LJAAG {
         Scenes.addScene("test", new Node2D( // Represents the scene
             new PlayerBody(
                 new Camera(),
-                new Sprite("templayer"),
+                new Sprite("templayer", Vector2.getOrigin(), Vector2.of(5,5)),
                 new WalkAction()
             )
         ));

@@ -31,6 +31,12 @@ public class Vector2 {
     // Create a vector2 given values
     public static Vector2 of(double x, double y) { return new Vector2(x, y); }
 
+    public static Vector2 getCongruenceScaleFactor() { return new Vector2(1, 1); };
+    
+    public static Vector2 getOrigin() { return new Vector2(); };
+
+    public static Vector2 ofScaleFactor(double scaleFactor) { return new Vector2(scaleFactor, scaleFactor); }
+
     // Add two vectors
     public Vector2 add(Vector2 v) { return new Vector2(x + v.x, y + v.y); }
 

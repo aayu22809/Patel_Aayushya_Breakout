@@ -20,7 +20,7 @@ public abstract class Node<T extends Node<?>> {
     // Constructor
     public Node() { this.children = new ArrayList<>(); }
     @SafeVarargs
-    public Node(T... children) { this.children = Arrays.asList(children); }
+    public Node(T... children) { this.children = new ArrayList<>(Arrays.asList(children)); }
 
     /* ================ [ METHODS ] ================ */
 

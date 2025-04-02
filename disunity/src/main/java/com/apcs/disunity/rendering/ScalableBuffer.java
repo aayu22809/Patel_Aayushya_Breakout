@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 
 import com.apcs.disunity.math.Vector2;
 
@@ -68,13 +67,18 @@ public class ScalableBuffer {
     /* ================ [ GRAPHICS ] ================ */
 
     // Draw image
-    public void drawImage(Image img, Vector2 pos, ImageObserver observer) {
+    public void drawImage(Image img, Vector2 pos, Vector2 scaleFactor) {
         graphics.drawImage(img,
             (int) (pos.x * scale), (int) (pos.y * scale),
-            (int) (img.getHeight(observer) * scale),
-            (int) (img.getWidth(observer) * scale),
-            observer
+            (int) (img.getWidth(null) * scale * scaleFactor.x),
+            (int) (img.getHeight(null) * scale * scaleFactor.y),
+            null
         );
+    }
+
+    // Draw image
+    public void drawImage(Image img, Vector2 pos) {
+        this.drawImage(img, pos, Vector2.getCongruenceScaleFactor());
     }
 
 }

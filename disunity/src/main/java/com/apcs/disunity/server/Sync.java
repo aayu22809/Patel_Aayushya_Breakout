@@ -17,8 +17,5 @@ public final class Sync {
     public Sync(int idPrefix) {
         this.idPrefix = (byte) idPrefix;
     }
-
-    
-
     
 }

@@ -33,8 +33,8 @@ public class Resources {
                 name = name.substring(0, name.lastIndexOf('.'));
 
             switch (type) {
-                case "image": addResource(name, new Resource(Resource.Type.IMAGE, file.getAbsolutePath())); break;
-                default: break;
+                case "image" -> addResource(name, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
+                default -> { }
             }
         } catch (IOException e) { e.printStackTrace(); }
     }
