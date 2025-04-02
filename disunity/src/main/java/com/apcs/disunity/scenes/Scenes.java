@@ -1,16 +1,10 @@
 package com.apcs.disunity.scenes;
 
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.apcs.disunity.Game;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.DrawnNode;
-import com.apcs.disunity.rendering.RenderObject;
-import com.apcs.disunity.resources.Image;
-import com.apcs.disunity.resources.Resources;
 
 /**
  * Manages the scenes in the game
@@ -42,21 +36,6 @@ public class Scenes {
     public static void updateScene(double delta) { getScene().update(delta); }
 
     // Draw current scene
-    public static void drawScene(Vector2 offset) {
-        List<RenderObject> objs = getScene().getRenderObjects(offset);
-
-        for (RenderObject imageInfo : objs) {
-
-            // Draw sprite image
-            BufferedImage img = Resources.loadResource(imageInfo.name, Image.class).getImage();
-
-            Game.getInstance().getBuffer().drawImage(
-                img,
-                imageInfo.offset,
-                imageInfo.scale
-            );
-
-        }
-    }
+    public static void drawScene(Vector2 offset) { getScene().draw(offset); }
 
 }

@@ -11,9 +11,9 @@ import static java.lang.Byte.SIZE;
  * @author Sharvil Phadke
  * 
  */
-public class Util {
+public final class Util {
 
-    public static byte[] pack(byte[] bytes) {
+    public static final byte[] pack(byte[] bytes) {
         byte[] packet = new byte[Integer.BYTES + bytes.length];
         byte[] header = Util.getBytes(bytes.length);
         System.arraycopy(header, 0, packet, 0, Integer.BYTES);
@@ -21,18 +21,18 @@ public class Util {
         return packet;
     }
 
-    public static byte[] unpack(byte[] data, int headerLoc) {
+    public static final byte[] unpack(byte[] data, int headerLoc) {
         int size = getInt(data, headerLoc);
         byte[] output = new byte[size];
         System.arraycopy(data, headerLoc + Integer.BYTES, output, 0, size);
         return output;
     }
 
-    public static byte[] unpack(byte[] data) {
+    public static final byte[] unpack(byte[] data) {
         return unpack(data, 0);
     }
 
-    public static byte[] unpack(InputStream data) {
+    public static final byte[] unpack(InputStream data) {
         try {
         byte[] header = data.readNBytes(Integer.BYTES);
         int packetSize = getInt(header);
@@ -41,7 +41,7 @@ public class Util {
         } catch (IOException ioe) { return null; }
     }
 
-    public static byte[] getBytes(int val) {
+    public static final byte[] getBytes(int val) {
         byte[] bytes = new byte[Integer.BYTES];
         for (int i = 0; i < Integer.BYTES; i++) {
             bytes[i] = (byte) ((val & (0XFF << (i * SIZE))) >> (i * SIZE));
@@ -49,7 +49,7 @@ public class Util {
         return bytes;
     }
 
-    public static int getInt(byte[] data, int loc) {
+    public static final int getInt(byte[] data, int loc) {
         int val = 0;
         for (int i = 0; i < Integer.BYTES; i++) {
             val |= (data[i + loc] & 0xFF) << (i * SIZE);
@@ -57,11 +57,11 @@ public class Util {
         return val;
     }
 
-    public static int getInt(byte[] data) {
+    public static final int getInt(byte[] data) {
         return getInt(data, 0);
     }
 
-    public static byte[] getBytes(long val) {
+    public static final byte[] getBytes(long val) {
         byte[] bytes = new byte[Long.BYTES];
         for (int i = 0; i < Long.BYTES; i++) {
             bytes[i] = (byte) ((val & (0XFFL << (i * SIZE))) >> (i * SIZE));
@@ -69,7 +69,7 @@ public class Util {
         return bytes;
     }
 
-    public static long getLong(byte[] data, int loc) {
+    public static final long getLong(byte[] data, int loc) {
         long val = 0;
         for (int i = 0; i < Long.BYTES; i++) {
             val |= (data[i + loc] & 0XFFL) << (i * SIZE);
@@ -77,7 +77,7 @@ public class Util {
         return val;
     }
 
-    public static long getLong(byte[] data) {
+    public static final long getLong(byte[] data) {
         return getLong(data, 0);
     }
 

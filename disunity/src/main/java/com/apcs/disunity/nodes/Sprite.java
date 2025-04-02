@@ -1,10 +1,9 @@
 package com.apcs.disunity.nodes;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
 
+import com.apcs.disunity.Game;
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.rendering.RenderObject;
 import com.apcs.disunity.resources.Image;
 import com.apcs.disunity.resources.Resources;
 
@@ -29,22 +28,18 @@ public class Sprite extends Node2D {
     /* ================ [ METHODS ] ================ */
     
     @Override
-    public List<RenderObject> getRenderObjects(Vector2 offset) {
+    public void draw(Vector2 offset) {
         // Draw sprite image
         BufferedImage img = Resources.loadResource(image, Image.class).getImage();
 
         Vector2 sf = getScale();
 
-        List<RenderObject> objs = super.getRenderObjects(offset);
-        objs.add(new RenderObject(
-            image, 
+        Game.getInstance().getBuffer().drawImage(
+            img,
             getPos().add(offset).add(Vector2.of(img.getWidth() * sf.x, img.getHeight() * sf.y).mul(-0.5)),
             sf
-        ));
+        );
 
-
-        // Draw children
-        return objs;
     }
 
     public String getImage() {

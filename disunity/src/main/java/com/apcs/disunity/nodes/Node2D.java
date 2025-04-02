@@ -1,9 +1,6 @@
 package com.apcs.disunity.nodes;
 
-import java.util.List;
-
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.rendering.RenderObject;
 
 /**
  * A base class for 2D nodes with position
@@ -42,8 +39,8 @@ public class Node2D extends DrawnNode {
     /* ================ [ NODE ] ================ */
 
     @Override
-    public List<RenderObject> getRenderObjects(Vector2 offset) {
+    public void draw(Vector2 offset) {
         // Draw children relative to this
-        return super.getRenderObjects(pos.add(offset));
+        super.draw(pos.add(offset));
     }
 }
