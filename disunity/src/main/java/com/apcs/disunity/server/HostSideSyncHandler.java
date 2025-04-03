@@ -35,6 +35,8 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
             senderThread.start();
 
         });
+
+        host.start();
     }
 
     @Override
