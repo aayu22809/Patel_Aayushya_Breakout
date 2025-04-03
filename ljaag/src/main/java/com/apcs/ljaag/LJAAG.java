@@ -33,10 +33,10 @@ public class LJAAG {
         Inputs.fromJSON("ljaag/keybinds.json");
 
         // Create the game scenes
-        Scenes.addScene("test", new Node2D( // Represents the scene
+        Scenes.addScene("test", new Node2D(
             new PlayerBody(
                 new Camera(),
-                new Sprite("templayer", Vector2.getOrigin(), Vector2.of(5,5)),
+                new Sprite("templayer"),
                 new WalkAction()
             )
         ));

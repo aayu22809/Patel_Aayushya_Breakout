@@ -15,7 +15,7 @@ public class Body extends Node2D {
     /* ================ [ FIELDS ] ================ */
 
     // Velocity
-    private Vector2 vel = new Vector2();
+    private Vector2 vel = Vector2.ZERO;
 
     // Constructors
     public Body() { super(); }

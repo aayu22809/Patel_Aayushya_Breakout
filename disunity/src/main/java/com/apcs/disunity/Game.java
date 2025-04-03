@@ -43,7 +43,7 @@ public class Game extends JPanel implements Runnable {
         this.dimensions = dimensions;
 
         // Camera pos
-        this.cameraPos = Vector2.of(0, 0);
+        this.cameraPos = Vector2.ZERO;
 
         // Panel background
         setBackground(Color.BLACK);
