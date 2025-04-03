@@ -9,9 +9,9 @@ public class PingTestServer {
             System.out.printf("Address: %s\n   Port: %d\n",h.getAddress(),h.getPort());
             h.start();
             System.out.print("Server started. Please wait for Client to join, then type the identifier: ");
-            String identifier;
+            int identifier;
             try (Scanner s = new Scanner(System.in)) {
-                identifier = s.nextLine();
+                identifier = h.identify(s.nextLine());
             }
 
             for (int i = 0; i < 100; i++) {

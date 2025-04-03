@@ -40,12 +40,16 @@ public class Client implements Closeable {
         System.out.println("[CLIENT] Socket closed");
     }  
 
-    public String identify() {
+    public String getStringIdentifier() {
         return identifier;
     }
 
     public byte id() {
         return (byte) id;
+    }
+
+    public PacketTransceiver getTransceiver() {
+        return transceiver;
     }
       
 }

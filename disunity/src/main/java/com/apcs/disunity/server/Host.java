@@ -6,10 +6,13 @@ import java.net.Inet6Address;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
 
 /**
  * 
@@ -24,11 +27,15 @@ public class Host implements Closeable {
     public static final long DELAY_MS = 20;
 
     private final ServerSocket server;
-    private final Map<String, PacketTransceiver> clientTransceivers = new ConcurrentHashMap<>();
+    private final Map<Integer, PacketTransceiver> clientTransceivers = new ConcurrentHashMap<>();
+    private final Map<String, Integer> ids = new ConcurrentHashMap<>();
     private final Queue<Socket> sockets = new ConcurrentLinkedQueue<>();
     private final Thread listenerThread;
+    private final List<Consumer<Integer>> onJoinActions = new LinkedList<>();
 
-    private int clientId;
+    public static final int ID = 0;
+
+    private int clientId = 0;
 
     public Host() throws IOException {
         this(DEFAULT_PORT);
@@ -36,18 +43,22 @@ public class Host implements Closeable {
     
     public Host(int port) throws IOException {
         server = new ServerSocket();
-        clientId = 1;
         server.bind(new InetSocketAddress(Inet6Address.ofLiteral("::"), port));
         listenerThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Socket socket = server.accept();
                     sockets.add(socket);
-                    socket.getOutputStream().write(clientId++);
+                    int id = ++clientId;
+                    socket.getOutputStream().write(id);
                     PacketTransceiver clientTransceiver = new PacketTransceiver(socket.getInputStream(), socket.getOutputStream());
-                    String clientIdentifier = identify(socket);
+                    String clientIdentifier = getStringIdentifier(socket);
                     System.out.printf("[SERVER] Client at %s connected, creating handler\n", clientIdentifier);
-                    clientTransceivers.put(clientIdentifier, clientTransceiver);
+                    ids.put(clientIdentifier, id);
+                    clientTransceivers.put(id, clientTransceiver);
+                    for (Consumer<Integer> action : onJoinActions) {
+                        action.accept(id);
+                    }
                 } catch (IOException ioe) { }
             }
             System.out.println("[SERVER] Listener thread terminated");
@@ -64,18 +75,18 @@ public class Host implements Closeable {
         listenerThread.interrupt();
         for (Socket socket : sockets) {
             socket.close();
-            System.out.printf("[SERVER] Client %s handler socket closed\n", identify(socket));
+            System.out.printf("[SERVER] Client %s handler socket closed\n", getStringIdentifier(socket));
         }
         server.close();
         System.out.println("[SERVER] Server socket closed");
     }
 
-    public byte[] recieve(String clientIdentifier) {
-        return clientTransceivers.get(clientIdentifier).recieve();
+    public byte[] recieve(int id) {
+        return clientTransceivers.get(id).recieve();
     }
 
-    public void send(String clientIdentifier, byte[] bytes) {
-        clientTransceivers.get(clientIdentifier).send(bytes);
+    public void send(int id, byte[] bytes) {
+        clientTransceivers.get(id).send(bytes);
     }
 
     public String getAddress() {
@@ -86,7 +97,24 @@ public class Host implements Closeable {
         return server.getLocalPort();
     }
 
-    public static String identify(Socket socket) {
+    public static String getStringIdentifier(Socket socket) {
         return String.format("%s:%d", socket.getInetAddress(), socket.getPort());
     }
+
+    public PacketTransceiver getTransceiver(int id) {
+        return clientTransceivers.get(id);
+    }
+
+    public int identify(String clientIdentifier) {
+        return ids.get(clientIdentifier);
+    }
+
+    public void attachJoinAction(Consumer<Integer> onJoinAction) {
+        onJoinActions.add(onJoinAction);
+    }
+
+    public void removeJoinAction(Consumer<Integer> onJoinAction) {
+        onJoinActions.remove(onJoinAction);
+    }
+
 }

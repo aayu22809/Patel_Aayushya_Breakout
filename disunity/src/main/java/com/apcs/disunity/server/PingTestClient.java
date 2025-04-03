@@ -3,6 +3,7 @@ package com.apcs.disunity.server;
 import java.io.IOException;
 import java.util.Scanner;
 
+@SuppressWarnings("CallToPrintStackTrace")
 public class PingTestClient {
     public static void main(String[] args) {
         String host;
@@ -14,7 +15,7 @@ public class PingTestClient {
             port = s.nextInt();
         }
         try (Client c = new Client(host, port)) {
-            System.out.printf("Identifier: ",c.identify());
+            System.out.printf("Identifier: ",c.getStringIdentifier());
             for (int i = 0; i < 100; i++) {
                 
                 //synchronize
@@ -44,5 +45,6 @@ public class PingTestClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }
