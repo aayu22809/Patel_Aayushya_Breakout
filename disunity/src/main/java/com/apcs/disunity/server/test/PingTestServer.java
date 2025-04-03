@@ -1,4 +1,7 @@
-package com.apcs.disunity.server;
+package com.apcs.disunity.server.test;
+
+import com.apcs.disunity.server.Host;
+import com.apcs.disunity.server.Util;
 
 import java.io.IOException;
 import java.util.Scanner;
