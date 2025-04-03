@@ -42,9 +42,8 @@ public final class Util {
         byte[] output = new byte[length];
         int loc = 0;
         for (byte[] subpacket : subpackets) {
-            subpacket = pack(subpacket);
             System.arraycopy(pack(subpacket), 0, output, loc, subpacket.length);
-            loc += subpacket.length;
+            loc += subpacket.length + PACKET_HEADER_SIZE;
         }
         return output;
     }
@@ -55,7 +54,7 @@ public final class Util {
         while (loc < data.length) {
             byte[] subdata = unpack(data, loc);
             output.add(subdata);
-            loc += subdata.length;
+            loc += subdata.length + PACKET_HEADER_SIZE;
         }
         return output;
     }
