@@ -36,6 +36,9 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
 
         });
 
+    }
+
+    public void start() {
         host.start();
     }
 
