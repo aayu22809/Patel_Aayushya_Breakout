@@ -1,5 +1,7 @@
 package com.apcs.disunity.nodes;
 
+import com.apcs.disunity.server.Synced;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.function.Function;
  * @author Qinzhao Li
  * @author Toshiki Takeuchi
  */
-public abstract class Node<T extends Node<?>> {
+public abstract class Node<T extends Node<?>> implements Synced {
 
     /* ================ [ FIELDS ] ================ */
 

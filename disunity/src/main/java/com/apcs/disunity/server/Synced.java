@@ -21,6 +21,6 @@ public interface Synced {
      * @param sender The ID of the sender, as managed by the Host.
      * @param data   The byte array containing the received data.
      */
-    void recieve(int sender, byte[] data);
+    void receive(int sender, byte[] data);
 
 }

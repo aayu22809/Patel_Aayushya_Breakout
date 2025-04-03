@@ -43,4 +43,14 @@ public class Node2D extends DrawnNode {
         // Draw children relative to this
         super.draw(pos.add(offset));
     }
+
+    @Override
+    public byte[] supply(int recipient) {
+        return pos.getBytes();
+    }
+
+    @Override
+    public void receive(int sender, byte[] data) {
+        pos = Vector2.of(sender,data);
+    }
 }

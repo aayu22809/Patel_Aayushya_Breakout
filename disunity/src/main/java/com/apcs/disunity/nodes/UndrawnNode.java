@@ -5,7 +5,7 @@ package com.apcs.disunity.nodes;
  * 
  * @author Toshiki Takeuchi
  */
-public class UndrawnNode extends Node<UndrawnNode> {
+public abstract class UndrawnNode extends Node<UndrawnNode> {
 
     /* ================ [ FIELDS ] ================ */
 

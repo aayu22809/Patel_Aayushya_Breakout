@@ -45,5 +45,16 @@ public class Camera extends UndrawnNode {
         // Update children
         super.update(delta);
     }
-    
+
+    /* ================ [ SYNCED ] ================ */
+
+    @Override
+    public byte[] supply(int recipient) {
+        return pos.getBytes();
+    }
+
+    @Override
+    public void receive(int sender, byte[] data) {
+        pos = Vector2.of(sender,data);
+    }
 }

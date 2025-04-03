@@ -16,6 +16,7 @@ public abstract class SyncHandler {
         return instance;
     }
 
+    ///  creates bundled packets from registered {@link Synced} objects.
     protected final byte[] poll(int recipient) {
         List<byte[]> subpackets = new LinkedList<>();
         for (Synced sync : syncs) {
@@ -24,10 +25,11 @@ public abstract class SyncHandler {
         return Util.bundleSubpackets(subpackets);
     }
 
+    /// applies received packets to registered {@link Synced} objects.
     protected final void distribute(int sender, byte[] data) {
         List<byte[]> subdata = Util.debundleSubpackets(data);
         for (int i = 0; i < syncs.size(); i++) {
-            syncs.get(i).recieve(sender, subdata.get(i));
+            syncs.get(i).receive(sender, subdata.get(i));
         }
     }
 }

@@ -4,6 +4,7 @@ import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.moveaction.MoveAction;
+import com.apcs.disunity.server.Util;
 
 /**
  * A 2d node that can handle movement and collision
@@ -47,5 +48,22 @@ public class Body extends Node2D {
         // Update children
         super.update(delta);
     }
-    
+
+    /* ================ [ SYNCED ] ================ */
+    @Override
+    public byte[] supply(int recipient) {
+        byte[] superPacket = super.supply(recipient);
+        byte[] velPacket = vel.getBytes();
+        byte[] packet = new byte[superPacket.length + velPacket.length];
+        System.arraycopy(superPacket,0,packet,0, superPacket.length );
+        System.arraycopy(velPacket,0,packet,superPacket.length,velPacket.length);
+        return packet;
+    }
+
+    @Override
+    public void receive(int sender, byte[] data) {
+        super.receive(sender,data);
+        // TODO: better parsing system
+        vel = Vector2.of(sender,data,super.supply(0).length);
+    }
 }

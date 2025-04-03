@@ -28,4 +28,13 @@ public class WalkAction extends MoveAction<Vector2> {
     @Override
     public Vector2 apply(Vector2 vel, double delta) { return dir; }
 
+    /* ================ [ SYNCED ] ================ */
+
+    @Override
+    public byte[] supply(int recipient) {
+        return new byte[0];
+    }
+
+    @Override
+    public void receive(int sender, byte[] data) {}
 }
