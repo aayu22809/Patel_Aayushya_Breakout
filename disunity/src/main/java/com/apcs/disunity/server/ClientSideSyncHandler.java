@@ -16,13 +16,13 @@ public class ClientSideSyncHandler extends SyncHandler implements Closeable {
 
         senderThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
-                distribute(client.id(), transceiver.recieve());
+                distribute(Synced.HOST, transceiver.recieve());
             }
         });
 
         recieverThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
-                transceiver.send(poll(Host.ID));
+                transceiver.send(poll(Synced.HOST));
             }
         });
     }
@@ -38,6 +38,11 @@ public class ClientSideSyncHandler extends SyncHandler implements Closeable {
         client.close();
         recieverThread.interrupt();
         senderThread.interrupt();
+    }
+
+    @Override
+    public int getEndpointId() {
+        return client.id();
     }
     
 }

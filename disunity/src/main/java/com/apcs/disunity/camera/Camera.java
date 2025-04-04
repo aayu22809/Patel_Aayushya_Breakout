@@ -54,7 +54,8 @@ public class Camera extends UndrawnNode {
     }
 
     @Override
-    public void receive(int sender, byte[] data) {
-        pos = Vector2.of(sender,data);
+    public int receive(int sender, byte[] data) {
+        // pos = Vector2.of(Util.getInt(data, 0), Util.getInt(data, Integer.BYTES));
+        return 0;
     }
 }

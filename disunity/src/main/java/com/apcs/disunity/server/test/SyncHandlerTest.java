@@ -1,5 +1,8 @@
 package com.apcs.disunity.server.test;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
 import com.apcs.disunity.input.Inputs;
@@ -15,9 +18,6 @@ import com.apcs.disunity.server.ClientSideSyncHandler;
 import com.apcs.disunity.server.HostSideSyncHandler;
 import com.apcs.disunity.server.SyncHandler;
 import static com.apcs.disunity.server.test.TestingUtils.spawnProcess;
-
-import java.io.IOException;
-import java.util.Scanner;
 
 /// # current status of this test:
 /// ## working
@@ -76,9 +76,12 @@ public class SyncHandlerTest {
             ).normalized().mul(100);
           }
 
+
           public void trigger(Object data) {}
           public byte[] supply(int recipient) { return new byte[0]; }
-          public void receive(int sender, byte[] data) {}
+          public int receive(int sender, byte[] data) {
+            return 0;
+          }
         }
       ){
         @Override
@@ -86,7 +89,40 @@ public class SyncHandlerTest {
           super.update(delta);
 //          System.out.printf("%s s = %s, v = %s\n",windowName, getPos(), getVel());
         }
-      }
+      },
+
+      new Body(
+          new Sprite("templayer"),
+          new MoveAction() {
+            @Override
+            public Vector2 apply(Vector2 vel, double delta) {
+              if(!isHost) return vel;
+              return new Vector2(
+                (Inputs.getAction("left") ? -1 : 0) + (Inputs.getAction("right") ? 1 : 0),
+                (Inputs.getAction("up") ? -1 : 0) + (Inputs.getAction("down") ? 1 : 0)
+              ).normalized().mul(100);
+            }
+
+
+            public void trigger(Object data) {}
+            public byte[] supply(int recipient) { return new byte[0]; }
+            public int receive(int sender, byte[] data) {
+              return 0;
+            }
+          }
+        ){
+          @Override
+          public void update(double delta) {
+            super.update(delta);
+  //          System.out.printf("%s s = %s, v = %s\n",windowName, getPos(), getVel());
+          }
+
+          @Override
+          public int receive(int sender, byte[] data) {
+            // this is extremely bad practice and we should find a better way to do this
+            return super.receive(sender-1, data);
+          }
+        }
     ));
 
     Scenes.setScene("test");

@@ -1,6 +1,7 @@
 package com.apcs.disunity.nodes;
 
 import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.server.Util;
 
 /**
  * A base class for 2D nodes with position
@@ -50,7 +51,9 @@ public class Node2D extends DrawnNode {
     }
 
     @Override
-    public void receive(int sender, byte[] data) {
-        pos = Vector2.of(sender,data);
+    public int receive(int sender, byte[] data) {
+        if (sender == 0) return 0;
+        pos = Vector2.of(Util.getInt(data, 0), Util.getInt(data, Integer.BYTES));
+        return Integer.BYTES * 2;
     }
 }

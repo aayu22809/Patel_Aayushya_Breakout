@@ -37,8 +37,19 @@ public class Game extends JPanel implements Runnable {
     // Input handler
     private InputHandler input;
 
+    // Is the host
+    private boolean isHost;
+
     // Constructors
+
     public Game(Vector2 dimensions, String scene) {
+        this(dimensions, scene, true);
+    }
+
+    public Game(Vector2 dimensions, String scene, boolean isHost) {
+
+        this.isHost = isHost;
+        
         // Game dimensions
         this.dimensions = dimensions;
 
@@ -151,6 +162,10 @@ public class Game extends JPanel implements Runnable {
 
         }
 
+    }
+
+    public boolean isHost() {
+        return isHost;
     }
 
 }

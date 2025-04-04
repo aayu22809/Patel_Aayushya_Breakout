@@ -5,8 +5,10 @@ import java.util.List;
 
 public abstract class SyncHandler {
 
-    private static SyncHandler instance;
-    private static final List<Synced> syncs = new LinkedList<>();
+    private static SyncHandler instance; 
+    { instance = this; }
+
+    private final List<Synced> syncs = new LinkedList<>();
 
     public void register(Synced synced) {
         syncs.add(synced);
@@ -32,4 +34,6 @@ public abstract class SyncHandler {
             syncs.get(i).receive(sender, subdata.get(i));
         }
     }
+
+    public abstract int getEndpointId();
 }

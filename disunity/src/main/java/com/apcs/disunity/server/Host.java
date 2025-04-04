@@ -33,8 +33,6 @@ public class Host implements Closeable {
     private final Thread listenerThread;
     private final List<Consumer<Integer>> onJoinActions = new LinkedList<>();
 
-    public static final int ID = 0;
-
     private int clientId = 0;
 
     public Host() throws IOException {

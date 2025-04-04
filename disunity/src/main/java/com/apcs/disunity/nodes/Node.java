@@ -1,11 +1,11 @@
 package com.apcs.disunity.nodes;
 
-import com.apcs.disunity.server.Synced;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+
+import com.apcs.disunity.server.Synced;
 
 /**
  * The base class for all nodes in the game

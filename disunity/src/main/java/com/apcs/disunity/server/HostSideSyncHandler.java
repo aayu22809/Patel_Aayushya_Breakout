@@ -49,5 +49,9 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
         }
     }
 
+    @Override
+    public int getEndpointId() {
+        return Synced.HOST;
+    }
 
 }

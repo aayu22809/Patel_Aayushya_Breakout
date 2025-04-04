@@ -41,14 +41,6 @@ public class Vector2 {
     public static Vector2 of(double x) { return new Vector2(x, x); }
     public static Vector2 of(double x, double y) { return new Vector2(x, y); }
 
-    // parses packets to vector
-    public static Vector2 of(int sender, byte[] data) {
-        return Vector2.of(sender,data,0);
-    }
-    public static Vector2 of(int sender, byte[] data, int loc) {
-        return Vector2.of(Util.getInt(data,loc), Util.getInt(data,loc+Integer.BYTES));
-    }
-
     // Add two vectors
     public Vector2 add(Vector2 v) { return new Vector2(x + v.x, y + v.y); }
 

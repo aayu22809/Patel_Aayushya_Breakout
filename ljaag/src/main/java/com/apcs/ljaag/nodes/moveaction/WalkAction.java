@@ -36,5 +36,5 @@ public class WalkAction extends MoveAction<Vector2> {
     }
 
     @Override
-    public void receive(int sender, byte[] data) {}
+    public int receive(int sender, byte[] data) { return 0; }
 }

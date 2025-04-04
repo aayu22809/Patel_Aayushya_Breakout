@@ -61,9 +61,10 @@ public class Body extends Node2D {
     }
 
     @Override
-    public void receive(int sender, byte[] data) {
-        super.receive(sender,data);
-        // TODO: better parsing system
-        vel = Vector2.of(sender,data,super.supply(0).length);
+    public int receive(int sender, byte[] data) {
+        if (sender == 0) return 0;
+        int used = super.receive(sender,data);
+        vel = Vector2.of(Util.getInt(data, used), Util.getInt(data, used + Integer.BYTES));
+        return used + Integer.BYTES * 2;
     }
 }
