@@ -11,6 +11,6 @@ public abstract class UndrawnNode extends Node<UndrawnNode> {
 
     // Constructors
     public UndrawnNode() { super(); }
-    public UndrawnNode(UndrawnNode... nodes) { super(nodes); }
+    public UndrawnNode(UndrawnNode... children) { super(children); }
 
 }

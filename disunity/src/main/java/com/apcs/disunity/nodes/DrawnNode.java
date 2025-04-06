@@ -24,9 +24,8 @@ public abstract class DrawnNode extends Node<Node<?>> {
     public void draw(Vector2 offset) {
 
         // Draw children
-        for (Node<?> node : getChildren()) {
-            if (node instanceof DrawnNode drawnNode)
-                drawnNode.draw(offset);
+        for (DrawnNode node : getChildren(DrawnNode.class)) {
+            node.draw(offset);
         }
 
     }

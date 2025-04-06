@@ -45,6 +45,8 @@ public class Node2D extends DrawnNode {
         super.draw(pos.add(offset));
     }
 
+    /* ================ [ SYNCED ] ================ */
+
     @Override
     public byte[] supply(int recipient) {
         return pos.getBytes();
@@ -56,4 +58,5 @@ public class Node2D extends DrawnNode {
         pos = Vector2.of(Util.getInt(data, 0), Util.getInt(data, Integer.BYTES));
         return Integer.BYTES * 2;
     }
+
 }

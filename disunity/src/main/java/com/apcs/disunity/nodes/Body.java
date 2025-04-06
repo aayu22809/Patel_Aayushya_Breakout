@@ -1,8 +1,8 @@
-package com.apcs.disunity.nodes.body;
+package com.apcs.disunity.nodes;
 
+import com.apcs.disunity.annotations.Requires;
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.nodes.Node;
-import com.apcs.disunity.nodes.Node2D;
+import com.apcs.disunity.nodes.controller.Controller;
 import com.apcs.disunity.nodes.moveaction.MoveAction;
 import com.apcs.disunity.server.Util;
 
@@ -11,9 +11,13 @@ import com.apcs.disunity.server.Util;
  * 
  * @author Qinzhao Li
  */
+@Requires(nodes = {Controller.class})
 public class Body extends Node2D {
 
     /* ================ [ FIELDS ] ================ */
+
+    // Controller id
+    private int controller;
 
     // Velocity
     private Vector2 vel = Vector2.ZERO;
@@ -34,12 +38,24 @@ public class Body extends Node2D {
     /* ================ [ NODE ] ================ */
 
     @Override
+    public void initialize() {
+        // Grab controller id
+        this.controller = getChild(Controller.class).getId();
+
+        // Update children controllers
+        for (MoveAction<?> action : getChildren(MoveAction.class)) {
+            action.setController(controller);
+        }
+
+        // Complete initialization
+        super.initialize();
+    }
+
+    @Override
     public void update(double delta) {
         // Apply movement nodes
-        for (Node<?> node : getChildren()) {
-            if (node instanceof MoveAction<?> action) {
-                vel = action.apply(vel, delta);
-            }
+        for (MoveAction<?> action : getChildren(MoveAction.class)) {
+            vel = action.apply(vel, delta);
         }
 
         // Move with velocity
@@ -50,6 +66,7 @@ public class Body extends Node2D {
     }
 
     /* ================ [ SYNCED ] ================ */
+
     @Override
     public byte[] supply(int recipient) {
         byte[] superPacket = super.supply(recipient);
@@ -67,4 +84,5 @@ public class Body extends Node2D {
         vel = Vector2.of(Util.getInt(data, used), Util.getInt(data, used + Integer.BYTES));
         return used + Integer.BYTES * 2;
     }
+    
 }
