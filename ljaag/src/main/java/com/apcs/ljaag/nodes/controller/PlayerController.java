@@ -1,7 +1,8 @@
-package com.apcs.disunity.nodes.controller;
+package com.apcs.ljaag.nodes.controller;
 
 import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.nodes.controller.Controller;
 import com.apcs.disunity.signals.Signals;
 
 /** 

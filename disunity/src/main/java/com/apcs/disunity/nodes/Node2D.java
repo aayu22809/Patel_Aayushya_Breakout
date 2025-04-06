@@ -30,12 +30,14 @@ public class Node2D extends DrawnNode {
     // Set position
     public void setPos(Vector2 pos) { this.pos = pos; }
 
+    // Set scale
+    public void setScale(Vector2 scale) { this.scale = scale; }
+
     // Get position
     public Vector2 getPos() { return pos; }
 
+    // Get scale
     public Vector2 getScale() { return scale; }
-
-    public void setScale(Vector2 scale) { this.scale = scale; }
     
     /* ================ [ NODE ] ================ */
 
