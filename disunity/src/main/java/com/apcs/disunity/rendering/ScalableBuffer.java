@@ -24,7 +24,7 @@ public class ScalableBuffer {
     private Vector2 ratio;
     private double scale;
 
-    // Constructor
+    // Constructors
     public ScalableBuffer(Vector2 ratio, Vector2 target) {
         // Set ratio
         this.ratio = ratio;
@@ -66,18 +66,14 @@ public class ScalableBuffer {
     /* ================ [ GRAPHICS ] ================ */
 
     // Draw image
-    public void drawImage(Image img, Vector2 pos, Vector2 scaleFactor) {
+    public void drawImage(Image img, Vector2 pos) { drawImage(img, pos, Vector2.ONE); }
+    public void drawImage(Image img, Vector2 pos, Vector2 imgScale) {
         graphics.drawImage(img,
             (int) (pos.x * scale), (int) (pos.y * scale),
-            (int) (img.getWidth(null) * scale * scaleFactor.x),
-            (int) (img.getHeight(null) * scale * scaleFactor.y),
+            (int) (img.getWidth(null) * scale * imgScale.x),
+            (int) (img.getHeight(null) * scale * imgScale.y),
             null
         );
-    }
-
-    // Draw image
-    public void drawImage(Image img, Vector2 pos) {
-        this.drawImage(img, pos, Vector2.ONE);
     }
 
 }

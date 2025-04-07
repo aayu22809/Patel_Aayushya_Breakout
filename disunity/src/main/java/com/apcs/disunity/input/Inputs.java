@@ -54,6 +54,8 @@ public class Inputs {
         } return false;
     }
 
+    /* ================ [ LOADER ] ================ */
+
     // Load from a JSON file
     public static void fromJSON(String path) {
         try {

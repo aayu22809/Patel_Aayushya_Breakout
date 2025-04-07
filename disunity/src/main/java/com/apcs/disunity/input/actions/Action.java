@@ -16,7 +16,7 @@ public class Action {
     // Keys
     private final Input[] inputs;
 
-    // Constructor
+    // Constructors
     @JsonCreator
     public Action(Input... inputs) { this.inputs = inputs; }
 

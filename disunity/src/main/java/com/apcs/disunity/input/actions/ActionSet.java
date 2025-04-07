@@ -15,7 +15,7 @@ public class ActionSet {
     // Actions
     private final Action[] actions;
 
-    // Constructor
+    // Constructors
     @JsonCreator
     public ActionSet(Action... actions) { this.actions = actions; }
 

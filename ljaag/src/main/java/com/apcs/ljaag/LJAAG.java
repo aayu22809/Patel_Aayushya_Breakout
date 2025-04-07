@@ -28,7 +28,7 @@ public class LJAAG {
     public static void main(String[] args) {
         
         // Import resources from the assets folder
-        Resources.scanFolder("ljaag/assets", true);
+        Resources.scanFolder("ljaag/assets");
 
         // Import keybinds from a JSON file
         Inputs.fromJSON("ljaag/keybinds.json");

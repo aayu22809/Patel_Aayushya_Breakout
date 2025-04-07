@@ -26,28 +26,26 @@ public class Sprite extends Node2D {
     public Sprite(String image, Vector2 pos, Vector2 scale, Node<?>... children) { super(pos, scale, children); this.image = image; }
 
     /* ================ [ METHODS ] ================ */
-    
+
+    // Get image
+    public String getImage() { return image; }
+
+    // Set image
+    public void setImage(String image) { this.image = image; }
+
+    /* ================ [ NODE ] ================ */
+
     @Override
     public void draw(Vector2 offset) {
         // Draw sprite image
         BufferedImage img = Resources.loadResource(image, Image.class).getImage();
 
-        Vector2 sf = getScale();
-
+        Vector2 imgScale = getScale();
         Game.getInstance().getBuffer().drawImage(
             img,
-            getPos().add(offset).add(Vector2.of(img.getWidth() * sf.x, img.getHeight() * sf.y).mul(-0.5)),
-            sf
+            getPos().add(offset).add(Vector2.of(img.getWidth() * imgScale.x, img.getHeight() * imgScale.y).mul(-0.5)),
+            imgScale
         );
-
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
 }

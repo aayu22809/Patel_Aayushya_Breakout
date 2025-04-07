@@ -57,7 +57,7 @@ public class SyncHandlerTest {
 
   private static App makeApp(String windowName, SyncHandler syncHandler, boolean isHost) {
     // Import resources from the assets folder
-    Resources.scanFolder("ljaag/assets", true);
+    Resources.scanFolder("ljaag/assets");
 
     // Import keybinds from a JSON file
     Inputs.fromJSON("ljaag/keybinds.json");

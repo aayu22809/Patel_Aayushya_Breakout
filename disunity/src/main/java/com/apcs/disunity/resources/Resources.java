@@ -24,17 +24,28 @@ public class Resources {
     public static void addResource(String name, Resource resource) { resources.put(name, resource); }
 
     // Add resource w/ file
-    public static void addResource(File file) {
+    public static void addResource(File file, String dir) {
         try {
             String type = Files.probeContentType(file.toPath()).split("/")[0];
-            String name = file.getName();
+            String fileName= file.getName();
 
-            if (name.indexOf('.') != -1)
-                name = name.substring(0, name.lastIndexOf('.'));
+            // Clean up file name
+            if (fileName.indexOf('.') != -1) {
+                fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+            }
 
+            // Grab info from file name
+            String[] info = fileName.split("-");
+            String name = info[0];
+
+            // Add resource by type
             switch (type) {
-                case "image" -> addResource(name, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
-                default -> { }
+                case "image":
+                    addResource(name, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
+                    // anim stuff
+                    break;
+                default:
+                    break;
             }
         } catch (IOException e) { e.printStackTrace(); }
     }
@@ -43,18 +54,21 @@ public class Resources {
     public static Object loadResource(String name) { return resources.get(name).load(); }
     public static <T> T loadResource(String name, Class<T> type) { return type.cast(resources.get(name).load()); }
 
+    /* ================ [ SCANNER ] ================ */
+
     // Scan folder
-    public static void scanFolder(String path) { scanFolder(path, false); }
-    public static void scanFolder(String path, boolean deep) {
+    public static void scanFolder(String path) { scanFolder(path, null); }
+    public static void scanFolder(String path, String dir) {
         File root = new File(path);
         File[] contents = root.listFiles();
 
         if (contents != null) {
             for (File file : contents) {
-                if (deep && file.isDirectory())
-                    scanFolder(file.getAbsolutePath(), true);
-
-                addResource(file);
+                if (dir == null && file.isDirectory()) {
+                    scanFolder(file.getAbsolutePath(), file.getName());
+                } else {
+                    addResource(file, dir);
+                }
             }
         }
     }

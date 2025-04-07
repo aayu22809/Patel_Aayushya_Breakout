@@ -26,7 +26,7 @@ public class Vector2 {
     // X and Y rounded to integers
     public final int xi, yi;
 
-    // Constructor
+    // Constructors
     public Vector2() { this(0, 0); }
     public Vector2(double x, double y) {
         this.x = x;

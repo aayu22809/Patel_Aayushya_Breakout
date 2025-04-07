@@ -16,7 +16,7 @@ public class App extends JFrame {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Constructor
+    // Constructors
     public App(String title, int width, int height, Game game) {
 
         // Window setup

@@ -53,8 +53,8 @@ public class Image {
             return this;
         }
 
-        // Rescale image
-        public Builder rescale(int w, int h) {
+        // Resize image
+        public Builder resize(int w, int h) {
             // New image
             BufferedImage res = new BufferedImage(w, h, image.getType());
             

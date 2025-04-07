@@ -26,7 +26,7 @@ public abstract class Node<T extends Node<?>> implements Synced {
     // Triggers initialize
     private boolean isInitialized = false;
 
-    // Constructor
+    // Constructors
     public Node() { this.children = new ArrayList<>(); }
     @SafeVarargs
     public Node(T... children) { this.children = new ArrayList<>(Arrays.asList(children)); }

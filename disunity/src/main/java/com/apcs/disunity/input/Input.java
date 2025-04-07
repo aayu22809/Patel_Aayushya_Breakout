@@ -214,7 +214,7 @@ public enum Input {
     // Name
     private String name;
 
-    // Constructor
+    // Constructors
     @JsonCreator
     Input(String name) { this.name = name; }
 
