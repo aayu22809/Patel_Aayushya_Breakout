@@ -30,13 +30,13 @@ public class ScalableBuffer {
         this.ratio = ratio;
 
         // Refresh buffer
-        this.refresh(target);
+        this.setSize(target);
     }
 
     /* ================ [ METHODS ] ================ */
 
     // Refresh buffer
-    public void refresh(Vector2 size) {
+    public void setSize(Vector2 size) {
 
         size = Vector2.of(
             Math.min(size.x, size.y * ratio.x / ratio.y),
