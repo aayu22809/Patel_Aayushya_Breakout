@@ -11,10 +11,18 @@ import com.apcs.disunity.nodes.moveaction.MoveAction;
  */
 public class WalkAction extends MoveAction<Vector2> {
 
+    /* ================ [ ATTRIBUTES ] ================ */
+
+    // Speed
+    private double speed = 100;
+
     /* ================ [ FIELDS ] ================ */
 
+    // Action id
+    protected static final String actionId = "walk";
+
     // Walk direction
-    private Vector2 dir;
+    private Vector2 dir = Vector2.ZERO;
 
     // Constructors
     public WalkAction() { super(); }
@@ -26,15 +34,6 @@ public class WalkAction extends MoveAction<Vector2> {
     public void trigger(Vector2 data) { this.dir = data; }
 
     @Override
-    public Vector2 apply(Vector2 vel, double delta) { return dir; }
+    public Vector2 apply(Vector2 vel, double delta) { return dir.mul(speed); }
 
-    /* ================ [ SYNCED ] ================ */
-
-    @Override
-    public byte[] supply(int recipient) {
-        return new byte[0];
-    }
-
-    @Override
-    public int receive(int sender, byte[] data) { return 0; }
 }

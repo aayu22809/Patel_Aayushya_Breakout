@@ -37,7 +37,6 @@ public class ScalableBuffer {
 
     // Refresh buffer
     public void setSize(Vector2 size) {
-
         size = Vector2.of(
             Math.min(size.x, size.y * ratio.x / ratio.y),
             Math.min(size.y, size.x * ratio.y / ratio.x)

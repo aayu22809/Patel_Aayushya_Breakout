@@ -2,9 +2,12 @@ package com.apcs.disunity.nodes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
+import com.apcs.disunity.annotations.Requires;
 import com.apcs.disunity.server.Synced;
 
 /**
@@ -20,6 +23,9 @@ public abstract class Node<T extends Node<?>> implements Synced {
     // List of children
     private final List<T> children;
 
+    // Triggers initialize
+    private boolean isInitialized = false;
+
     // Constructor
     public Node() { this.children = new ArrayList<>(); }
     @SafeVarargs
@@ -28,24 +34,92 @@ public abstract class Node<T extends Node<?>> implements Synced {
     /* ================ [ METHODS ] ================ */
 
     // Add child
-    public void addChild(T node) { children.add(node); }
+    public void addChild(T node) {
+        children.add(node);
+        isInitialized = false;
+    }
 
     // Remove child
     public void removeChild(T node) { children.remove(node); }
 
-    // Get children
-    public List<T> getChildren() { return children; }
-
     // Clear children
     public void clearChildren() { children.clear(); }
 
+    // Get child of a certain type
+    public <U extends T> U getChild(Class<U> type) {
+        for (T node : children) {
+            if (type.isInstance(node)) {
+                return type.cast(node);
+            }
+        } return null;
+    }
+
+    // Get children
+    public List<T> getChildren() { return children; }
+
+    // Get children of a certain type
+    public <U extends T> List<U> getChildren(Class<U> type) {
+        List<U> children = new ArrayList<>();
+        for (T node : getChildren()) {
+            if (type.isInstance(node)) {
+                children.add(type.cast(node));
+            }
+        } return children;
+    }
+
     /* ================ [ NODE ] ================ */
+
+    // Initialize node
+    public void initialize() {
+        // Check if node meets requirements
+        if (this.getClass().isAnnotationPresent(Requires.class)) {
+            // Grab nodes from annotation
+            Requires requires = this.getClass().getAnnotation(Requires.class);
+            Set<Class<? extends Node>> requirements = new HashSet<>(Arrays.asList(requires.nodes()));
+
+            // Check children
+            for (T node : children) {
+                requirements.removeIf(required -> required.isAssignableFrom(node.getClass()));
+            }
+
+            // Throw exception if requirements are not met
+            if (!requirements.isEmpty()) {
+                throw new RuntimeException(
+                    "Node " + this.getClass().getSimpleName() +
+                    " requires " + requirements.iterator().next().getSimpleName() + 
+                    " to be initialized."
+                );
+            }
+        }
+
+        // Set initialized
+        isInitialized = true;
+    }
+
+    // Tick node
+    public final void tick(double delta) {
+        // Re-initialize node
+        if (!isInitialized) initialize();
+
+        // Update node
+        update(delta);
+    }
 
     // Update node
     public void update(double delta) {
         // Update children
-        for (T node : children) node.update(delta);
+        for (T node : children) node.tick(delta);
     }
+
+    /* ================ [ SYNCED ] ================ */
+
+    @Override
+    public byte[] supply(int recipient) { return new byte[0]; }
+
+    @Override
+    public int receive(int sender, byte[] data) { return 0; }
+
+    /* ================ [ PRINTING ] ================ */
 
     /// Overload for default behavior of {@link #print(boolean, Function, List)}.
     /// Prints node names in tree structure
@@ -78,4 +152,5 @@ public abstract class Node<T extends Node<?>> implements Synced {
 
         indent.removeLast();
     }
+
 }

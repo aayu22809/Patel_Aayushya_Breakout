@@ -2,10 +2,13 @@ package com.apcs.disunity.server;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.Inet6Address;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +44,7 @@ public class Host implements Closeable {
     
     public Host(int port) throws IOException {
         server = new ServerSocket();
-        server.bind(new InetSocketAddress(Inet6Address.ofLiteral("::"), port));
+        server.bind(new InetSocketAddress(InetAddress.getLocalHost(), port));
         listenerThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -88,6 +91,20 @@ public class Host implements Closeable {
     }
 
     public String getAddress() {
+        Enumeration<NetworkInterface> interfaces;
+        System.out.println(server.getLocalPort());
+        // everything in this try catch is copied from the internet
+        try {
+            interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress address = addresses.nextElement();
+                    return address.getHostAddress();
+                }
+            }
+        } catch (SocketException e) {}
         return server.getInetAddress().getHostAddress();
     }
 

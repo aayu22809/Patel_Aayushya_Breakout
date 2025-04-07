@@ -10,7 +10,7 @@ import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.Sprite;
-import com.apcs.disunity.nodes.body.Body;
+import com.apcs.disunity.nodes.Body;
 import com.apcs.disunity.nodes.moveaction.MoveAction;
 import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scenes;
@@ -31,6 +31,7 @@ import static com.apcs.disunity.server.test.TestingUtils.spawnProcess;
 /// - multi-client test
 public class SyncHandlerTest {
   /// only client has control over character, position and velocity gets synced to host.
+  @SuppressWarnings("resource")
   public static void main(String[] args) throws IOException {
     spawnProcess(ServerTest.class);
     spawnProcess(ClientTest.class);
@@ -82,15 +83,20 @@ public class SyncHandlerTest {
           public int receive(int sender, byte[] data) {
             return 0;
           }
+          
         }
-      ){
+        
+      ) {
         @Override
-        public void update(double delta) {
-          super.update(delta);
-//          System.out.printf("%s s = %s, v = %s\n",windowName, getPos(), getVel());
+        public int receive(int sender, byte[] data) {
+          // this is really bad practice
+          if (!isHost) return 0;
+          else return super.receive(sender, data);
         }
       },
 
+
+      // client, should ignore server
       new Body(
           new Sprite("templayer"),
           new MoveAction() {
@@ -105,10 +111,6 @@ public class SyncHandlerTest {
 
 
             public void trigger(Object data) {}
-            public byte[] supply(int recipient) { return new byte[0]; }
-            public int receive(int sender, byte[] data) {
-              return 0;
-            }
           }
         ){
           @Override
@@ -119,8 +121,8 @@ public class SyncHandlerTest {
 
           @Override
           public int receive(int sender, byte[] data) {
-            // this is extremely bad practice and we should find a better way to do this
-            return super.receive(sender-1, data);
+            if (isHost) return 0;
+            else return super.receive(sender, data);
           }
         }
     ));

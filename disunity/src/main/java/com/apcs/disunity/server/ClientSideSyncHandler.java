@@ -3,6 +3,8 @@ package com.apcs.disunity.server;
 import java.io.Closeable;
 import java.io.IOException;
 
+import static com.apcs.disunity.server.Util.forever;
+
 public class ClientSideSyncHandler extends SyncHandler implements Closeable {
 
     private final PacketTransceiver transceiver;
@@ -15,15 +17,11 @@ public class ClientSideSyncHandler extends SyncHandler implements Closeable {
         transceiver = client.getTransceiver();
 
         senderThread = new Thread(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                distribute(Synced.HOST, transceiver.recieve());
-            }
+            forever(() -> distribute(Synced.HOST, transceiver.recieve()), Synced.PPMS);
         });
 
         recieverThread = new Thread(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                transceiver.send(poll(Synced.HOST));
-            }
+            forever(() -> transceiver.send(poll(client.id())), Synced.PPMS);
         });
     }
 

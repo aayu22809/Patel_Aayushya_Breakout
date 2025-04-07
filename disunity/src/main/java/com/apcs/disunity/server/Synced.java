@@ -4,6 +4,9 @@ public interface Synced {
 
     int HOST = 0;
 
+    // packets period in miliseconds
+    int PPMS = 20;
+
     /**
      * Generates the data to be sent to a specific recipient.  
      * The provided data should be sufficient for the recipient to fully reconstruct the object.
@@ -12,7 +15,7 @@ public interface Synced {
      * @param recipient The ID of the recipient, as managed by the Host.
      * @return A byte array containing the data for the specified recipient.
      */
-    byte[] supply(int recipient);
+    default byte[] supply(int recipient) { return new byte[0]; }
 
     /**
      * Processes incoming data from a specified sender.  
@@ -26,6 +29,6 @@ public interface Synced {
      * @param data   The byte array containing the received data.
      * @return the number of bytes used so far, so the current recieve call knows where to read from.
      */
-    int receive(int sender, byte[] data);
+    default int receive(int sender, byte[] data) { return 0; }
 
 }
