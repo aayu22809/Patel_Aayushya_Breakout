@@ -33,7 +33,7 @@ public class Scenes {
     public static DrawnNode getScene() { return scenes.get(scene); }
 
     // Update current scene
-    public static void updateScene(double delta) { getScene().update(delta); }
+    public static void updateScene(double delta) { getScene().tick(delta); }
 
     // Draw current scene
     public static void drawScene(Vector2 offset) { getScene().draw(offset); }

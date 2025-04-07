@@ -34,20 +34,19 @@ public class Game extends JPanel implements Runnable {
     // Buffer for scaling the game
     private ScalableBuffer buffer;
 
-    // Input handler
+    // Handles keystrokes from user
     private InputHandler input;
 
     // Is the host
     private boolean isHost;
 
     // Constructors
-
     public Game(Vector2 dimensions, String scene) {
         this(dimensions, scene, true);
     }
 
     public Game(Vector2 dimensions, String scene, boolean isHost) {
-
+        // Set host status
         this.isHost = isHost;
         
         // Game dimensions
@@ -99,6 +98,9 @@ public class Game extends JPanel implements Runnable {
 
     // Get instance
     public static Game getInstance() { return instance; }
+
+    // Get host status
+    public boolean isHost() { return isHost; }
 
     /* ================ [ JPANEL ] ================ */
 
@@ -162,10 +164,6 @@ public class Game extends JPanel implements Runnable {
 
         }
 
-    }
-
-    public boolean isHost() {
-        return isHost;
     }
 
 }

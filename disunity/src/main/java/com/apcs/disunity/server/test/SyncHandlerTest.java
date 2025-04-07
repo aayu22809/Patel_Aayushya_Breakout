@@ -10,7 +10,7 @@ import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.Sprite;
-import com.apcs.disunity.nodes.body.Body;
+import com.apcs.disunity.nodes.Body;
 import com.apcs.disunity.nodes.moveaction.MoveAction;
 import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scenes;
@@ -31,6 +31,7 @@ import static com.apcs.disunity.server.test.TestingUtils.spawnProcess;
 /// - multi-client test
 public class SyncHandlerTest {
   /// only client has control over character, position and velocity gets synced to host.
+  @SuppressWarnings("resource")
   public static void main(String[] args) throws IOException {
     spawnProcess(ServerTest.class);
     spawnProcess(ClientTest.class);

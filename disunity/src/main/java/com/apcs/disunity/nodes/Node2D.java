@@ -30,12 +30,14 @@ public class Node2D extends DrawnNode {
     // Set position
     public void setPos(Vector2 pos) { this.pos = pos; }
 
+    // Set scale
+    public void setScale(Vector2 scale) { this.scale = scale; }
+
     // Get position
     public Vector2 getPos() { return pos; }
 
+    // Get scale
     public Vector2 getScale() { return scale; }
-
-    public void setScale(Vector2 scale) { this.scale = scale; }
     
     /* ================ [ NODE ] ================ */
 
@@ -44,6 +46,8 @@ public class Node2D extends DrawnNode {
         // Draw children relative to this
         super.draw(pos.add(offset));
     }
+
+    /* ================ [ SYNCED ] ================ */
 
     @Override
     public byte[] supply(int recipient) {
@@ -55,4 +59,5 @@ public class Node2D extends DrawnNode {
         pos = Vector2.of(Util.getInt(data, 0), Util.getInt(data, Integer.BYTES));
         return Integer.BYTES * 2;
     }
+
 }
