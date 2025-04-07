@@ -52,7 +52,6 @@ public class Node2D extends DrawnNode {
 
     @Override
     public int receive(int sender, byte[] data) {
-        if (sender == 0) return 0;
         pos = Vector2.of(Util.getInt(data, 0), Util.getInt(data, Integer.BYTES));
         return Integer.BYTES * 2;
     }

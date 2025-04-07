@@ -122,4 +122,14 @@ public final class Util {
         return objs.toArray();
     }
 
+    public static final void forever(Runnable action, int period) {
+        long prev = System.currentTimeMillis();
+        while (!Thread.currentThread().isInterrupted()) {
+            if (System.currentTimeMillis() - prev >= period) {
+                prev = System.currentTimeMillis();
+                action.run();
+            }
+        }
+    }
+
 }
