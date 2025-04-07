@@ -1,7 +1,7 @@
 package com.apcs.disunity;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -61,7 +61,6 @@ public class Game extends JPanel implements Runnable {
         
         // Double buffering
         buffer = new ScalableBuffer(dimensions, dimensions);
-        setDoubleBuffered(true);
 
         // Focus window for input
         setFocusable(true);
@@ -106,13 +105,21 @@ public class Game extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Fix window stretching
-        int w = getWidth(), h = getHeight();
-        w = (int) Math.min(w, h * dimensions.x / dimensions.y);
-        h = (int) Math.min(h, w * dimensions.y / dimensions.x);
+        // Clear buffer
+        buffer.clear();
+
+        // update buffer
+        Scenes.drawScene(
+          cameraPos.mul(-1)
+            .add(dimensions.mul(0.5)) // Center on camera
+        );
+
+        BufferedImage image = buffer.getImage();
+        int w = image.getWidth();
+        int h = image.getHeight();
 
         // Draw to screen
-        g.drawImage(buffer.getImage(), (getWidth()-w) / 2, (getHeight()-h) / 2, w, h, null);
+        g.drawImage(image, (getWidth()-w) / 2, (getHeight()-h) / 2, w, h, null);
     }
 
     /* ================ [ RUNNABLE ] ================ */
@@ -121,7 +128,7 @@ public class Game extends JPanel implements Runnable {
     public void run() {
 
         // Variables
-        double delta = 0, ddelta = 0;
+        double delta = 0;
         long prevTime = System.nanoTime(), curTime;
 
         // Game loop
@@ -130,36 +137,21 @@ public class Game extends JPanel implements Runnable {
             // Calculate delta
             curTime = System.nanoTime();
             delta += (curTime - prevTime) / 1000000.0;
-            ddelta += (curTime - prevTime) / 1000000.0;
             prevTime = curTime;
 
-            // Update game
-            while (delta >= Options.getMSPF()) {
-                // Update scene
-                Scenes.updateScene(Options.getSPF());
+            if(delta >= Options.getMSPF()) {
+                // Update game
+                while (delta >= Options.getMSPF()) {
+                    // Update scene
+                    Scenes.updateScene(Options.getSPF());
 
-                // Decrease delta
-                delta -= Options.getMSPF();
-            }
+                    // Decrease delta
+                    delta -= Options.getMSPF();
+                }
 
-            // Draw game
-            while (ddelta >= Options.getMSPD()) {
-                // Clear buffer
-                buffer.clear();
-                
-                // Draw scene
-                Scenes.drawScene(
-                    cameraPos.mul(-1)
-                        .add(dimensions.mul(0.5)) // Center on camera
-                );
-
-                // Draw buffer to screen
+                // render updated frame
                 repaint();
-
-                // Decrease delta
-                ddelta -= Options.getMSPD();
             }
-
         }
 
     }
