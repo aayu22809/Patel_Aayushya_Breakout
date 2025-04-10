@@ -89,7 +89,7 @@ public class Game extends JPanel implements Runnable {
     // Set camera position
     public void setCameraPos(Vector2 pos) { this.cameraPos = pos; }
 
-    // set buffer size
+    // Set buffer size
     public void setBufferSize(Vector2 size) { buffer.setSize(size); }
 
     // Get buffer
@@ -141,7 +141,7 @@ public class Game extends JPanel implements Runnable {
             delta += (curTime - prevTime) / 1000000.0;
             prevTime = curTime;
 
-            if(delta >= Options.getMSPF()) {
+            if (delta >= Options.getMSPF()) {
                 // Update game
                 while (delta >= Options.getMSPF()) {
                     // Update scene
@@ -151,7 +151,7 @@ public class Game extends JPanel implements Runnable {
                     delta -= Options.getMSPF();
                 }
 
-                // render updated frame
+                // Render updated frame
                 repaint();
             }
         }
