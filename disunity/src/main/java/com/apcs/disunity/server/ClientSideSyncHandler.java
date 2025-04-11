@@ -17,11 +17,11 @@ public class ClientSideSyncHandler extends SyncHandler implements Closeable {
         transceiver = client.getTransceiver();
 
         senderThread = new Thread(() -> {
-            forever(() -> distribute(Synced.HOST, transceiver.recieve()), Synced.PPMS);
+            forever(() -> distribute(Syncable.HOST, transceiver.recieve()), Syncable.PPMS);
         });
 
         recieverThread = new Thread(() -> {
-            forever(() -> transceiver.send(poll(client.id())), Synced.PPMS);
+            forever(() -> transceiver.send(poll(client.id())), Syncable.PPMS);
         });
     }
 

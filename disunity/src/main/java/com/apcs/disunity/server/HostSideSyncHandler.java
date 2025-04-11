@@ -19,11 +19,11 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
             PacketTransceiver transceiver = host.getTransceiver(id);
 
             Thread recieverThread = new Thread(() -> {
-                forever(() -> distribute(id, transceiver.recieve()), Synced.PPMS);
+                forever(() -> distribute(id, transceiver.recieve()), Syncable.PPMS);
             });
 
             Thread senderThread = new Thread(() -> {
-                forever(() -> transceiver.send(poll(Synced.HOST)), Synced.PPMS);
+                forever(() -> transceiver.send(poll(Syncable.HOST)), Syncable.PPMS);
             });
 
             threads.add(recieverThread);
@@ -49,7 +49,7 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
 
     @Override
     public int getEndpointId() {
-        return Synced.HOST;
+        return Syncable.HOST;
     }
 
 }

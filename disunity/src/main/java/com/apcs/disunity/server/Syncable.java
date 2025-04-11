@@ -1,6 +1,6 @@
 package com.apcs.disunity.server;
 
-public interface Synced {
+public interface Syncable {
 
     int HOST = 0;
 
@@ -15,7 +15,7 @@ public interface Synced {
      * @param recipient The ID of the recipient, as managed by the Host.
      * @return A byte array containing the data for the specified recipient.
      */
-    default byte[] supply(int recipient) { return new byte[0]; }
+    byte[] supply(int recipient);
 
     /**
      * Processes incoming data from a specified sender.  
@@ -29,6 +29,6 @@ public interface Synced {
      * @param data   The byte array containing the received data.
      * @return the number of bytes used so far, so the current recieve call knows where to read from.
      */
-    default int receive(int sender, byte[] data) { return 0; }
+    int receive(int sender, byte[] data);
 
 }
