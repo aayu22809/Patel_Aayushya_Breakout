@@ -16,6 +16,7 @@ import com.apcs.disunity.annotations.Requires;
  * 
  * @author Qinzhao Li
  * @author Toshiki Takeuchi
+ * TODO: remove Syncable from Node
  */
 public abstract class Node<T extends Node<?>> implements Syncable {
 
