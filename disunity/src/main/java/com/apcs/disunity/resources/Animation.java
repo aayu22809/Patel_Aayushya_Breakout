@@ -1,5 +1,6 @@
 package com.apcs.disunity.resources;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -10,23 +11,21 @@ import javax.imageio.ImageIO;
  * 
  * @author Qinzhao Li
  */
-public class Animation {
+public class Animation extends Image {
     
     /* ================ [ FIELDS ] ================ */
 
-    // Frame
+    // Current frame
     private int frame = 0;
 
-    // Images
-    private final Image[] images;
+    // Image frames
+    private final BufferedImage[] images;
 
     // Constructors
-    public Animation(Image... images) { this.images = images; }
-
-    /* ================ [ METHODS ] ================ */
-
-    // Get image
-    public Image getImage() { return images[frame]; }
+    public Animation(BufferedImage... images) {
+        super(images[0]);
+        this.images = images;
+    }
 
     /* ================ [ BUILDER ] ================ */
 
@@ -39,17 +38,17 @@ public class Animation {
 
         /* ================ [ FIELDS ] ================ */
 
-        // Image instance
-        private Image[] images;
+        // Image instances
+        private BufferedImage[] images;
 
         /* ================ [ METHODS ] ================ */
         
         // Set image
-        public Builder set(Image[] images) { this.images = images; return this; }
+        public Builder set(BufferedImage[] images) { this.images = images; return this; }
 
         // Load image
         public Builder load(String path) {
-            Image temp = new Image.Builder().load(path).getImage();
+            BufferedImage temp = new Image.Builder().load(path).getImage().getImage();
             
             return this;
         }

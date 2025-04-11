@@ -10,16 +10,13 @@ import com.apcs.disunity.nodes.moveaction.MoveAction;
  * @author Qinzhao Li
  */
 public class WalkAction extends MoveAction<Vector2> {
-
+    
     /* ================ [ ATTRIBUTES ] ================ */
 
     // Speed
     private double speed = 100;
 
     /* ================ [ FIELDS ] ================ */
-
-    // Action id
-    protected static final String actionId = "walk";
 
     // Walk direction
     private Vector2 dir = Vector2.ZERO;
@@ -29,6 +26,9 @@ public class WalkAction extends MoveAction<Vector2> {
     public WalkAction(UndrawnNode... children) { super(children); }
 
     /* ================ [ MOVEACTION ] ================ */
+
+    @Override
+    public String actionId() { return "walk"; }
     
     @Override
     public void trigger(Vector2 data) { this.dir = data; }

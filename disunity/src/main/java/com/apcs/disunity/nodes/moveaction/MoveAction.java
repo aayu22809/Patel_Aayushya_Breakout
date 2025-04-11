@@ -13,9 +13,6 @@ public abstract class MoveAction<T> extends UndrawnNode {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Action id
-    protected static final String actionId = "move";
-
     // Controller id
     private int controller;
 
@@ -33,13 +30,16 @@ public abstract class MoveAction<T> extends UndrawnNode {
     @Override
     public void initialize() {
         // Connect to signal
-        Signals.connect(Signals.getSignal(controller, actionId), this::trigger);
+        Signals.connect(Signals.getSignal(controller, this.actionId()), this::trigger);
 
         // Complete initialization
         super.initialize();
     }
 
     /* ================ [ MOVEACTION ] ================ */
+
+    // Get action id
+    public abstract String actionId();
 
     // Trigger the action
     public abstract void trigger(T data);
