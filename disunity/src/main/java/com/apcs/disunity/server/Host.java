@@ -54,7 +54,6 @@ public class Host implements Closeable {
                     socket.getOutputStream().write(id);
                     PacketTransceiver clientTransceiver = new PacketTransceiver(socket.getInputStream(), socket.getOutputStream());
                     String clientIdentifier = getStringIdentifier(socket);
-                    System.out.printf("[SERVER] Client at %s connected, creating handler\n", clientIdentifier);
                     ids.put(clientIdentifier, id);
                     clientTransceivers.put(id, clientTransceiver);
                     for (Consumer<Integer> action : onJoinActions) {
@@ -62,7 +61,6 @@ public class Host implements Closeable {
                     }
                 } catch (IOException ioe) { }
             }
-            System.out.println("[SERVER] Listener thread terminated");
         });
     }
 
@@ -76,10 +74,8 @@ public class Host implements Closeable {
         listenerThread.interrupt();
         for (Socket socket : sockets) {
             socket.close();
-            System.out.printf("[SERVER] Client %s handler socket closed\n", getStringIdentifier(socket));
         }
         server.close();
-        System.out.println("[SERVER] Server socket closed");
     }
 
     public byte[] recieve(int id) {

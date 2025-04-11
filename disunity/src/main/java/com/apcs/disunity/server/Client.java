@@ -23,7 +23,6 @@ public class Client implements Closeable {
         id = socket.getInputStream().read();
         transceiver = new PacketTransceiver(socket.getInputStream(), socket.getOutputStream());
         identifier = String.format("%s:%d", socket.getLocalAddress(), socket.getLocalPort());
-        System.out.println("[CLIENT] Connected to server. My identifier is: "+identifier);
     }
 
     public void send(byte[] bytes) {
@@ -37,7 +36,6 @@ public class Client implements Closeable {
     @Override
     public void close() throws IOException {
         socket.close();
-        System.out.println("[CLIENT] Socket closed");
     }  
 
     public String getStringIdentifier() {
