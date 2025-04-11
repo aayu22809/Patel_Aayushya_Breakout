@@ -1,5 +1,7 @@
 package com.apcs.disunity.nodes;
 
+import com.apcs.disunity.server.Syncable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -8,15 +10,15 @@ import java.util.Set;
 import java.util.function.Function;
 
 import com.apcs.disunity.annotations.Requires;
-import com.apcs.disunity.server.Synced;
 
 /**
  * The base class for all nodes in the game
  * 
  * @author Qinzhao Li
  * @author Toshiki Takeuchi
+ * TODO: remove Syncable from Node
  */
-public abstract class Node<T extends Node<?>> implements Synced {
+public abstract class Node<T extends Node<?>> implements Syncable {
 
     /* ================ [ FIELDS ] ================ */
 

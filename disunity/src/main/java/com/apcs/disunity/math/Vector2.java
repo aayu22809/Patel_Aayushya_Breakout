@@ -1,5 +1,6 @@
 package com.apcs.disunity.math;
 
+import com.apcs.disunity.server.Syncable;
 import com.apcs.disunity.server.Util;
 
 /**
@@ -8,7 +9,7 @@ import com.apcs.disunity.server.Util;
  * @author Qinzhao Li
  * @author Sharvil Phadke
  */
-public class Vector2 {
+public class Vector2 implements Syncable {
 
     /* ================ [ CONSTANTS ] ================ */
 
@@ -75,4 +76,15 @@ public class Vector2 {
     @Override
     public String toString() { return "(" + x + ", " + y + ")"; }
 
+    /* =============== [SYNCABLE] ================== */
+    // TODO: decide on how this should be implemented.
+    @Override
+    public byte[] supply(int recipient) {
+        return new byte[0];
+    }
+
+    @Override
+    public int receive(int sender, byte[] data) {
+        return 0;
+    }
 }

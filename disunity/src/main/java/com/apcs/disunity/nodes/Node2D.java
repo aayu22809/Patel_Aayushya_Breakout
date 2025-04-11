@@ -1,5 +1,6 @@
 package com.apcs.disunity.nodes;
 
+import com.apcs.disunity.annotations.SyncedField;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.server.Util;
 
@@ -13,7 +14,9 @@ public class Node2D extends DrawnNode {
     /* ================ [ FIELDS ] ================ */
     
     // Position
+    @SyncedField
     private Vector2 pos = Vector2.ZERO;
+    @SyncedField
     private Vector2 scale = Vector2.ONE;
 
     // Constructors
