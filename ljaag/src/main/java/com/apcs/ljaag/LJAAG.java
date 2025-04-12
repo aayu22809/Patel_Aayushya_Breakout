@@ -8,6 +8,7 @@ import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Body;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.Sprite;
+import com.apcs.disunity.resources.Image;
 import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scenes;
 import com.apcs.ljaag.nodes.controller.PlayerController;
@@ -35,10 +36,11 @@ public class LJAAG {
 
         // Create the game scenes
         Scenes.addScene("test", new Node2D(
+            new Sprite("BACKGROUND"),
             new Body(
                 new PlayerController(),
                 new Camera(),
-                new Sprite("templayer"),
+                new Sprite("PLAYER"),
                 new WalkAction()
             )
         ));
@@ -48,10 +50,12 @@ public class LJAAG {
             "Title", 
             800, 450,
             new Game(
-                Vector2.of(320, 180),
+                Vector2.of(480, 270),
                 "test"
             )
         );
+
+        System.out.println(((Image) Resources.loadResource("BACKGROUND")).getImage().getHeight());
 
     }
     

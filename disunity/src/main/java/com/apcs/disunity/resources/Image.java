@@ -1,6 +1,5 @@
 package com.apcs.disunity.resources;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -53,25 +52,8 @@ public class Image {
             return this;
         }
 
-        // Resize image
-        public Builder resize(int w, int h) {
-            // New image
-            BufferedImage res = new BufferedImage(w, h, image.getType());
-            
-            // Draw image
-            Graphics2D g = res.createGraphics();
-            g.drawImage(image, 0, 0, w, h, null);
-            g.dispose();
-
-            // Set image
-            image = res;
-
-            // Return self
-            return this;
-        }
-
         // Get image
-        public Image getImage() { return new Image(image); }
+        public Image get() { return new Image(image); }
 
     }
     

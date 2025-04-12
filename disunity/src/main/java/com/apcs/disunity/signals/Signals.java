@@ -25,7 +25,6 @@ public class Signals {
 
     // Connect a signal to a function
     public static <T> void connect(String signal, Consumer<T> function) {
-        System.out.println("CONNECT: " + signal + " -> " + function.getClass().getSimpleName());
         if (!signals.containsKey(signal)) {
             signals.put(signal, new ArrayList<>());
         }
@@ -43,7 +42,6 @@ public class Signals {
     // Trigger all functions connected to a signal
     @SuppressWarnings("unchecked")
     public static <T> void trigger(String signal, T data) {
-        System.out.println("TRIGGER: " + signal + " -> " + data.toString());
         if (signals.containsKey(signal)) {
             for (Consumer<?> consumer : signals.get(signal)) {
                 ((Consumer<T>) consumer).accept(data);

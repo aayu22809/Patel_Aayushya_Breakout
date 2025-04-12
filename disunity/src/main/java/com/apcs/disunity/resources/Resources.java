@@ -2,9 +2,10 @@ package com.apcs.disunity.resources;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.apcs.disunity.files.FileUtil;
 
 /**
  * Handles all resources in the game
@@ -26,23 +27,28 @@ public class Resources {
     // Add resource w/ file
     public static void addResource(File file, String dir) {
         try {
-            String type = Files.probeContentType(file.toPath()).split("/")[0];
-            String fileName= file.getName();
+            // Grab file info
+            String type = FileUtil.getType(file);
+            String fileName = FileUtil.getName(file);
 
-            // Clean up file name
-            if (fileName.indexOf('.') != -1) {
-                fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+            String[] info = FileUtil.parseInfo(fileName);
+            String name = info[0];
+
+            // Directory prefix
+            if (dir != null && !name.equals(dir)) {
+                name = dir + "_" + name;
             }
 
-            // Grab info from file name
-            String[] info = fileName.split("-");
-            String name = info[0];
+            // Capitalize name
+            name = name.toUpperCase();
 
             // Add resource by type
             switch (type) {
                 case "image":
-                    addResource(name, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
-                    // anim stuff
+                    // Image sets
+                    if (info.length == 2) addResource(name, new Resource(Resource.Type.IMAGESET, file.getAbsolutePath()));
+                    // Regular images
+                    else addResource(name, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
                     break;
                 default:
                     break;
@@ -62,11 +68,15 @@ public class Resources {
         File root = new File(path);
         File[] contents = root.listFiles();
 
+        // Check contents
         if (contents != null) {
             for (File file : contents) {
+                // Scan child folders
                 if (dir == null && file.isDirectory()) {
                     scanFolder(file.getAbsolutePath(), file.getName());
-                } else {
+                }
+                // Add resource to game
+                else {
                     addResource(file, dir);
                 }
             }

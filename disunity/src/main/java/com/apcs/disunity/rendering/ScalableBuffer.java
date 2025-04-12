@@ -22,9 +22,10 @@ public class ScalableBuffer {
 
     // Scale
     private Vector2 ratio;
-    private double scale;
+    private double xScale, yScale;
 
     // Constructors
+    public ScalableBuffer(Vector2 ratio) { this(ratio, ratio); }
     public ScalableBuffer(Vector2 ratio, Vector2 target) {
         // Set ratio
         this.ratio = ratio;
@@ -50,7 +51,8 @@ public class ScalableBuffer {
         graphics = image.createGraphics();
 
         // Set scale
-        scale = size.x / ratio.x;
+        xScale = size.x / ratio.x;
+        yScale = size.y / ratio.y;
 
         // White background
         graphics.setBackground(Color.WHITE);
@@ -60,7 +62,8 @@ public class ScalableBuffer {
     public void clear() { graphics.clearRect(0, 0, image.getWidth(), image.getHeight()); }
 
     // Getters
-    public double getScale() { return scale; }
+    public double getXScale() { return xScale; }
+    public double getYScale() { return yScale; }
     public BufferedImage getImage() { return image; }
 
     /* ================ [ GRAPHICS ] ================ */
@@ -69,9 +72,10 @@ public class ScalableBuffer {
     public void drawImage(Image img, Vector2 pos) { drawImage(img, pos, Vector2.ONE); }
     public void drawImage(Image img, Vector2 pos, Vector2 imgScale) {
         graphics.drawImage(img,
-            (int) (pos.x * scale), (int) (pos.y * scale),
-            (int) (img.getWidth(null) * scale * imgScale.x),
-            (int) (img.getHeight(null) * scale * imgScale.y),
+            (int) (pos.x * xScale),
+            (int) (pos.y * yScale),
+            (int) Math.round(img.getWidth(null) * imgScale.x * xScale),
+            (int) Math.round(img.getHeight(null) * imgScale.y * yScale),
             null
         );
     }

@@ -59,7 +59,7 @@ public class Game extends JPanel implements Runnable {
         setBackground(Color.BLACK);
         
         // Double buffering
-        buffer = new ScalableBuffer(dimensions, dimensions);
+        buffer = new ScalableBuffer(dimensions);
 
         // Focus window for input
         setFocusable(true);
@@ -110,7 +110,7 @@ public class Game extends JPanel implements Runnable {
         // Clear buffer
         buffer.clear();
 
-        // update buffer
+        // Update buffer
         Scenes.drawScene(
           cameraPos.mul(-1)
             .add(dimensions.mul(0.5)) // Center on camera
@@ -121,14 +121,13 @@ public class Game extends JPanel implements Runnable {
         int h = image.getHeight();
 
         // Draw to screen
-        g.drawImage(image, (getWidth()-w) / 2, (getHeight()-h) / 2, w, h, null);
+        g.drawImage(image, (getWidth() - w) / 2, (getHeight() - h) / 2, w, h, null);
     }
 
     /* ================ [ RUNNABLE ] ================ */
 
     @Override
     public void run() {
-
         // Variables
         double delta = 0;
         long prevTime = System.nanoTime(), curTime;
@@ -155,7 +154,6 @@ public class Game extends JPanel implements Runnable {
                 repaint();
             }
         }
-
     }
 
 }
