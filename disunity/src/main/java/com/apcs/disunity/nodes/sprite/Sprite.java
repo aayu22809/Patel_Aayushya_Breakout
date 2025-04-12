@@ -1,9 +1,11 @@
-package com.apcs.disunity.nodes;
+package com.apcs.disunity.nodes.sprite;
 
 import java.awt.image.BufferedImage;
 
 import com.apcs.disunity.Game;
 import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.nodes.Node;
+import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.resources.Image;
 import com.apcs.disunity.resources.Resources;
 
@@ -37,10 +39,11 @@ public class Sprite extends Node2D {
 
     @Override
     public void draw(Vector2 offset) {
-        // Draw sprite image
-        BufferedImage img = Resources.loadResource(image, Image.class).getImage();
-
+        // Load sprite image
+        BufferedImage img = Resources.loadResource(getImage(), Image.class).getImage();
         Vector2 imgScale = getScale();
+
+        // Draw image to buffer
         Game.getInstance().getBuffer().drawImage(
             img,
             getPos().add(offset).add(Vector2.of(img.getWidth() * imgScale.x, img.getHeight() * imgScale.y).mul(-0.5)),

@@ -16,7 +16,7 @@ public class Resource {
      */
     public enum Type {
         IMAGE,
-        IMAGESET
+        ANIMATION
     }
 
     /* ================ [ FIELDS ] ================ */
@@ -38,7 +38,7 @@ public class Resource {
         // Check resource type
         switch (type) {
             case IMAGE: return new Image.Builder().load(path).get();
-            case IMAGESET: return new ImageSet.Builder().load(path).get();
+            case ANIMATION: return new Animation.Builder().load(path).get();
             default: return null;
         }
 
