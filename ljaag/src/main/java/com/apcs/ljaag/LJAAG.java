@@ -5,11 +5,12 @@ import com.apcs.disunity.Game;
 import com.apcs.disunity.camera.Camera;
 import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.nodes.Body;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
-import com.apcs.disunity.nodes.Sprite;
 import com.apcs.disunity.nodes.controller.Controller;
+import com.apcs.disunity.nodes.body.Body;
+import com.apcs.disunity.nodes.sprite.AnimatedSprite;
+import com.apcs.disunity.nodes.sprite.Sprite;
 import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scenes;
 import com.apcs.disunity.server.ClientSideSyncHandler;
@@ -56,7 +57,7 @@ public class LJAAG {
 
         // Create the game scenes
         Scenes.addScene("test", new Node2D(
-          new Sprite("BACKGROUND")
+            new Sprite("background")
         ));
 
         Scenes.setScene("test");
@@ -81,10 +82,10 @@ public class LJAAG {
       boolean isPlayer = SyncHandler.getInstance().getEndpointId() == clientId;
       Body body = new Body();
       body.addChildren(
-        isPlayer ? new PlayerController() : new Controller(){},
-        new Camera(),
-        new Sprite("PLAYER"),
-        new WalkAction()
+          new AnimatedSprite("player"),
+          isPlayer ? new PlayerController() : new Controller(){},
+          new Camera(),
+          new WalkAction()
       );
       body.clientId = clientId;
       return body;

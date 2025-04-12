@@ -21,6 +21,15 @@ public class Resources {
 
     /* ================ [ METHODS ] ================ */
 
+    // Create id name
+    public static String createId(String dir, String name) {
+        if (dir != null && !name.equals(dir)) {
+            return dir + "_" + name;
+        }
+        
+        return name;
+    }
+
     // Add resource
     public static void addResource(String name, Resource resource) { resources.put(name, resource); }
 
@@ -32,21 +41,13 @@ public class Resources {
             String fileName = FileUtil.getName(file);
 
             String[] info = FileUtil.parseInfo(fileName);
-            String name = info[0];
-
-            // Directory prefix
-            if (dir != null && !name.equals(dir)) {
-                name = dir + "_" + name;
-            }
-
-            // Capitalize name
-            name = name.toUpperCase();
-
+            String name = createId(dir, info[0]);
+            
             // Add resource by type
             switch (type) {
                 case "image":
                     // Image sets
-                    if (info.length == 2) addResource(name, new Resource(Resource.Type.IMAGESET, file.getAbsolutePath()));
+                    if (info.length == 2) addResource(name, new Resource(Resource.Type.ANIMATION, file.getAbsolutePath()));
                     // Regular images
                     else addResource(name, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
                     break;
