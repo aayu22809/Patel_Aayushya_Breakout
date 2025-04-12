@@ -1,6 +1,9 @@
 package com.apcs.disunity.server;
 
-public interface Syncable {
+import java.io.InputStream;
+import java.io.OutputStream;
+
+public interface Syncable<T> {
 
     int HOST = 0;
 
@@ -13,9 +16,9 @@ public interface Syncable {
      * This method should be non-blocking and should not wait for tick updates.
      *
      * @param recipient The ID of the recipient, as managed by the Host.
-     * @return A byte array containing the data for the specified recipient.
+     * @param packetOut output stream to write packet data
      */
-    byte[] supply(int recipient);
+    void supply(int recipient, OutputStream packetOut);
 
     /**
      * Processes incoming data from a specified sender.  
@@ -26,9 +29,9 @@ public interface Syncable {
      * to return how many of the bytes have been used by it and it's own super, and so on.
      * 
      * @param sender The ID of the sender, as managed by the Host.
-     * @param data   The byte array containing the received data.
+     * @param packetIn   The input stream containing the received data.
      * @return the number of bytes used so far, so the current recieve call knows where to read from.
      */
-    int receive(int sender, byte[] data);
+    T receive(int sender, InputStream packetIn);
 
 }

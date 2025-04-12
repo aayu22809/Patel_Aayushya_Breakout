@@ -3,6 +3,8 @@ package com.apcs.disunity.server;
 import java.io.IOException;
 import java.io.InputStream;
 import static java.lang.Byte.SIZE;
+
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -80,12 +82,36 @@ public final class Util {
         return bytes;
     }
 
+    public static final void writeInt(OutputStream out, int val) {
+        try {
+            for (int i = 0; i < Integer.BYTES; val >>= 8) {
+                out.write(val & 0xFF);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static final int getInt(byte[] data, int loc) {
         int val = 0;
         for (int i = 0; i < Integer.BYTES; i++) {
             val |= (data[i + loc] & 0xFF) << (i * SIZE);
         }
         return val;
+    }
+
+    public static final int getInt(InputStream in) {
+        try {
+            int val = 0;
+            for (int i = 0; i < Integer.BYTES; i++) {
+                int byt = in.read();
+                if(val < 0) throw new RuntimeException();
+                val |= byt << (i * SIZE);
+            }
+            return val;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static final int getInt(byte[] data) {
