@@ -1,6 +1,7 @@
 package com.apcs.disunity.camera;
 
 import com.apcs.disunity.Game;
+import com.apcs.disunity.annotations.SyncedField;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.UndrawnNode;
 
@@ -14,6 +15,7 @@ public class Camera extends UndrawnNode {
     /* ================ [ FIELDS ] ================ */
 
     // Camera position
+    @SyncedField
     private Vector2 pos = Vector2.ZERO;
 
     // Camera scale
@@ -46,16 +48,4 @@ public class Camera extends UndrawnNode {
         super.update(delta);
     }
 
-    /* ================ [ SYNCED ] ================ */
-
-    @Override
-    public byte[] supply(int recipient) {
-        return pos.getBytes();
-    }
-
-    @Override
-    public int receive(int sender, byte[] data) {
-        // pos = Vector2.of(Util.getInt(data, 0), Util.getInt(data, Integer.BYTES));
-        return 0;
-    }
 }

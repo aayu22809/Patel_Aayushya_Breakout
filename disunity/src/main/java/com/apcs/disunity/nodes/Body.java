@@ -1,10 +1,10 @@
 package com.apcs.disunity.nodes;
 
 import com.apcs.disunity.annotations.Requires;
+import com.apcs.disunity.annotations.SyncedField;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.controller.Controller;
 import com.apcs.disunity.nodes.moveaction.MoveAction;
-import com.apcs.disunity.server.Util;
 
 /**
  * A 2d node that can handle movement and collision
@@ -20,6 +20,7 @@ public class Body extends Node2D {
     private int controller;
 
     // Velocity
+    @SyncedField
     private Vector2 vel = Vector2.ZERO;
 
     // Constructors
@@ -65,23 +66,4 @@ public class Body extends Node2D {
         super.update(delta);
     }
 
-    /* ================ [ SYNCED ] ================ */
-
-    @Override
-    public byte[] supply(int recipient) {
-        byte[] superPacket = super.supply(recipient);
-        byte[] velPacket = vel.getBytes();
-        byte[] packet = new byte[superPacket.length + velPacket.length];
-        System.arraycopy(superPacket,0,packet,0, superPacket.length );
-        System.arraycopy(velPacket,0,packet,superPacket.length,velPacket.length);
-        return packet;
-    }
-
-    @Override
-    public int receive(int sender, byte[] data) {
-        int used = super.receive(sender,data);
-        vel = Vector2.of(Util.getInt(data, used), Util.getInt(data, used + Integer.BYTES));
-        return used + Integer.BYTES * 2;
-    }
-    
 }

@@ -16,9 +16,8 @@ import com.apcs.disunity.annotations.Requires;
  * 
  * @author Qinzhao Li
  * @author Toshiki Takeuchi
- * TODO: remove Syncable from Node
  */
-public abstract class Node<T extends Node<?>> implements Syncable {
+public abstract class Node<T extends Node<?>> {
 
     /* ================ [ FIELDS ] ================ */
 
@@ -112,14 +111,6 @@ public abstract class Node<T extends Node<?>> implements Syncable {
         // Update children
         for (T node : children) node.tick(delta);
     }
-
-    /* ================ [ SYNCED ] ================ */
-
-    @Override
-    public byte[] supply(int recipient) { return new byte[0]; }
-
-    @Override
-    public int receive(int sender, byte[] data) { return 0; }
 
     /* ================ [ PRINTING ] ================ */
 

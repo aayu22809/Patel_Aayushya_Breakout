@@ -51,16 +51,4 @@ public class Node2D extends DrawnNode {
     }
 
     /* ================ [ SYNCED ] ================ */
-
-    @Override
-    public byte[] supply(int recipient) {
-        return pos.getBytes();
-    }
-
-    @Override
-    public int receive(int sender, byte[] data) {
-        pos = Vector2.of(Util.getInt(data, 0), Util.getInt(data, Integer.BYTES));
-        return Integer.BYTES * 2;
-    }
-
 }

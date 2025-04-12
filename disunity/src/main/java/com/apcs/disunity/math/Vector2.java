@@ -3,13 +3,17 @@ package com.apcs.disunity.math;
 import com.apcs.disunity.server.Syncable;
 import com.apcs.disunity.server.Util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * A 2D vector with x and y components
  * 
  * @author Qinzhao Li
  * @author Sharvil Phadke
  */
-public class Vector2 implements Syncable {
+public class Vector2 implements Syncable<Vector2> {
 
     /* ================ [ CONSTANTS ] ================ */
 
@@ -76,15 +80,17 @@ public class Vector2 implements Syncable {
     @Override
     public String toString() { return "(" + x + ", " + y + ")"; }
 
+
     /* =============== [SYNCABLE] ================== */
-    // TODO: decide on how this should be implemented.
+
     @Override
-    public byte[] supply(int recipient) {
-        return new byte[0];
+    public void supply(int recipient, OutputStream packetOut) {
+      Util.writeInt(packetOut,xi);
+      Util.writeInt(packetOut,yi);
     }
 
     @Override
-    public int receive(int sender, byte[] data) {
-        return 0;
+    public Vector2 receive(int sender, InputStream packetIn) {
+        return Vector2.of(Util.getInt(packetIn),Util.getInt(packetIn));
     }
 }
