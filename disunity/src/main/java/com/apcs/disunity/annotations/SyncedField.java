@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 /// TODO: implement packet pipeline
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-// @EnforceFieldType(Syncable.class)
+@EnforceFieldType(Syncable.class)
 public @interface SyncedField {
 }
