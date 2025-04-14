@@ -8,7 +8,7 @@ import java.util.Map;
 import com.apcs.disunity.files.FileUtil;
 
 /**
- * Handles all resources in the game
+ * Handles all of the resources in the game
  * 
  * @author Qinzhao Li
  */
@@ -16,40 +16,33 @@ public class Resources {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Resources map
+    // Maps resource ids to resources
     private static final Map<String, Resource> resources = new HashMap<>();
 
     /* ================ [ METHODS ] ================ */
 
-    // Create id name
+    // Create id from directory and name
     public static String createId(String dir, String name) {
-        if (dir != null && !name.equals(dir)) {
+        if (dir != null && !name.equals(dir))
             return dir + "_" + name;
-        }
-        
         return name;
     }
 
-    // Add resource
+    // Add resource to map
     public static void addResource(String name, Resource resource) { resources.put(name, resource); }
 
-    // Add resource w/ file
+    // Add resource to map w/ file
     public static void addResource(File file, String dir) {
         try {
             // Grab file info
             String type = FileUtil.getType(file);
             String fileName = FileUtil.getName(file);
-
-            String[] info = FileUtil.parseInfo(fileName);
-            String name = createId(dir, info[0]);
+            String id = createId(dir, fileName);
             
             // Add resource by type
             switch (type) {
                 case "image":
-                    // Image sets
-                    if (info.length == 2) addResource(name, new Resource(Resource.Type.ANIMATION, file.getAbsolutePath()));
-                    // Regular images
-                    else addResource(name, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
+                    addResource(id, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
                     break;
                 default:
                     break;
@@ -57,14 +50,18 @@ public class Resources {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    // Load resource
+    // Load resource from map
     public static Object loadResource(String name) { return resources.get(name).load(); }
+
+    // Load resource from map w/ type
     public static <T> T loadResource(String name, Class<T> type) { return type.cast(resources.get(name).load()); }
 
     /* ================ [ SCANNER ] ================ */
 
-    // Scan folder
+    // Scan assets folder
     public static void scanFolder(String path) { scanFolder(path, null); }
+
+    // Scan subfolders
     public static void scanFolder(String path, String dir) {
         File root = new File(path);
         File[] contents = root.listFiles();
@@ -73,13 +70,10 @@ public class Resources {
         if (contents != null) {
             for (File file : contents) {
                 // Scan child folders
-                if (dir == null && file.isDirectory()) {
+                if (dir == null && file.isDirectory()) 
                     scanFolder(file.getAbsolutePath(), file.getName());
-                }
                 // Add resource to game
-                else {
-                    addResource(file, dir);
-                }
+                else addResource(file, dir);
             }
         }
     }

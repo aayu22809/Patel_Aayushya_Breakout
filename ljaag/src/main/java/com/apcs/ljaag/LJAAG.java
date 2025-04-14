@@ -2,6 +2,9 @@ package com.apcs.ljaag;
 
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
+import com.apcs.disunity.animation.Animation;
+import com.apcs.disunity.animation.AnimationFrame;
+import com.apcs.disunity.animation.AnimationSet;
 import com.apcs.disunity.camera.Camera;
 import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.math.Vector2;
@@ -82,9 +85,20 @@ public class LJAAG {
       boolean isPlayer = SyncHandler.getInstance().getEndpointId() == clientId;
       Body body = new Body();
       body.addChildren(
-          new AnimatedSprite("player"),
+          isPlayer ? new Camera() : new Node<Node<?>>() {},
+          new AnimatedSprite(
+              new AnimationSet("player",
+                  new Animation("run",
+                      new AnimationFrame("player_run_0", 0.15),
+                      new AnimationFrame("player_run_1", 0.15),
+                      new AnimationFrame("player_run_2", 0.15),
+                      new AnimationFrame("player_run_3", 0.15),
+                      new AnimationFrame("player_run_4", 0.15),
+                      new AnimationFrame("player_run_5", 0.15)
+                  )
+              )
+          ),
           isPlayer ? new PlayerController() : new Controller(){},
-          new Camera(),
           new WalkAction()
       );
       body.clientId = clientId;

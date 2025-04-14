@@ -49,6 +49,8 @@ public class Sprite extends Node2D {
             getPos().add(offset).add(Vector2.of(img.getWidth() * imgScale.x, img.getHeight() * imgScale.y).mul(-0.5)),
             imgScale
         );
+
+        super.draw(offset);
     }
 
 }
