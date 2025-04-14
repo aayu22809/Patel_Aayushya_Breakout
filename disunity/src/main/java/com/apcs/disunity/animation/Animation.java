@@ -19,7 +19,15 @@ public class Animation {
     private int frame = 0;
 
     // Constructors
-    public Animation(String name, AnimationFrame... frames) { this.name = name; this.frames = frames; }
+    public Animation(String name, double... frameDurations) {
+        this.name = name;
+
+        // Create frames
+        frames = new AnimationFrame[frameDurations.length];
+        for (int i = 0; i < frameDurations.length; i++) {
+            frames[i] = new AnimationFrame(name + "_" + i, frameDurations[i]);
+        }
+    }
 
     /* ================ [ METHODS ] ================ */
 

@@ -23,6 +23,13 @@ public class PlayerController extends Controller {
         ).normalized();
 
         Signals.trigger(Signals.getSignal(getId(), "walk"), walkDir);
+
+        // Trigger animations
+        if (walkDir.length() > 0) {
+            Signals.trigger(Signals.getSignal(getId(), "animate"), "run");
+        } else {
+            Signals.trigger(Signals.getSignal(getId(), "animate"), null);
+        }
     }
     
 }

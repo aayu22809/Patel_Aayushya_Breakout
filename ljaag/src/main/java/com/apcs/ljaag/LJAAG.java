@@ -3,7 +3,6 @@ package com.apcs.ljaag;
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
 import com.apcs.disunity.animation.Animation;
-import com.apcs.disunity.animation.AnimationFrame;
 import com.apcs.disunity.animation.AnimationSet;
 import com.apcs.disunity.camera.Camera;
 import com.apcs.disunity.input.Inputs;
@@ -19,8 +18,8 @@ import com.apcs.disunity.scenes.Scenes;
 import com.apcs.disunity.server.ClientSideSyncHandler;
 import com.apcs.disunity.server.HostSideSyncHandler;
 import com.apcs.disunity.server.SyncHandler;
+import com.apcs.ljaag.nodes.action.WalkAction;
 import com.apcs.ljaag.nodes.controller.PlayerController;
-import com.apcs.ljaag.nodes.moveaction.WalkAction;
 
 import java.io.IOException;
 
@@ -88,14 +87,7 @@ public class LJAAG {
           isPlayer ? new Camera() : new Node<Node<?>>() {},
           new AnimatedSprite(
               new AnimationSet("player",
-                  new Animation("run",
-                      new AnimationFrame("player_run_0", 0.15),
-                      new AnimationFrame("player_run_1", 0.15),
-                      new AnimationFrame("player_run_2", 0.15),
-                      new AnimationFrame("player_run_3", 0.15),
-                      new AnimationFrame("player_run_4", 0.15),
-                      new AnimationFrame("player_run_5", 0.15)
-                  )
+                  new Animation("run",0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
               )
           ),
           isPlayer ? new PlayerController() : new Controller(){},

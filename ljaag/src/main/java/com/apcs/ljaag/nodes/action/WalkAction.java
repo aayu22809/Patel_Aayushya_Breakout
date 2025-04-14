@@ -1,8 +1,8 @@
-package com.apcs.ljaag.nodes.moveaction;
+package com.apcs.ljaag.nodes.action;
 
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.UndrawnNode;
-import com.apcs.disunity.nodes.moveaction.MoveAction;
+import com.apcs.disunity.nodes.action.MoveAction;
 
 /**
  * A move action that allows directional movement.
