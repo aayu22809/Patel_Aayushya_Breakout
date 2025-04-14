@@ -6,6 +6,7 @@ import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.action.MoveAction;
+import com.apcs.disunity.nodes.controller.Controlled;
 import com.apcs.disunity.nodes.controller.Controller;
 import com.apcs.disunity.server.Util;
 
@@ -49,7 +50,7 @@ public class Body extends Node2D {
         this.controller = getChild(Controller.class).getId();
 
         // Update children controllers
-        for (MoveAction<?> action : getChildren(MoveAction.class)) {
+        for (Controlled action : getChildren(Controlled.class)) {
             action.setController(controller);
         }
 
