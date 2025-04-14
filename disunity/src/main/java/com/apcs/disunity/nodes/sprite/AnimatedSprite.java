@@ -7,23 +7,28 @@ import com.apcs.disunity.animation.AnimationSet;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
+import com.apcs.disunity.nodes.controller.Controlled;
 import com.apcs.disunity.resources.Image;
 import com.apcs.disunity.resources.Resources;
+import com.apcs.disunity.signals.Signals;
 
 /**
  * A sprite that can play animations
  * 
  * @author Qinzhao Li
  */
-public class AnimatedSprite extends Node2D {
+public class AnimatedSprite extends Node2D implements Controlled {
 
     /* ================ [ FIELDS ] ================ */
+
+    // Controller id
+    private int controller;
 
     // Animation set
     private AnimationSet animations;
 
     // Current animation
-    private String animation = "run";
+    private String animation = null;
 
     // Previous frame time
     private long prevFrame = System.nanoTime();
@@ -33,11 +38,17 @@ public class AnimatedSprite extends Node2D {
     public AnimatedSprite(AnimationSet animations, Node<?>... children) { super(children); this.animations = animations; }
     public AnimatedSprite(AnimationSet animations, Vector2 pos, Node<?>... children) { super(pos, children); this.animations = animations; }
     public AnimatedSprite(AnimationSet animations, Vector2 pos, Vector2 scale, Node<?>... children) { super(pos, scale, children); this.animations = animations; }
+    
+    /* ================ [ CONTROLLED ] ================ */
 
+    // Set controller id
+    public void setController(int controller) { this.controller = controller; }
+    
     /* ================ [ METHODS ] ================ */
 
     // Set animation
     public void setAnimation(String animation) {
+        if (this.animation == animation) return;
         this.animation = animation;
         prevFrame = System.nanoTime();
     }
@@ -46,6 +57,15 @@ public class AnimatedSprite extends Node2D {
     public String getAnimation() { return animation; }
 
     /* ================ [ NODE ] ================ */
+
+    @Override
+    public void initialize() {
+        // Connect to signal
+        Signals.connect(Signals.getSignal(controller, "animate"), this::setAnimation);
+
+        // Complete initialization
+        super.initialize();
+    }
 
     @Override
     public void update(double delta) {
@@ -70,7 +90,10 @@ public class AnimatedSprite extends Node2D {
         } else {
             // Load current frame
             img = Resources.loadResource(
-                animations.getAnimation(animation).getFrame().image,
+                Resources.createId(
+                    animations.getBase(),
+                    animations.getAnimation(animation).getFrame().image
+                ),
                 Image.class
             ).getImage();
         }

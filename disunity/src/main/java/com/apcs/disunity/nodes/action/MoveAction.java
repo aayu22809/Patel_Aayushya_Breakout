@@ -1,7 +1,8 @@
-package com.apcs.disunity.nodes.moveaction;
+package com.apcs.disunity.nodes.action;
 
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.UndrawnNode;
+import com.apcs.disunity.nodes.controller.Controlled;
 import com.apcs.disunity.signals.Signals;
 
 /**
@@ -9,7 +10,7 @@ import com.apcs.disunity.signals.Signals;
  * 
  * @author Qinzhao Li
  */
-public abstract class MoveAction<T> extends UndrawnNode {
+public abstract class MoveAction<T> extends UndrawnNode implements Controlled {
 
     /* ================ [ FIELDS ] ================ */
 
@@ -20,7 +21,7 @@ public abstract class MoveAction<T> extends UndrawnNode {
     public MoveAction() { super(); }
     public MoveAction(UndrawnNode... children) { super(children); }
 
-    /* ================ [ METHODS ] ================ */
+    /* ================ [ CONTROLLED ] ================ */
 
     // Set controller id
     public void setController(int controller) { this.controller = controller; }

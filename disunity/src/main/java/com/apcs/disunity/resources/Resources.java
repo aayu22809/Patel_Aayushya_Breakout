@@ -47,7 +47,8 @@ public class Resources {
                 default:
                     break;
             }
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) { return; }
+        catch (NullPointerException e) { return; }
     }
 
     // Load resource from map

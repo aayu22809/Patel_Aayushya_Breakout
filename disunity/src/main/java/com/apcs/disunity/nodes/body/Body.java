@@ -4,8 +4,8 @@ import com.apcs.disunity.annotations.Requires;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
+import com.apcs.disunity.nodes.action.MoveAction;
 import com.apcs.disunity.nodes.controller.Controller;
-import com.apcs.disunity.nodes.moveaction.MoveAction;
 import com.apcs.disunity.server.Util;
 
 /**
