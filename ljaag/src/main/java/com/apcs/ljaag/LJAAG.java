@@ -11,7 +11,6 @@ import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.body.Body;
 import com.apcs.disunity.nodes.sprite.AnimatedSprite;
 import com.apcs.disunity.nodes.sprite.Sprite;
-import com.apcs.disunity.resources.Image;
 import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scenes;
 import com.apcs.ljaag.nodes.action.WalkAction;
@@ -61,8 +60,6 @@ public class LJAAG {
                 "test"
             )
         );
-
-        System.out.println(((Image) Resources.loadResource("BACKGROUND")).getImage().getHeight());
 
     }
     
