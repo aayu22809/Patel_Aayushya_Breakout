@@ -26,10 +26,5 @@ public class FileUtil {
     public static String getType(File file) throws IOException {
         return Files.probeContentType(file.toPath()).split("/")[0];
     }
-
-    // Get file info from name
-    public static String[] parseInfo(String name) {
-        return name.split("-");
-    }
     
 }

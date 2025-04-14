@@ -2,6 +2,9 @@ package com.apcs.ljaag;
 
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
+import com.apcs.disunity.animation.Animation;
+import com.apcs.disunity.animation.AnimationFrame;
+import com.apcs.disunity.animation.AnimationSet;
 import com.apcs.disunity.camera.Camera;
 import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.math.Vector2;
@@ -40,7 +43,18 @@ public class LJAAG {
             new Sprite("background"),
             new Body(
                 new Camera(),
-                new AnimatedSprite("player"),
+                new AnimatedSprite(
+                    new AnimationSet("player",
+                        new Animation("run",
+                            new AnimationFrame("player_run_0", 0.15),
+                            new AnimationFrame("player_run_1", 0.15),
+                            new AnimationFrame("player_run_2", 0.15),
+                            new AnimationFrame("player_run_3", 0.15),
+                            new AnimationFrame("player_run_4", 0.15),
+                            new AnimationFrame("player_run_5", 0.15)
+                        )
+                    )
+                ),
                 new PlayerController(),
                 new WalkAction()
             )
