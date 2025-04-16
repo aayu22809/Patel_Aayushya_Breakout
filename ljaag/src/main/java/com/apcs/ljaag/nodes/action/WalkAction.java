@@ -5,7 +5,7 @@ import com.apcs.disunity.nodes.UndrawnNode;
 import com.apcs.disunity.nodes.action.MoveAction;
 
 /**
- * A move action that allows directional movement.
+ * A move action that allows directional movement
  *
  * @author Qinzhao Li
  */
@@ -25,15 +25,17 @@ public class WalkAction extends MoveAction<Vector2> {
     public WalkAction() { super(); }
     public WalkAction(UndrawnNode... children) { super(children); }
 
-    /* ================ [ MOVEACTION ] ================ */
+    /* ================ [ APPLIABLE ] ================ */
+
+    @Override
+    public Vector2 apply(Vector2 vel, double delta) { return dir.mul(speed); }
+
+    /* ================ [ ACTION ] ================ */
 
     @Override
     public String actionId() { return "walk"; }
     
     @Override
     public void trigger(Vector2 data) { this.dir = data; }
-
-    @Override
-    public Vector2 apply(Vector2 vel, double delta) { return dir.mul(speed); }
 
 }

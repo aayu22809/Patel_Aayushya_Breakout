@@ -13,6 +13,7 @@ import com.apcs.disunity.nodes.sprite.AnimatedSprite;
 import com.apcs.disunity.nodes.sprite.Sprite;
 import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scenes;
+import com.apcs.ljaag.nodes.action.TurnAction;
 import com.apcs.ljaag.nodes.action.WalkAction;
 import com.apcs.ljaag.nodes.controller.PlayerController;
 
@@ -47,7 +48,8 @@ public class LJAAG {
                     )
                 ),
                 new PlayerController(),
-                new WalkAction()
+                new WalkAction(),
+                new TurnAction()
             )
         ));
 

@@ -111,7 +111,6 @@ public class Game extends JPanel implements Runnable {
         // Update buffer
         Scenes.drawScene(
             transform.move(dimensions.mul(0.5)) // Center on camera
-            // mul -1 tempo deleted
         );
 
         BufferedImage image = buffer.getImage();

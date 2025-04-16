@@ -21,7 +21,10 @@ public class Signals {
     /* ================ [ METHODS ] ================ */
 
     // Get signal name with source
-    public static String getSignal(int source, String name) { return source + "_" + name; };
+    public static String getSignal(int source, String name) {
+        if (source < 0) return name;
+        return source + "_" + name;
+    };
 
     // Connect a signal to a function
     public static <T> void connect(String signal, Consumer<T> function) {
