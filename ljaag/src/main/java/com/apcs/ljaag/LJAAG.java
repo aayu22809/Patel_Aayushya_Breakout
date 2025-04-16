@@ -18,6 +18,7 @@ import com.apcs.disunity.scenes.Scenes;
 import com.apcs.disunity.server.ClientSideSyncHandler;
 import com.apcs.disunity.server.HostSideSyncHandler;
 import com.apcs.disunity.server.SyncHandler;
+import com.apcs.ljaag.nodes.action.TurnAction;
 import com.apcs.ljaag.nodes.action.WalkAction;
 import com.apcs.ljaag.nodes.controller.PlayerController;
 
@@ -91,7 +92,8 @@ public class LJAAG {
               )
           ),
           isPlayer ? new PlayerController() : new Controller(){},
-          new WalkAction()
+          new WalkAction(),
+          new TurnAction()
       );
       body.clientId = clientId;
       return body;

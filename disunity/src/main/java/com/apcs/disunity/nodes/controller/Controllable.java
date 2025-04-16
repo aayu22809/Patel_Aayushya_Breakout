@@ -5,7 +5,7 @@ package com.apcs.disunity.nodes.controller;
  * 
  * @author Qinzhao Li
  */
-public interface Controlled {
+public interface Controllable {
 
     /* ================ [ METHODS ] ================ */
 
