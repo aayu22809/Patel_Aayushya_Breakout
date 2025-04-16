@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 
 /**
@@ -69,15 +70,24 @@ public class ScalableBuffer {
     /* ================ [ GRAPHICS ] ================ */
 
     // Draw image
-    public void drawImage(Image img, Vector2 pos) { drawImage(img, pos, Vector2.ONE); }
-    public void drawImage(Image img, Vector2 pos, Vector2 imgScale) {
-        graphics.drawImage(img,
-            (int) (pos.x * xScale),
-            (int) (pos.y * yScale),
-            (int) Math.round(img.getWidth(null) * imgScale.x * xScale),
-            (int) Math.round(img.getHeight(null) * imgScale.y * yScale),
-            null
-        );
+    public void drawImage(Image img, Transform transform) {
+        // Image dimensions
+        double imgWidth = img.getWidth(null);
+        double imgHeight = img.getHeight(null);
+
+        // Center pivot
+        Vector2 offset = Vector2.of(imgWidth, imgHeight)
+            .mul(transform.scale)
+            .mul(-0.5);
+        Transform _transform = transform.move(offset);
+
+        // Drawing inputs
+        int xPos = (int) Math.round(_transform.pos.x * xScale);
+        int yPos = (int) Math.round(_transform.pos.y * yScale);
+        int width = (int) Math.round(imgWidth * _transform.scale.x * xScale);
+        int height = (int) Math.round(imgHeight * _transform.scale.y * yScale);
+
+        graphics.drawImage(img, xPos, yPos, width, height, null);
     }
 
 }

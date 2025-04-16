@@ -1,7 +1,6 @@
 package com.apcs.disunity.nodes;
 
-import com.apcs.disunity.Game;
-import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.math.Transform;
 
 /**
  * A node that has children which may draw to a buffer
@@ -18,16 +17,11 @@ public abstract class DrawnNode extends Node<Node<?>> {
 
     /* ================ [ METHODS ] ================ */
 
-    /// draws content of this node to buffer.
-    /// use {@link Game#getInstance()} and {@link Game#getBuffer()} to access current buffer.
-    /// @param offset where the node should be drawn
-    public void draw(Vector2 offset) {
-
-        // Draw children
+    // Draws this node and its children to the buffer
+    public void draw(Transform offset) {
         for (DrawnNode node : getChildren(DrawnNode.class)) {
             node.draw(offset);
         }
-
     }
 
 }

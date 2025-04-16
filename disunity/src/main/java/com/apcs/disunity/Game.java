@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import com.apcs.disunity.input.InputHandler;
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.rendering.ScalableBuffer;
 import com.apcs.disunity.scenes.Scenes;
@@ -27,18 +28,18 @@ public class Game extends JPanel implements Runnable {
 
     // Game dimensions
     private Vector2 dimensions;
-
-    // Camera position to control viewport
-    private Vector2 cameraPos;
-
+    
     // Buffer for scaling the game
     private ScalableBuffer buffer;
-
+    
     // Handles keystrokes from user
     private InputHandler input;
-
+    
     // Is the host
     private boolean isHost;
+
+    // Global transform to control viewport
+    private Transform transform = new Transform();
 
     // Constructors
     public Game(Vector2 dimensions, String scene) {
@@ -51,9 +52,6 @@ public class Game extends JPanel implements Runnable {
         
         // Game dimensions
         this.dimensions = dimensions;
-
-        // Camera pos
-        this.cameraPos = Vector2.ZERO;
 
         // Panel background
         setBackground(Color.BLACK);
@@ -86,8 +84,8 @@ public class Game extends JPanel implements Runnable {
         game.start();
     }
 
-    // Set camera position
-    public void setCameraPos(Vector2 pos) { this.cameraPos = pos; }
+    // Set global transform
+    public void setTransform(Transform transform) { this.transform = transform; }
 
     // Set buffer size
     public void setBufferSize(Vector2 size) { buffer.setSize(size); }
@@ -112,8 +110,8 @@ public class Game extends JPanel implements Runnable {
 
         // Update buffer
         Scenes.drawScene(
-          cameraPos.mul(-1)
-            .add(dimensions.mul(0.5)) // Center on camera
+            transform.move(dimensions.mul(0.5)) // Center on camera
+            // mul -1 tempo deleted
         );
 
         BufferedImage image = buffer.getImage();

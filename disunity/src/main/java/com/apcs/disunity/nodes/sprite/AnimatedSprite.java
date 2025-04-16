@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 import com.apcs.disunity.Game;
 import com.apcs.disunity.animation.AnimationSet;
-import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.controller.Controlled;
@@ -36,8 +36,7 @@ public class AnimatedSprite extends Node2D implements Controlled {
     // Constructors
     public AnimatedSprite(AnimationSet animations) { this.animations = animations; }
     public AnimatedSprite(AnimationSet animations, Node<?>... children) { super(children); this.animations = animations; }
-    public AnimatedSprite(AnimationSet animations, Vector2 pos, Node<?>... children) { super(pos, children); this.animations = animations; }
-    public AnimatedSprite(AnimationSet animations, Vector2 pos, Vector2 scale, Node<?>... children) { super(pos, scale, children); this.animations = animations; }
+    public AnimatedSprite(AnimationSet animations, Transform transform, Node<?>... children) { super(transform, children); this.animations = animations; }
     
     /* ================ [ CONTROLLED ] ================ */
 
@@ -82,7 +81,7 @@ public class AnimatedSprite extends Node2D implements Controlled {
     }
 
     @Override
-    public void draw(Vector2 offset) {
+    public void draw(Transform offset) {
         BufferedImage img;
         if (animation == null) {
             // Default sprite fallback
@@ -97,15 +96,9 @@ public class AnimatedSprite extends Node2D implements Controlled {
                 Image.class
             ).getImage();
         }
-
-        Vector2 imgScale = getScale();
             
         // Draw image to buffer
-        Game.getInstance().getBuffer().drawImage(
-            img,
-            getPos().add(offset).add(Vector2.of(img.getWidth() * imgScale.x, img.getHeight() * imgScale.y).mul(-0.5)),
-            imgScale
-        );
+        Game.getInstance().getBuffer().drawImage(img, transform.apply(offset));
         
         // Draw children
         super.draw(offset);
