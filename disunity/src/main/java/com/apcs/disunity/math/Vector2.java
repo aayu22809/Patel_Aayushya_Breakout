@@ -52,6 +52,9 @@ public class Vector2 implements Syncable<Vector2> {
     // Multiply by a scalar
     public Vector2 mul(double v) { return new Vector2(x * v, y * v); }
 
+    // Multiply component-wise
+    public Vector2 mul(Vector2 v) { return new Vector2(x * v.x, y * v.y); }
+
     // Dot product with another vector
     public double dot(Vector2 v) { return x * v.x + y * v.y; }
 

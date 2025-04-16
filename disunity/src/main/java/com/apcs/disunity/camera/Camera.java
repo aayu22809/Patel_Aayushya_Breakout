@@ -1,48 +1,30 @@
 package com.apcs.disunity.camera;
 
 import com.apcs.disunity.Game;
-import com.apcs.disunity.annotations.SyncedField;
-import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.nodes.UndrawnNode;
+import com.apcs.disunity.math.Transform;
+import com.apcs.disunity.nodes.Node;
+import com.apcs.disunity.nodes.Node2D;
 
 /**
  * A camera to control the viewport
  * 
  * @author Qinzhao Li
  */
-public class Camera extends UndrawnNode {
+public class Camera extends Node2D {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Camera position
-    @SyncedField
-    private Vector2 pos = Vector2.ZERO;
-
-    // Camera scale
-    private double scale = 1;
-
     // Constructors
     public Camera() { super(); }
-    public Camera(UndrawnNode... children) { super(children); }
-    public Camera(Vector2 pos, UndrawnNode... children) { super(children); this.pos = pos; }
-
-    /* ================ [ METHODS ] ================ */
-
-    // Scale
-    public void scale(double s) { scale = s; }
-
-    // Set position
-    public void setPos(Vector2 pos) { this.pos = pos; }
-
-    // Get position
-    public Vector2 getPos() { return pos; }
+    public Camera(Node<?>... children) { super(children); }
+    public Camera(Transform transform, Node<?>... children) { super(transform, children); }
 
     /* ================ [ NODE ] ================ */
 
     @Override
     public void update(double delta) {
-        // Update camera position
-        Game.getInstance().setCameraPos(getPos());
+        // Update global transform
+        Game.getInstance().setTransform(transform);
 
         // Update children
         super.update(delta);

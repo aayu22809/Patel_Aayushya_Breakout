@@ -3,7 +3,7 @@ package com.apcs.disunity.scenes;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.nodes.DrawnNode;
 
 /**
@@ -36,6 +36,6 @@ public class Scenes {
     public static void updateScene(double delta) { getScene().tick(delta); }
 
     // Draw current scene
-    public static void drawScene(Vector2 offset) { getScene().draw(offset); }
+    public static void drawScene(Transform offset) { getScene().draw(offset); }
 
 }

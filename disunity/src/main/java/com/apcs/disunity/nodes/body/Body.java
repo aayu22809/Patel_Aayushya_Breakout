@@ -2,6 +2,7 @@ package com.apcs.disunity.nodes.body;
 
 import com.apcs.disunity.annotations.Requires;
 import com.apcs.disunity.annotations.SyncedField;
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
@@ -32,7 +33,7 @@ public class Body extends Node2D {
     // Constructors
     public Body() { super(); }
     public Body(Node<?>... children) { super(children); }
-    public Body(Vector2 pos, Node<?>... children) { super(pos, children); }
+    public Body(Transform transform, Node<?>... children) { super(transform, children); }
 
     /* ================ [ METHODS ] ================ */
 
@@ -66,7 +67,7 @@ public class Body extends Node2D {
         }
 
         // Move with velocity
-        move(vel.mul(delta));
+        transform = transform.move(vel.mul(delta));
 
         // Update children
         super.update(delta);

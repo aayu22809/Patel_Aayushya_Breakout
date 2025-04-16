@@ -3,7 +3,7 @@ package com.apcs.disunity.nodes.sprite;
 import java.awt.image.BufferedImage;
 
 import com.apcs.disunity.Game;
-import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.resources.Image;
@@ -24,8 +24,7 @@ public class Sprite extends Node2D {
     // Constructors
     public Sprite(String image) { super(); this.image = image; }
     public Sprite(String image, Node<?>... children) { super(children); this.image = image; }
-    public Sprite(String image, Vector2 pos, Node<?>... children) { super(pos, children); this.image = image; }
-    public Sprite(String image, Vector2 pos, Vector2 scale, Node<?>... children) { super(pos, scale, children); this.image = image; }
+    public Sprite(String image, Transform transform, Node<?>... children) { super(transform, children); this.image = image; }
 
     /* ================ [ METHODS ] ================ */
 
@@ -38,18 +37,14 @@ public class Sprite extends Node2D {
     /* ================ [ NODE ] ================ */
 
     @Override
-    public void draw(Vector2 offset) {
+    public void draw(Transform offset) {
         // Load sprite image
         BufferedImage img = Resources.loadResource(getImage(), Image.class).getImage();
-        Vector2 imgScale = getScale();
 
         // Draw image to buffer
-        Game.getInstance().getBuffer().drawImage(
-            img,
-            getPos().add(offset).add(Vector2.of(img.getWidth() * imgScale.x, img.getHeight() * imgScale.y).mul(-0.5)),
-            imgScale
-        );
+        Game.getInstance().getBuffer().drawImage(img, transform.apply(offset));
 
+        // Draw children
         super.draw(offset);
     }
 
