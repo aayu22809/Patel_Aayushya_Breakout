@@ -84,7 +84,7 @@ public final class Util {
 
     public static final void writeInt(OutputStream out, int val) {
         try {
-            for (int i = 0; i < Integer.BYTES; val >>= 8) {
+            for (int i = 0; i < Integer.BYTES; i++, val >>= SIZE) {
                 out.write(val & 0xFF);
             }
         } catch (IOException e) {
@@ -105,7 +105,7 @@ public final class Util {
             int val = 0;
             for (int i = 0; i < Integer.BYTES; i++) {
                 int byt = in.read();
-                if(val < 0) throw new RuntimeException();
+                if(byt < 0) throw new RuntimeException();
                 val |= byt << (i * SIZE);
             }
             return val;
@@ -146,16 +146,6 @@ public final class Util {
             objs.add(o);
         }
         return objs.toArray();
-    }
-
-    public static final void forever(Runnable action, int period) {
-        long prev = System.currentTimeMillis();
-        while (!Thread.currentThread().isInterrupted()) {
-            if (System.currentTimeMillis() - prev >= period) {
-                prev = System.currentTimeMillis();
-                action.run();
-            }
-        }
     }
 
 }

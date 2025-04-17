@@ -40,6 +40,13 @@ public abstract class Node<T extends Node<?>> {
         isInitialized = false;
     }
 
+    @SafeVarargs
+    public final void addChildren(T... nodes) {
+        for(T child: nodes) {
+            addChild(child);
+        }
+    }
+
     // Remove child
     public void removeChild(T node) { children.remove(node); }
 

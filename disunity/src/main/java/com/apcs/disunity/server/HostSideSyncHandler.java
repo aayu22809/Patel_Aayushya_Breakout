@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.apcs.disunity.server.Util.forever;
-
 public class HostSideSyncHandler extends SyncHandler implements Closeable {
 
     private final Host host;
@@ -14,16 +12,19 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
 
     public HostSideSyncHandler() throws IOException {
         host = new Host();
-
         host.attachJoinAction((id) -> {
             PacketTransceiver transceiver = host.getTransceiver(id);
 
             Thread recieverThread = new Thread(() -> {
-                forever(() -> distribute(id, transceiver.recieve()), Syncable.PPMS);
+                while (!Thread.currentThread().isInterrupted()) {
+                    distribute(id, transceiver.recieve());
+                }
             });
 
             Thread senderThread = new Thread(() -> {
-                forever(() -> transceiver.send(poll(Syncable.HOST)), Syncable.PPMS);
+                while (!Thread.currentThread().isInterrupted()) {
+                    transceiver.send(poll(Syncable.HOST));
+                }
             });
 
             threads.add(recieverThread);
@@ -33,7 +34,6 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
             senderThread.start();
 
         });
-
     }
 
     public void start() {
@@ -52,4 +52,6 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
         return Syncable.HOST;
     }
 
+    public int getPort() {return host.getPort();}
+    public String getAddress() {return host.getAddress();}
 }
