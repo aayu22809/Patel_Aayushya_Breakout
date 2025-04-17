@@ -13,6 +13,8 @@ import com.apcs.disunity.nodes.moveaction.MoveAction;
  */
 @Requires(nodes = {Controller.class})
 public class Body extends Node2D {
+    // MUST DO: remove this
+    public int clientId;
 
     /* ================ [ FIELDS ] ================ */
 

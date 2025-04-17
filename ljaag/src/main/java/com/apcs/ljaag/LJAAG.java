@@ -2,7 +2,6 @@ package com.apcs.ljaag;
 
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
-import com.apcs.disunity.annotations.ClientUnique;
 import com.apcs.disunity.camera.Camera;
 import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.math.Vector2;
@@ -62,7 +61,7 @@ public class LJAAG {
 
         Scenes.setScene("test");
         for(int i=0; i<4; i++) {
-          Scenes.getScene().addChildren(instantiateCharacter(i));
+          Scenes.getScene().addChildren(instantiateCharacter(i+1));
         }
 
         registerNodeRecursive(Scenes.getScene());
@@ -78,18 +77,16 @@ public class LJAAG {
             )
         );
     }
-    private static Body instantiateCharacter(int playerId) {
-        @ClientUnique()
-        class UnsyncedBody extends Body {}
-
-      boolean isPlayer = SyncHandler.getInstance().getEndpointId() == playerId + 1;
-      Body body = isPlayer ? new UnsyncedBody() : new Body();
+    private static Body instantiateCharacter(int clientId) {
+      boolean isPlayer = SyncHandler.getInstance().getEndpointId() == clientId;
+      Body body = new Body();
       body.addChildren(
         isPlayer ? new PlayerController() : new Controller(){},
         new Camera(),
         new Sprite("PLAYER"),
         new WalkAction()
       );
+      body.clientId = clientId;
       return body;
     }
     private static void registerNodeRecursive(Node<?> node) {

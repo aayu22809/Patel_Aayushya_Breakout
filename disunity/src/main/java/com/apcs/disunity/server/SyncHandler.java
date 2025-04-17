@@ -1,7 +1,7 @@
 package com.apcs.disunity.server;
 
-import com.apcs.disunity.annotations.ClientUnique;
 import com.apcs.disunity.annotations.SyncedField;
+import com.apcs.disunity.nodes.Body;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -64,11 +64,13 @@ public abstract class SyncHandler {
                 for (Field field : getSyncedFields(sync.getClass()).toList()) {
                     int size = Util.getInt(in);
                     byte[] subpkt = new byte[size];
-                    int numBytes = 0;
-                    numBytes = in.read(subpkt);
+                    int numBytes = in.read(subpkt);
                     if (numBytes == -1) throw new RuntimeException("packet was smaller than expected.");
 
-                    if (sync.getClass().isAnnotationPresent(ClientUnique.class)) return;
+                    // MUST DO: implement proper client reconciliation
+                    if (sync instanceof Body body)
+                        if(body.clientId == getEndpointId() ||
+                           getEndpointId() == 0 && sender != body.clientId) continue;
                     ByteArrayInputStream packetStream = new ByteArrayInputStream(subpkt);
                     field.set(sync, ((Syncable<?>) field.get(sync)).receive(sender, packetStream));
                     packetStream.close();
