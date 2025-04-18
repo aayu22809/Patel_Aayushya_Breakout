@@ -11,7 +11,7 @@ echo "✅ Made run.sh executable"
 cd disunity-web
 if [ ! -d "node_modules" ]; then
   echo "📦 Installing dependencies..."
-  pnpm install
+  npm install
 else
   echo "✅ Dependencies already installed"
 fi
@@ -21,4 +21,4 @@ echo "🚀 Starting development server..."
 echo "Once the server starts, open http://localhost:5173 in your browser"
 echo "Click 'Play Game' and then 'Start Game' to launch the Java application"
 echo ""
-pnpm run dev
+npm run dev
