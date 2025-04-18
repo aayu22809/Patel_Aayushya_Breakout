@@ -1,15 +1,15 @@
 package com.apcs.disunity.server;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import static java.lang.Byte.SIZE;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.fasterxml.jackson.core.util.ByteArrayBuilder;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 
@@ -126,29 +126,52 @@ public final class Util {
         return bytes;
     }
 
-    public static final int getInt(byte[] data, int loc) {
+    public static final Number getNum(byte[] data, int size, int loc) {
         int val = 0;
-        for (int i = 0; i < Integer.BYTES; i++) {
-            val |= (data[i + loc] & 0xFF) << (i * SIZE);
-        }
-        return val;
+        for (int i = 0; i < size; i++) val |= (data[i + loc] & ~0L) << (i * SIZE);
+        return val & (~0L >> (Long.BYTES - size));
     }
 
-    public static final int getInt(byte[] data) {
-        return getInt(data, 0);
+    public static final int getInt(byte[] data, int loc) {
+        return getNum(data, Integer.BYTES, loc).intValue();
     }
+
 
     public static final long getLong(byte[] data, int loc) {
-        long val = 0;
-        for (int i = 0; i < Long.BYTES; i++) {
-            val |= (data[i + loc] & 0XFFL) << (i * SIZE);
-        }
-        return val;
+        return getNum(data, Long.BYTES, loc).longValue();
     }
 
-    public static final long getLong(byte[] data) {
-        return getLong(data, 0);
+    public static final Map<Class<?>,Function<byte[],?>> classMethods = new HashMap<>();
+    static {
+        classMethods.put(byte.class, Util::getByte);
+        classMethods.put(char.class, Util::getChar);
+        classMethods.put(int.class, Util::getInt);
+        classMethods.put(long.class, Util::getLong);
+        classMethods.put(float.class, Util::getFloat);
+        classMethods.put(double.class, Util::getDouble);
+        classMethods.put(boolean.class, Util::getBoolean);
+        classMethods.put(byte.class, Util::getByte);
     }
+
+    public static final Object getPrimativeData(byte[] data, Class<?> type) {
+        return classMethods.get(type).apply(data);
+    }
+
+    public static final short getShort(byte[] data) { return getNum(data, Short.SIZE, 0).shortValue(); }
+
+    public static final char getChar(byte[] data) { return (char) getShort(data); }
+
+    public static final int getInt(byte[] data) { return getInt(data, 0); }
+
+    public static final long getLong(byte[] data) { return getLong(data, 0); }
+
+    public static final double getDouble(byte[] data) { return Double.doubleToLongBits(getLong(data)); }
+
+    public static final float getFloat(byte[] data) { return Float.intBitsToFloat(getInt(data)); }
+
+    public static final boolean getBoolean(byte[] data) { return data[0] == ~0; }
+
+    public static final byte getByte(byte[] data) { return data[0]; }
 
     public static final Object[] flatten(Object o) {
         List<Object> objs = new LinkedList<>();
