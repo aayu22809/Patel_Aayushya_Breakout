@@ -43,8 +43,8 @@ public abstract class SyncHandler {
     protected final void distribute(int sender, byte[] data) {
         List<byte[]> subdata = Util.debundleSubpackets(data);
         for (int i = 0; i < syncs.size(); i++) {
-            if (syncs.get(i).get()
-            syncs.get(i).receive(sender, subdata.get(i));
+            // if (syncs.get(i).get()
+            // syncs.get(i).receive(sender, subdata.get(i));
         }
     }
 
