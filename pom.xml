@@ -19,25 +19,17 @@
         <maven.compier.plugin.version>3.14.0</maven.compier.plugin.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.apcs</groupId>
-            <artifactId>processor</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compier.plugin.version}</version>
-                <configuration>
+                <!-- <configuration>
                     <annotationProcessors>
                         com.apcs.disunity.annotations.FieldTypeEnforcer
                     </annotationProcessors>
-                </configuration>
+                </configuration> -->
             </plugin>
         </plugins>
     </build>

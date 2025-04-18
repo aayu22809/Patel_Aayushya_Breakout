@@ -45,8 +45,20 @@ public class Vector2 implements Syncable {
     // Add two vectors
     public Vector2 add(Vector2 v) { return new Vector2(x + v.x, y + v.y); }
 
+    // Subtract two vectors
+    public Vector2 sub(Vector2 v) { return new Vector2(x - v.x, y - v.y); }
+
     // Multiply by a scalar
     public Vector2 mul(double v) { return new Vector2(x * v, y * v); }
+    
+    // Multiply component-wise
+    public Vector2 mul(Vector2 v) { return new Vector2(x * v.x, y * v.y); }
+
+    // Divide by a scalar
+    public Vector2 div(double v) { return new Vector2(x / v, y / v); }
+
+    // Divide component-wise
+    public Vector2 div(Vector2 v) { return new Vector2(x / v.x, y / v.y); }
 
     // Dot product with another vector
     public double dot(Vector2 v) { return x * v.x + y * v.y; }
@@ -77,6 +89,7 @@ public class Vector2 implements Syncable {
     public String toString() { return "(" + x + ", " + y + ")"; }
 
     /* =============== [SYNCABLE] ================== */
+    
     // TODO: decide on how this should be implemented.
     @Override
     public byte[] supply(int recipient) {

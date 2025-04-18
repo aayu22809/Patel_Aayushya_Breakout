@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import com.apcs.disunity.input.InputHandler;
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.rendering.ScalableBuffer;
 import com.apcs.disunity.scenes.Scenes;
@@ -27,18 +28,18 @@ public class Game extends JPanel implements Runnable {
 
     // Game dimensions
     private Vector2 dimensions;
-
-    // Camera position to control viewport
-    private Vector2 cameraPos;
-
+    
     // Buffer for scaling the game
     private ScalableBuffer buffer;
-
+    
     // Handles keystrokes from user
     private InputHandler input;
-
+    
     // Is the host
     private boolean isHost;
+
+    // Global transform to control viewport
+    private Transform transform = new Transform();
 
     // Constructors
     public Game(Vector2 dimensions, String scene) {
@@ -52,14 +53,11 @@ public class Game extends JPanel implements Runnable {
         // Game dimensions
         this.dimensions = dimensions;
 
-        // Camera pos
-        this.cameraPos = Vector2.ZERO;
-
         // Panel background
         setBackground(Color.BLACK);
         
         // Double buffering
-        buffer = new ScalableBuffer(dimensions, dimensions);
+        buffer = new ScalableBuffer(dimensions);
 
         // Focus window for input
         setFocusable(true);
@@ -86,8 +84,8 @@ public class Game extends JPanel implements Runnable {
         game.start();
     }
 
-    // Set camera position
-    public void setCameraPos(Vector2 pos) { this.cameraPos = pos; }
+    // Set global transform
+    public void setTransform(Transform transform) { this.transform = transform; }
 
     // Set buffer size
     public void setBufferSize(Vector2 size) { buffer.setSize(size); }
@@ -110,10 +108,9 @@ public class Game extends JPanel implements Runnable {
         // Clear buffer
         buffer.clear();
 
-        // update buffer
+        // Update buffer
         Scenes.drawScene(
-          cameraPos.mul(-1)
-            .add(dimensions.mul(0.5)) // Center on camera
+            transform.move(dimensions.mul(0.5)) // Center on camera
         );
 
         BufferedImage image = buffer.getImage();
@@ -121,14 +118,13 @@ public class Game extends JPanel implements Runnable {
         int h = image.getHeight();
 
         // Draw to screen
-        g.drawImage(image, (getWidth()-w) / 2, (getHeight()-h) / 2, w, h, null);
+        g.drawImage(image, (getWidth() - w) / 2, (getHeight() - h) / 2, w, h, null);
     }
 
     /* ================ [ RUNNABLE ] ================ */
 
     @Override
     public void run() {
-
         // Variables
         double delta = 0;
         long prevTime = System.nanoTime(), curTime;
@@ -155,7 +151,6 @@ public class Game extends JPanel implements Runnable {
                 repaint();
             }
         }
-
     }
 
 }

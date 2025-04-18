@@ -60,7 +60,7 @@ public abstract class Node<T extends Node<?>> implements Syncable {
     public List<T> getChildren() { return children; }
 
     // Get children of a certain type
-    public <U extends T> List<U> getChildren(Class<U> type) {
+    public <U> List<U> getChildren(Class<U> type) {
         List<U> children = new ArrayList<>();
         for (T node : getChildren()) {
             if (type.isInstance(node)) {

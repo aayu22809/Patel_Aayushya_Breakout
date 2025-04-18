@@ -2,12 +2,13 @@ package com.apcs.disunity.resources;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.apcs.disunity.files.FileUtil;
+
 /**
- * Handles all resources in the game
+ * Handles all of the resources in the game
  * 
  * @author Qinzhao Li
  */
@@ -15,60 +16,65 @@ public class Resources {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Resources map
+    // Maps resource ids to resources
     private static final Map<String, Resource> resources = new HashMap<>();
 
     /* ================ [ METHODS ] ================ */
 
-    // Add resource
+    // Create id from directory and name
+    public static String createId(String dir, String name) {
+        if (dir != null && !name.equals(dir))
+            return dir + "_" + name;
+        return name;
+    }
+
+    // Add resource to map
     public static void addResource(String name, Resource resource) { resources.put(name, resource); }
 
-    // Add resource w/ file
+    // Add resource to map w/ file
     public static void addResource(File file, String dir) {
         try {
-            String type = Files.probeContentType(file.toPath()).split("/")[0];
-            String fileName= file.getName();
-
-            // Clean up file name
-            if (fileName.indexOf('.') != -1) {
-                fileName = fileName.substring(0, fileName.lastIndexOf('.'));
-            }
-
-            // Grab info from file name
-            String[] info = fileName.split("-");
-            String name = info[0];
-
+            // Grab file info
+            String type = FileUtil.getType(file);
+            String fileName = FileUtil.getName(file);
+            String id = createId(dir, fileName);
+            
             // Add resource by type
             switch (type) {
                 case "image":
-                    addResource(name, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
-                    // anim stuff
+                    addResource(id, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
                     break;
                 default:
                     break;
             }
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) { return; }
+        catch (NullPointerException e) { return; }
     }
 
-    // Load resource
+    // Load resource from map
     public static Object loadResource(String name) { return resources.get(name).load(); }
+
+    // Load resource from map w/ type
     public static <T> T loadResource(String name, Class<T> type) { return type.cast(resources.get(name).load()); }
 
     /* ================ [ SCANNER ] ================ */
 
-    // Scan folder
+    // Scan assets folder
     public static void scanFolder(String path) { scanFolder(path, null); }
+
+    // Scan subfolders
     public static void scanFolder(String path, String dir) {
         File root = new File(path);
         File[] contents = root.listFiles();
 
+        // Check contents
         if (contents != null) {
             for (File file : contents) {
-                if (dir == null && file.isDirectory()) {
+                // Scan child folders
+                if (dir == null && file.isDirectory()) 
                     scanFolder(file.getAbsolutePath(), file.getName());
-                } else {
-                    addResource(file, dir);
-                }
+                // Add resource to game
+                else addResource(file, dir);
             }
         }
     }

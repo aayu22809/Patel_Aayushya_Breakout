@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 
 /**
@@ -22,9 +23,10 @@ public class ScalableBuffer {
 
     // Scale
     private Vector2 ratio;
-    private double scale;
+    private double xScale, yScale;
 
     // Constructors
+    public ScalableBuffer(Vector2 ratio) { this(ratio, ratio); }
     public ScalableBuffer(Vector2 ratio, Vector2 target) {
         // Set ratio
         this.ratio = ratio;
@@ -50,7 +52,8 @@ public class ScalableBuffer {
         graphics = image.createGraphics();
 
         // Set scale
-        scale = size.x / ratio.x;
+        xScale = size.x / ratio.x;
+        yScale = size.y / ratio.y;
 
         // White background
         graphics.setBackground(Color.WHITE);
@@ -60,20 +63,31 @@ public class ScalableBuffer {
     public void clear() { graphics.clearRect(0, 0, image.getWidth(), image.getHeight()); }
 
     // Getters
-    public double getScale() { return scale; }
+    public double getXScale() { return xScale; }
+    public double getYScale() { return yScale; }
     public BufferedImage getImage() { return image; }
 
     /* ================ [ GRAPHICS ] ================ */
 
     // Draw image
-    public void drawImage(Image img, Vector2 pos) { drawImage(img, pos, Vector2.ONE); }
-    public void drawImage(Image img, Vector2 pos, Vector2 imgScale) {
-        graphics.drawImage(img,
-            (int) (pos.x * scale), (int) (pos.y * scale),
-            (int) (img.getWidth(null) * scale * imgScale.x),
-            (int) (img.getHeight(null) * scale * imgScale.y),
-            null
-        );
+    public void drawImage(Image img, Transform transform) {
+        // Image dimensions
+        double imgWidth = img.getWidth(null);
+        double imgHeight = img.getHeight(null);
+
+        // Center pivot
+        Vector2 offset = Vector2.of(imgWidth, imgHeight)
+            .mul(transform.scale)
+            .mul(-0.5);
+        Transform _transform = transform.move(offset);
+
+        // Drawing inputs
+        int xPos = (int) Math.round(_transform.pos.x * xScale);
+        int yPos = (int) Math.round(_transform.pos.y * yScale);
+        int width = (int) Math.round(imgWidth * _transform.scale.x * xScale);
+        int height = (int) Math.round(imgHeight * _transform.scale.y * yScale);
+
+        graphics.drawImage(img, xPos, yPos, width, height, null);
     }
 
 }

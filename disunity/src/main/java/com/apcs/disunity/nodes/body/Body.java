@@ -1,9 +1,14 @@
-package com.apcs.disunity.nodes;
+package com.apcs.disunity.nodes.body;
 
 import com.apcs.disunity.annotations.Requires;
+import com.apcs.disunity.appliable.TransformAppliable;
+import com.apcs.disunity.appliable.VelocityAppliable;
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.nodes.Node;
+import com.apcs.disunity.nodes.Node2D;
+import com.apcs.disunity.nodes.controller.Controllable;
 import com.apcs.disunity.nodes.controller.Controller;
-import com.apcs.disunity.nodes.moveaction.MoveAction;
 import com.apcs.disunity.server.Util;
 
 /**
@@ -25,7 +30,7 @@ public class Body extends Node2D {
     // Constructors
     public Body() { super(); }
     public Body(Node<?>... children) { super(children); }
-    public Body(Vector2 pos, Node<?>... children) { super(pos, children); }
+    public Body(Transform transform, Node<?>... children) { super(transform, children); }
 
     /* ================ [ METHODS ] ================ */
 
@@ -43,7 +48,7 @@ public class Body extends Node2D {
         this.controller = getChild(Controller.class).getId();
 
         // Update children controllers
-        for (MoveAction<?> action : getChildren(MoveAction.class)) {
+        for (Controllable action : getChildren(Controllable.class)) {
             action.setController(controller);
         }
 
@@ -53,13 +58,18 @@ public class Body extends Node2D {
 
     @Override
     public void update(double delta) {
-        // Apply movement nodes
-        for (MoveAction<?> action : getChildren(MoveAction.class)) {
-            vel = action.apply(vel, delta);
+        // Apply velocity nodes
+        for (VelocityAppliable va : getChildren(VelocityAppliable.class)) {
+            vel = va.apply(vel, delta);
+        }
+
+        // Apply transform nodes
+        for (TransformAppliable ta : getChildren(TransformAppliable.class)) {
+            transform = ta.apply(transform, delta);
         }
 
         // Move with velocity
-        move(vel.mul(delta));
+        transform = transform.move(vel.mul(delta));
 
         // Update children
         super.update(delta);
