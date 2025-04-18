@@ -1,6 +1,5 @@
 package com.apcs.disunity.server;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,8 +42,7 @@ public abstract class SyncHandler {
     protected final void distribute(int sender, byte[] data) {
         List<byte[]> subdata = Util.debundleSubpackets(data);
         for (int i = 0; i < syncs.size(); i++) {
-            if (syncs.get(i).get()
-            syncs.get(i).receive(sender, subdata.get(i));
+            syncs.get(i).set(sender, subdata.get(i));
         }
     }
 

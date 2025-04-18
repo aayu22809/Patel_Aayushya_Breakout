@@ -17,5 +17,5 @@ import com.apcs.disunity.nodes.Node;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Requires {
-    Class<? extends Node>[] nodes();
+    Class<? extends Node<?>>[] nodes();
 }
