@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>processor</module>
         <module>disunity</module>
         <module>ljaag</module>
     </modules>
@@ -19,13 +20,13 @@
         <maven.compier.plugin.version>3.14.0</maven.compier.plugin.version>
     </properties>
 
-    <!-- <dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.apcs</groupId>
             <artifactId>processor</artifactId>
             <version>1.0.0</version>
         </dependency>
-    </dependencies> -->
+    </dependencies>
 
     <build>
         <plugins>

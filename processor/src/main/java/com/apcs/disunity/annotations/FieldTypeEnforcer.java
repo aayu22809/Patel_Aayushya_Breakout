@@ -1,5 +1,7 @@
 package com.apcs.disunity.annotations;
 
+import com.google.auto.service.AutoService;
+
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
@@ -13,6 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_23)
+@AutoService(Processor.class)
 public class FieldTypeEnforcer extends AbstractProcessor {
   private Elements elementUtils;
   private Types typeUtils;
