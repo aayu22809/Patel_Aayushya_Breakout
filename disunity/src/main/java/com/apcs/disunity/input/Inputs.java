@@ -3,7 +3,9 @@ package com.apcs.disunity.input;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.apcs.disunity.input.actions.Action;
 import com.apcs.disunity.input.actions.ActionSet;
@@ -24,7 +26,7 @@ public class Inputs {
     private static Map<String, ActionSet> actions = new HashMap<>();
 
     // Maps inputs to their pressed state
-    private static final Map<Input, Boolean> inputs = new HashMap<>();
+    private static final Set<Input> inputs = new HashSet<>();
 
     // Mouse position on the screen
     public static int mouseX = 0, mouseY = 0;
@@ -32,13 +34,15 @@ public class Inputs {
     /* ================ [ METHODS ] ================ */
 
     // Press an input
-    public static void press(Input input) { inputs.put(input, true); }
+    public static void press(Input input) { inputs.add(input); }
 
     // Release an input
     public static void release(Input input) { inputs.remove(input); }
+    // Release all keys
+    public static void releaseAll() { inputs.clear(); }
 
     // Get if input is pressed
-    public static boolean get(Input input) { return inputs.getOrDefault(input, false); }
+    public static boolean get(Input input) { return inputs.contains(input); }
 
     // Add an action to the map
     public static void addAction(String name, ActionSet action) { actions.put(name, action); }

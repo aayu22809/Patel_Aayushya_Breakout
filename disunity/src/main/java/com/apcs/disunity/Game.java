@@ -68,6 +68,7 @@ public class Game extends JPanel implements Runnable {
         addKeyListener(input);
         addMouseListener(input);
         addMouseMotionListener(input);
+        addFocusListener(input);
 
         // Set current scene
         Scenes.setScene(scene);
