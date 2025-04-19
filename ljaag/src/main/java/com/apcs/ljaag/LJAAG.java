@@ -65,7 +65,7 @@ public class LJAAG {
         ));
 
         Scenes.setScene("test");
-        for(int i=1; i<=1; i++) {
+        for(int i=1; i<=4; i++) {
           Scenes.getScene().addChildren(instantiateCharacter(i));
         }
 

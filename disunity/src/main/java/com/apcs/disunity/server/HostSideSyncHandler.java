@@ -8,32 +8,36 @@ import java.util.List;
 public class HostSideSyncHandler extends SyncHandler implements Closeable {
 
     private final Host host;
-    private final List<Thread> threads = new LinkedList<>();
+    private final List<TranscieverThread> threads = new LinkedList<>();
 
     public HostSideSyncHandler() throws IOException {
         host = new Host();
         host.attachJoinAction((id) -> {
             PacketTransceiver transceiver = host.getTransceiver(id);
 
-            Thread recieverThread = new Thread(() -> {
-                while (!Thread.currentThread().isInterrupted()) {
-                    distribute(id, transceiver.recieve());
-                }
-            });
-
-            Thread senderThread = new Thread(() -> {
-                while (!Thread.currentThread().isInterrupted()) {
-                    transceiver.send(poll(Syncable.HOST));
-                }
-            });
-
-            threads.add(recieverThread);
-            threads.add(senderThread);
-
-            recieverThread.start();
-            senderThread.start();
+            TranscieverThread thread = new TranscieverThread(transceiver, id);
+            threads.add(thread);
+            thread.start();
 
         });
+    }
+
+    private class TranscieverThread extends Thread {
+        public final PacketTransceiver TRANCIEVER;
+        public TranscieverThread(PacketTransceiver tr, int clientId) {
+            super(() -> {
+                while (!Thread.currentThread().isInterrupted()) {
+                    distribute(clientId, tr.recieve());
+                    for(TranscieverThread tt: threads) {
+                        // prevent sending back to packet source
+                        if(tt != Thread.currentThread()) {
+                            tt.TRANCIEVER.send(poll(Syncable.HOST));
+                        }
+                    }
+                }
+            });
+            TRANCIEVER = tr;
+        }
     }
 
     public void start() {
@@ -41,7 +45,7 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         for (Thread t : threads) {
             t.interrupt();
         }

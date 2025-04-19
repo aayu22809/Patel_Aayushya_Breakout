@@ -16,7 +16,7 @@ import com.apcs.disunity.scenes.Scenes;
  * 
  * @author Qinzhao Li
  */
-public class Game extends JPanel implements Runnable {
+public class Game extends JPanel {
 
     /* ================ [ FIELDS ] ================ */
 
@@ -28,13 +28,13 @@ public class Game extends JPanel implements Runnable {
 
     // Game dimensions
     private Vector2 dimensions;
-    
+
     // Buffer for scaling the game
     private ScalableBuffer buffer;
-    
+
     // Handles keystrokes from user
     private InputHandler input;
-    
+
     // Is the host
     private boolean isHost;
 
@@ -80,7 +80,10 @@ public class Game extends JPanel implements Runnable {
     
     // Start game thread
     public void start() {
-        game = new Thread(this);
+        game = new ThrottledLoopThread(
+            Options.getMSPF(),
+            () -> Scenes.updateScene(Options.getSPF()),
+            this::repaint);
         game.start();
     }
 
@@ -120,37 +123,4 @@ public class Game extends JPanel implements Runnable {
         // Draw to screen
         g.drawImage(image, (getWidth() - w) / 2, (getHeight() - h) / 2, w, h, null);
     }
-
-    /* ================ [ RUNNABLE ] ================ */
-
-    @Override
-    public void run() {
-        // Variables
-        double delta = 0;
-        long prevTime = System.nanoTime(), curTime;
-
-        // Game loop
-        while (game != null) {
-
-            // Calculate delta
-            curTime = System.nanoTime();
-            delta += (curTime - prevTime) / 1000000.0;
-            prevTime = curTime;
-
-            if (delta >= Options.getMSPF()) {
-                // Update game
-                while (delta >= Options.getMSPF()) {
-                    // Update scene
-                    Scenes.updateScene(Options.getSPF());
-
-                    // Decrease delta
-                    delta -= Options.getMSPF();
-                }
-
-                // Render updated frame
-                repaint();
-            }
-        }
-    }
-
 }

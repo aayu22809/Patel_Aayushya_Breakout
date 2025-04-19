@@ -1,5 +1,8 @@
 package com.apcs.disunity.server;
 
+import com.apcs.disunity.Options;
+import com.apcs.disunity.ThrottledLoopThread;
+
 import java.io.Closeable;
 import java.io.IOException;
 
@@ -20,11 +23,11 @@ public class ClientSideSyncHandler extends SyncHandler implements Closeable {
             }
         });
 
-        senderThread = new Thread(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                transceiver.send(poll(client.id()));
-            }
-        });
+        senderThread = new ThrottledLoopThread(
+            Options.getMSPP(),
+            () -> transceiver.send(poll(client.id())),
+            ()->{}
+        );
     }
 
     public void start() {
