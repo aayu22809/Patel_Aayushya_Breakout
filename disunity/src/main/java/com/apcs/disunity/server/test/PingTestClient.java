@@ -3,8 +3,13 @@ package com.apcs.disunity.server.test;
 import com.apcs.disunity.server.Client;
 import com.apcs.disunity.server.Util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
+
+import static com.apcs.disunity.server.SyncableLong.decodeLong;
+import static com.apcs.disunity.server.SyncableLong.encodeLong;
 
 @SuppressWarnings("CallToPrintStackTrace")
 public class PingTestClient {
@@ -28,7 +33,7 @@ public class PingTestClient {
                 System.out.println("Sync time: "+(System.currentTimeMillis() - t));
 
                 //test
-                System.out.println("Ping: "+(System.currentTimeMillis() - Util.getLong(c.recieve())));
+                System.out.println("Ping: "+(System.currentTimeMillis() - decodeLong(new ByteArrayInputStream(c.recieve()))));
                 
             }
             c.send(new byte[0]);
@@ -42,7 +47,9 @@ public class PingTestClient {
                 System.out.println("Sync time: "+(System.currentTimeMillis() - t));
 
                 //test
-                c.send(Util.getBytes(System.currentTimeMillis()));
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                encodeLong(System.currentTimeMillis(), out);
+                c.send(out.toByteArray());
 
             }
         } catch (IOException e) {

@@ -40,6 +40,7 @@ public class LJAAG {
       HostSideSyncHandler host = new HostSideSyncHandler();
         runApp();
         host.start();
+
     }
 
     // ISSUE: using try resource with SH terminates sender reciever thread (isInturrupted becomes true)
@@ -64,8 +65,8 @@ public class LJAAG {
         ));
 
         Scenes.setScene("test");
-        for(int i=0; i<4; i++) {
-          Scenes.getScene().addChildren(instantiateCharacter(i+1));
+        for(int i=1; i<=1; i++) {
+          Scenes.getScene().addChildren(instantiateCharacter(i));
         }
 
         registerNodeRecursive(Scenes.getScene());
@@ -83,19 +84,20 @@ public class LJAAG {
     }
     private static Body instantiateCharacter(int clientId) {
       boolean isPlayer = SyncHandler.getInstance().getEndpointId() == clientId;
-      Body body = new Body();
+      Body body = new Body(){{owner = clientId;}};
       body.addChildren(
-          isPlayer ? new Camera() : new Node<Node<?>>() {},
+          // making sure all instance sends equal amount of bytes
+          isPlayer ? new Camera() : new Node2D(),
+          isPlayer ? new PlayerController() : new Controller(){},
           new AnimatedSprite(
               new AnimationSet("player",
                   new Animation("run",0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
+                  {{owner = clientId;}}
               )
-          ),
-          isPlayer ? new PlayerController() : new Controller(){},
+          ){{owner = clientId;}},
           new WalkAction(),
           new TurnAction()
       );
-      body.clientId = clientId;
       return body;
     }
     private static void registerNodeRecursive(Node<?> node) {

@@ -5,6 +5,9 @@ import com.apcs.disunity.server.Syncable;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static com.apcs.disunity.server.SyncableDouble.decodeDouble;
+import static com.apcs.disunity.server.SyncableDouble.encodeDouble;
+
 /**
  * Contains position, scale, and rotation information
  * 
@@ -60,11 +63,17 @@ public class Transform implements Syncable<Transform> {
 
     @Override
     public void supply(int recipient, OutputStream packetOut) {
-
+        pos.supply(recipient, packetOut);
+        scale.supply(recipient, packetOut);
+        encodeDouble(rot, packetOut);
     }
 
     @Override
     public Transform receive(int sender, InputStream packetIn) {
-        return null;
+        return new Transform(
+            pos.receive(sender, packetIn),
+            scale.receive(sender, packetIn),
+            decodeDouble(packetIn)
+        );
     }
 }

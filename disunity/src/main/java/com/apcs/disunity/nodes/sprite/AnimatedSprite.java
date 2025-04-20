@@ -1,15 +1,19 @@
 package com.apcs.disunity.nodes.sprite;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 import com.apcs.disunity.Game;
 import com.apcs.disunity.animation.AnimationSet;
+import com.apcs.disunity.annotations.SyncedField;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.controller.Controllable;
 import com.apcs.disunity.resources.Image;
 import com.apcs.disunity.resources.Resources;
+import com.apcs.disunity.server.SyncHandler;
+import com.apcs.disunity.server.SyncedString;
 import com.apcs.disunity.signals.Signals;
 
 /**
@@ -28,7 +32,8 @@ public class AnimatedSprite extends Node2D implements Controllable {
     private AnimationSet animations;
 
     // Current animation
-    private String animation = null;
+    @SyncedField
+    private SyncedString animation = new SyncedString("");
 
     // Previous frame time
     private long prevFrame = System.nanoTime();
@@ -47,13 +52,13 @@ public class AnimatedSprite extends Node2D implements Controllable {
 
     // Set animation
     public void setAnimation(String animation) {
-        if (this.animation == animation) return;
-        this.animation = animation;
+        if (this.animation.value() == animation) return;
+        this.animation.setValue(animation);
         prevFrame = System.nanoTime();
     }
 
     // Get animation
-    public String getAnimation() { return animation; }
+    public String getAnimation() { return animation.value(); }
 
     /* ================ [ NODE ] ================ */
 
@@ -69,10 +74,10 @@ public class AnimatedSprite extends Node2D implements Controllable {
     @Override
     public void update(double delta) {
         // Update frame
-        if (animation != null) {
-            if (System.nanoTime() - prevFrame >= animations.getAnimation(animation).getFrame().duration * 1000000000) {
+        if (!animation.value().isEmpty()) {
+            if (System.nanoTime() - prevFrame >= animations.getAnimation(animation.value()).getFrame().duration * 1000000000) {
                 prevFrame = System.nanoTime();
-                animations.getAnimation(animation).nextFrame();
+                animations.getAnimation(animation.value()).nextFrame();
             }
         }
 
@@ -83,7 +88,7 @@ public class AnimatedSprite extends Node2D implements Controllable {
     @Override
     public void draw(Transform offset) {
         BufferedImage img;
-        if (animation == null) {
+        if (animation.value().isEmpty()) {
             // Default sprite fallback
             img = Resources.loadResource(animations.getBase(), Image.class).getImage();
         } else {
@@ -91,7 +96,7 @@ public class AnimatedSprite extends Node2D implements Controllable {
             img = Resources.loadResource(
                 Resources.createId(
                     animations.getBase(),
-                    animations.getAnimation(animation).getFrame().image
+                    animations.getAnimation(animation.value()).getFrame().image
                 ),
                 Image.class
             ).getImage();

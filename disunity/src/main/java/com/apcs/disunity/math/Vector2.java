@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static com.apcs.disunity.server.SyncableInt.decodeInt;
+import static com.apcs.disunity.server.SyncableInt.encodeInt;
+
 /**
  * A 2D vector with x and y components
  * 
@@ -79,30 +82,22 @@ public class Vector2 implements Syncable<Vector2> {
     // Check if vectors are equal
     public boolean equals(Vector2 v) { return x == v.x && y == v.y; }
 
-    // Convert to bytes
-    public byte[] getBytes() {
-        byte[] bytes = new byte[Integer.BYTES * 2];
-        System.arraycopy(Util.getBytes(xi), 0, bytes, 0, Integer.BYTES);
-        System.arraycopy(Util.getBytes(yi), 0, bytes, Integer.BYTES, Integer.BYTES);
-        return bytes;
-    }
-
     /* ================ [ OBJECT ] ================ */
 
     @Override
     public String toString() { return "(" + x + ", " + y + ")"; }
 
 
-    /* =============== [SYNCABLE] ================== */
+    /* =============== [ SYNCABLE ] ================== */
 
     @Override
     public void supply(int recipient, OutputStream packetOut) {
-      Util.writeInt(packetOut,xi);
-      Util.writeInt(packetOut,yi);
+      encodeInt(xi, packetOut);
+      encodeInt(yi, packetOut);
     }
 
     @Override
     public Vector2 receive(int sender, InputStream packetIn) {
-        return Vector2.of(Util.getInt(packetIn),Util.getInt(packetIn));
+        return Vector2.of(decodeInt(packetIn),decodeInt(packetIn));
     }
 }

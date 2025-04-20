@@ -25,7 +25,9 @@ public class PacketTransceiver {
         try {
             byte[] packet = Util.pack(bytes);
             out.write(packet);
-        } catch (IOException e) { }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public byte[] recieve() {
