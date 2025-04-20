@@ -1,17 +1,13 @@
 package com.apcs.disunity.input;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
 /**
  * Listens for inputs and updates them
  * 
  * @author Qinzhao Li
  */
-public class InputHandler implements KeyListener, MouseListener, MouseMotionListener {
+public class InputHandler implements KeyListener, MouseListener, MouseMotionListener, FocusListener {
 
     /* ================ [ KEYLISTENER ] ================ */
 
@@ -51,5 +47,14 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         Inputs.mouseX = e.getX();
         Inputs.mouseY = e.getY();
     }
-    
+
+    /* ================ [ FOCUSLISTENER ] ================ */
+
+    @Override
+    public void focusGained(FocusEvent e) { }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        Inputs.releaseAll();
+    }
 }
