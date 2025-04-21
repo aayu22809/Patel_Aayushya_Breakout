@@ -1,9 +1,10 @@
 package com.apcs.disunity.server;
 
+import com.apcs.disunity.Options;
+import com.apcs.disunity.ThrottledLoopThread;
+
 import java.io.Closeable;
 import java.io.IOException;
-
-import static com.apcs.disunity.server.Util.forever;
 
 public class ClientSideSyncHandler extends SyncHandler implements Closeable {
 
@@ -16,13 +17,17 @@ public class ClientSideSyncHandler extends SyncHandler implements Closeable {
         client = new Client(host, port);
         transceiver = client.getTransceiver();
 
-        senderThread = new Thread(() -> {
-            forever(() -> distribute(Syncable.HOST, transceiver.recieve()), Syncable.PPMS);
+        recieverThread = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                distribute(Syncable.HOST, transceiver.recieve());
+            }
         });
 
-        recieverThread = new Thread(() -> {
-            forever(() -> transceiver.send(poll(client.id())), Syncable.PPMS);
-        });
+        senderThread = new ThrottledLoopThread(
+            Options.getMSPP(),
+            () -> transceiver.send(poll(client.id())),
+            ()->{}
+        );
     }
 
     public void start() {
