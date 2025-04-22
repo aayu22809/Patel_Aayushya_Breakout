@@ -27,6 +27,13 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/hem1sphereCHS/FieldTypeEnforcer</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
