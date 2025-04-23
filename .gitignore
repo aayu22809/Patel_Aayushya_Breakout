@@ -1,6 +1,6 @@
 ### Core Maven ###
-**/target
-**/target/
+
+**/target/**
 **/pom.xml.*
 **/release.properties
 **/dependency-reduced-pom.xml
@@ -11,9 +11,11 @@
 !mvnw.cmd
 !.mvn/wrapper/
 
+### Keep Jars so Mr. Ferrante can run things ###
+!**/*.jar
+
 ### Build Artifacts ###
 **/*.class
-**/*.jar
 **/*.war
 **/*.ear
 

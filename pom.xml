@@ -11,6 +11,7 @@
     <modules>
         <module>disunity</module>
         <module>ljaag</module>
+        <module>processor</module>
     </modules>
 
     <properties>
