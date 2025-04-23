@@ -1,10 +1,11 @@
 package com.apcs.disunity.resources;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
+import static com.apcs.disunity.resources.Resources.loadFile;
 
 /**
  * An image to be used in the game
@@ -47,7 +48,7 @@ public class Image {
 
         // Load image
         public Builder load(String path) {
-            try { image = ImageIO.read(new File(path)); }
+            try { image = ImageIO.read(loadFile(path)); }
             catch (IOException e) { e.printStackTrace(); }
             return this;
         }

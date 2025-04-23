@@ -2,6 +2,7 @@ package com.apcs.disunity.resources;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ public class Resources {
 
     // Scan subfolders
     public static void scanFolder(String path, String dir) {
-        File root = new File(path);
+        File root = loadFile(path);
         File[] contents = root.listFiles();
 
         // Check contents
@@ -77,6 +78,11 @@ public class Resources {
                 else addResource(file, dir);
             }
         }
+    }
+
+    public static final File loadFile(String path) {
+        try { return new File(Resource.class.getClassLoader().getResource(path).toURI()); }
+        catch (URISyntaxException e) { throw new RuntimeException("Unable to load resource at "+path); }
     }
     
 }
