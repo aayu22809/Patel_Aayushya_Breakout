@@ -12,8 +12,8 @@ public class Animation {
     // Animation name
     private final String name;
 
-    // Frames list
-    private final AnimationFrame[] frames;
+    // Frame durations list
+    private final double[] frameDurations;
 
     // Current frame
     private int frame = 0;
@@ -21,12 +21,7 @@ public class Animation {
     // Constructors
     public Animation(String name, double... frameDurations) {
         this.name = name;
-
-        // Create frames
-        frames = new AnimationFrame[frameDurations.length];
-        for (int i = 0; i < frameDurations.length; i++) {
-            frames[i] = new AnimationFrame(name + "_" + i, frameDurations[i]);
-        }
+        this.frameDurations = frameDurations;
     }
 
     /* ================ [ METHODS ] ================ */
@@ -35,9 +30,15 @@ public class Animation {
     public String getName() { return name; }
 
     // Next frame
-    public void nextFrame() { frame = (frame + 1) % frames.length; }
+    public void nextFrame() { frame = (frame + 1) % frameDurations.length; }
 
     // Get current frame
-    public AnimationFrame getFrame() { return frames[frame]; }
+    public int getFrame() { return frame; }
+
+    // Get frame duration
+    public double getFrameDuration() { return frameDurations[frame]; }
+
+    // Get frame count
+    public int getFrameCount() { return frameDurations.length; }
     
 }

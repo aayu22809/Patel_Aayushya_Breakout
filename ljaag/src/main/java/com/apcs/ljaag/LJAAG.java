@@ -44,7 +44,7 @@ public class LJAAG {
                 new Camera(),
                 new AnimatedSprite(
                     new AnimationSet("player",
-                        new Animation("run",0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
+                        new Animation("run", 0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
                     )
                 ),
                 new PlayerController(),

@@ -70,7 +70,7 @@ public class AnimatedSprite extends Node2D implements Controllable {
     public void update(double delta) {
         // Update frame
         if (animation != null) {
-            if (System.nanoTime() - prevFrame >= animations.getAnimation(animation).getFrame().duration * 1000000000) {
+            if (System.nanoTime() - prevFrame >= animations.getAnimation(animation).getFrameDuration() * 1000000000) {
                 prevFrame = System.nanoTime();
                 animations.getAnimation(animation).nextFrame();
             }
@@ -88,13 +88,17 @@ public class AnimatedSprite extends Node2D implements Controllable {
             img = Resources.loadResource(animations.getBase(), Image.class).getImage();
         } else {
             // Load current frame
-            img = Resources.loadResource(
-                Resources.createId(
-                    animations.getBase(),
-                    animations.getAnimation(animation).getFrame().image
-                ),
-                Image.class
-            ).getImage();
+            img = Resources.loadResource(Resources.createId(
+                animations.getBase(),
+                animations.getAnimation(animation).getName()
+            ), Image.class).getImage();
+            
+            // Crop image to current frame
+            int w = img.getWidth() / animations.getAnimation(animation).getFrameCount();
+            img = img.getSubimage(
+                w * animations.getAnimation(animation).getFrame(), 0,
+                w, img.getHeight()
+            );
         }
             
         // Draw image to buffer
