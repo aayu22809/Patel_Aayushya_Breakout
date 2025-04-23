@@ -16,8 +16,10 @@ public class SyncableBoolean extends SyncableWrapper<Boolean> {
     }
     public static boolean decodeBoolean(InputStream in) {
         long val = decodeBits(1,in);
-        if(val == 1) return true;
-        else if (val == 0) return false;
-        else throw new IllegalArgumentException("value was neither 1 or 0. value: " + val);
+        switch ((int)val) {
+            case 1 -> { return true; }
+            case 0 -> { return false; }
+            default -> throw new IllegalArgumentException("value was neither 1 or 0. value: " + val);
+        }
     }
 }

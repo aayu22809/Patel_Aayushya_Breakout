@@ -18,7 +18,7 @@ public interface Syncable<T> {
      * @param recipient The ID of the recipient, as managed by the Host.
      * @param packetOut output stream to write packet data
      */
-    void supply(int recipient, OutputStream packetOut);
+    default void supply(int recipient, OutputStream packetOut) {}
 
     /**
      * Processes incoming data from a specified sender.  
@@ -32,6 +32,7 @@ public interface Syncable<T> {
      * @param packetIn   The input stream containing the received data.
      * @return the number of bytes used so far, so the current recieve call knows where to read from.
      */
-    T receive(int sender, InputStream packetIn);
+    @SuppressWarnings("unchecked")
+    default T receive(int sender, InputStream packetIn) { return (T) this; }
 
 }
