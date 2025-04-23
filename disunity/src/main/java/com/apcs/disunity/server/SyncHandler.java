@@ -1,7 +1,5 @@
 package com.apcs.disunity.server;
 
-import com.apcs.disunity.annotations.SyncedField;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,8 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.apcs.disunity.annotations.SyncedField;
 import static com.apcs.disunity.server.Syncable.HOST;
 import static com.apcs.disunity.server.SyncableInt.decodeInt;
+import static com.apcs.disunity.server.Util.decodePrimitive;
+import static com.apcs.disunity.server.Util.encodePrimitive;
 
 public abstract class SyncHandler {
 
@@ -45,7 +46,11 @@ public abstract class SyncHandler {
             ByteArrayOutputStream packetStream = new ByteArrayOutputStream();
             for (Object sync : syncs) {
                 for (Field field : getSyncedFields(sync.getClass()).toList()) {
-                    ((Syncable<?>) field.get(sync)).supply(recipient, packetStream);
+                    if (field.getType().isPrimitive()) {
+                        encodePrimitive(sync, packetStream);
+                    } else {
+                        ((Syncable<?>) field.get(sync)).supply(recipient, packetStream);
+                    }
                     out.write(Util.pack(packetStream.toByteArray()));
                     packetStream.reset();
                 }
@@ -78,9 +83,13 @@ public abstract class SyncHandler {
                         if(owner == getEndpointId() || getEndpointId() == HOST && sender != owner) continue;
                     } catch (NoSuchFieldException e) {}
 
-                    ByteArrayInputStream packetStream = new ByteArrayInputStream(subpkt);
-                    field.set(sync, ((Syncable<?>) field.get(sync)).receive(sender, packetStream));
-                    packetStream.close();
+                    try (ByteArrayInputStream packetStream = new ByteArrayInputStream(subpkt)) {
+                        if (field.getType().isPrimitive()) {
+                            field.set(sync, decodePrimitive(field.getType(), packetStream));
+                        } else {
+                            field.set(sync, ((Syncable<?>) field.get(sync)).receive(sender, packetStream));
+                        }
+                    }
                 }
             }
             if(in.available() != 0) throw new RuntimeException("reciever did not consume all contents of packet");

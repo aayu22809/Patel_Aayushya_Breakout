@@ -1,12 +1,9 @@
 package com.apcs.disunity.math;
 
-import com.apcs.disunity.server.Syncable;
-import com.apcs.disunity.server.Util;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.apcs.disunity.server.Syncable;
 import static com.apcs.disunity.server.SyncableInt.decodeInt;
 import static com.apcs.disunity.server.SyncableInt.encodeInt;
 

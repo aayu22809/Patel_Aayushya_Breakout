@@ -3,18 +3,18 @@ package com.apcs.disunity.server;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import static java.lang.Byte.SIZE;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static com.apcs.disunity.server.SyncableInt.decodeInt;
 import static com.apcs.disunity.server.SyncableInt.encodeInt;
-import static java.lang.Byte.SIZE;
-
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import com.fasterxml.jackson.core.util.ByteArrayBuilder;
 
 /**
  * 
@@ -83,4 +83,46 @@ public final class Util {
             throw new RuntimeException(e);
         }
     }
+
+    public static final Map<Class<?>,Function<InputStream,?>> decoders = new HashMap<>();
+    static {
+        decoders.put(Boolean.class, SyncableBoolean::decodeBoolean);
+        decoders.put(Byte.class, SyncableByte::decodeByte);
+        decoders.put(Character.class, SyncableChar::decodeChar);
+        decoders.put(Double.class, SyncableDouble::decodeDouble);
+        decoders.put(Float.class, SyncableFloat::decodeFloat);
+        decoders.put(Integer.class, SyncableInt::decodeInt);
+        decoders.put(Long.class, SyncableLong::decodeLong);
+        decoders.put(Short.class, SyncableShort::decodeShort);
+    }
+
+    public static final Map<Class<?>,BiConsumer<Object, OutputStream>> encoders = new HashMap<>();
+    static {
+        encoders.put(Boolean.class, (val, in) -> SyncableBoolean.encodeBoolean((boolean)val,in));
+        encoders.put(Byte.class, (val, in) -> SyncableByte.encodeByte((byte)val,in));
+        encoders.put(Character.class, (val, in) -> SyncableChar.encodeChar((char)val,in));
+        encoders.put(Double.class, (val, in) -> SyncableDouble.encodeDouble((double)val,in));
+        encoders.put(Float.class, (val, in) -> SyncableFloat.encodeFloat((float)val,in));
+        encoders.put(Integer.class, (val, in) -> SyncableInt.encodeInt((int)val,in));
+        encoders.put(Long.class, (val, in) -> SyncableLong.encodeLong((long)val,in));
+        encoders.put(Short.class, (val, in) -> SyncableShort.encodeShort((short)val,in));
+    }
+
+    public static final Object decodePrimitive(Class<?> type, InputStream in) {
+        for (Map.Entry<Class<?>,Function<InputStream,?>> entry : decoders.entrySet()) {
+            if (type.equals(entry.getKey())) return entry.getValue().apply(in);
+        }
+        throw new RuntimeException("Invalid Type: "+type.getName());
+    }
+
+    public static final void encodePrimitive(Object val, OutputStream out) {
+        for (Map.Entry<Class<?>,BiConsumer<Object, OutputStream>> entry : encoders.entrySet()) {
+            if (val.getClass().equals(entry.getKey())) {
+                entry.getValue().accept(val, out);
+                return;
+            }
+        }
+        throw new RuntimeException("Invalid Type: "+val.getClass().getName());
+    }
+
 }
