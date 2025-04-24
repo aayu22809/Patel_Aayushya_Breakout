@@ -9,9 +9,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>processor</module>
         <module>disunity</module>
         <module>ljaag</module>
-        <module>processor</module>
     </modules>
 
     <properties>

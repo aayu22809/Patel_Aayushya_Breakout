@@ -1,8 +1,7 @@
 package com.apcs.disunity.input;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -10,11 +9,9 @@ import java.util.Set;
 
 import com.apcs.disunity.input.actions.Action;
 import com.apcs.disunity.input.actions.ActionSet;
+import static com.apcs.disunity.resources.Resources.loadFileAsInputStream;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
-import static com.apcs.disunity.resources.Resources.loadFile;
 
 /** 
  * Handles all player inputs recieved
@@ -66,22 +63,9 @@ public class Inputs {
     // Load from a JSON file
     public static void fromJSON(String path) {
         try {
-            File file = loadFile(path);
-            
+            InputStream file = loadFileAsInputStream(path);
             ObjectMapper om = new ObjectMapper();
             actions = om.readValue(file, new TypeReference<Map<String, ActionSet>>() {});
-        } catch (IOException e) { e.printStackTrace(); }
-    }
-
-    // Save to a JSON file
-    public static void toJSON(String path) {
-        try {
-            File file = loadFile(path);
-            
-            ObjectMapper om = new ObjectMapper();
-            om.enable(SerializationFeature.INDENT_OUTPUT);
-
-            om.writeValue(file, actions);
         } catch (IOException e) { e.printStackTrace(); }
     }
     

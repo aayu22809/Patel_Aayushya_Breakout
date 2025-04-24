@@ -25,7 +25,7 @@ public class AnimatedSprite extends Node2D implements Controllable {
     private int controller;
 
     // Animation set
-    private AnimationSet animations;
+    private final AnimationSet animations;
 
     // Current animation
     private String animation = null;
@@ -41,11 +41,13 @@ public class AnimatedSprite extends Node2D implements Controllable {
     /* ================ [ CONTROLLABLE ] ================ */
 
     // Set controller id
+    @Override
     public void setController(int controller) { this.controller = controller; }
     
     /* ================ [ METHODS ] ================ */
 
     // Set animation
+    @SuppressWarnings("StringEquality")
     public void setAnimation(String animation) {
         if (this.animation == animation) return;
         this.animation = animation;
@@ -82,20 +84,8 @@ public class AnimatedSprite extends Node2D implements Controllable {
 
     @Override
     public void draw(Transform offset) {
-        BufferedImage img;
-        if (animation == null) {
-            // Default sprite fallback
-            img = Resources.loadResource(animations.getBase(), Image.class).getImage();
-        } else {
-            // Load current frame
-            img = Resources.loadResource(
-                Resources.createId(
-                    animations.getBase(),
-                    animations.getAnimation(animation).getFrame().image
-                ),
-                Image.class
-            ).getImage();
-        }
+        String imgPath = animation == null ? animations.getBase() : animations.getAnimation(animation).getFrame().image;
+        BufferedImage img = Resources.loadResource(imgPath, Image.class).getBuffer();
             
         // Draw image to buffer
         Game.getInstance().getBuffer().drawImage(img, transform.apply(offset));

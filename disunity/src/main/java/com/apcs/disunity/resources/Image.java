@@ -2,60 +2,30 @@ package com.apcs.disunity.resources;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import static com.apcs.disunity.resources.Resources.loadFile;
 
 /**
  * An image to be used in the game
  * 
  * @author Qinzhao Li
+ * @author Sharvil Phadke
  */
 public class Image {
 
-    /* ================ [ FIELDS ] ================ */
+    static { Resources.loaders.put(Image.class, Image::new); }
 
-    // Image instance
-    private final BufferedImage image;
+    private final BufferedImage buffer;
 
-    // Constructors
-    public Image(BufferedImage image) { this.image = image; }
+    public Image(BufferedImage image) { this.buffer = image; }
 
-    /* ================ [ METHODS ] ================ */
-
-    // Get image
-    public BufferedImage getImage() { return image; }
-
-    /* ================ [ BUILDER ] ================ */
-
-    /**
-     * Builds an image
-     * 
-     * @author Qinzhao Li
-     */
-    public static class Builder {
-
-        /* ================ [ FIELDS ] ================ */
-
-        // Image instance
-        private BufferedImage image;
-
-        /* ================ [ METHODS ] ================ */
-        
-        // Set image
-        public Builder set(BufferedImage image) { this.image = image; return this; }
-
-        // Load image
-        public Builder load(String path) {
-            try { image = ImageIO.read(loadFile(path)); }
-            catch (IOException e) { e.printStackTrace(); }
-            return this;
-        }
-
-        // Get image
-        public Image get() { return new Image(image); }
-
+    public Image(InputStream imageData) {
+        try (imageData) { buffer = ImageIO.read(imageData); }
+        catch (IOException e) { throw new RuntimeException("Unable to read image files"); }
     }
+
+    public BufferedImage getBuffer() { return buffer; }
     
 }

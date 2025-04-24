@@ -11,7 +11,6 @@ import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.body.Body;
 import com.apcs.disunity.nodes.sprite.AnimatedSprite;
 import com.apcs.disunity.nodes.sprite.Sprite;
-import com.apcs.disunity.resources.Resources;
 import com.apcs.disunity.scenes.Scenes;
 import com.apcs.ljaag.nodes.action.TurnAction;
 import com.apcs.ljaag.nodes.action.WalkAction;
@@ -30,21 +29,18 @@ public class LJAAG {
     /* ================ [ DRIVER ] ================ */
 
     public static void main(String[] args) {
-        
-        // Import resources from the assets folder
-        Resources.scanFolder("ljaag/assets");
-
+      
         // Import keybinds from a JSON file
-        Inputs.fromJSON("ljaag/keybinds.json");
+        Inputs.fromJSON("keybinds.json");
 
         // Create the game scenes
         Scenes.addScene("test", new Node2D(
-            new Sprite("background"),
+            new Sprite("background.png"),
             new Body(
                 new Camera(),
                 new AnimatedSprite(
-                    new AnimationSet("player",
-                        new Animation("run",0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
+                    new AnimationSet("player/player.png",
+                        new Animation("run","player/run_?.png",0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
                     )
                 ),
                 new PlayerController(),

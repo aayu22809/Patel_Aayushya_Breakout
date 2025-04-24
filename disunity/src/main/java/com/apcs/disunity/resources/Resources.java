@@ -1,88 +1,51 @@
 package com.apcs.disunity.resources;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.apcs.disunity.files.FileUtil;
+import java.util.function.Function;
 
 /**
  * Handles all of the resources in the game
  * 
  * @author Qinzhao Li
+ * @author Sharvil Phadke
  */
 public class Resources {
 
     /* ================ [ FIELDS ] ================ */
 
     // Maps resource ids to resources
-    private static final Map<String, Resource> resources = new HashMap<>();
+    private static final Map<String, Object> resources = new HashMap<>();
+    public static final Map<Class<?>,Function<InputStream,?>> loaders = new HashMap<>();
 
     /* ================ [ METHODS ] ================ */
 
-    // Create id from directory and name
-    public static String createId(String dir, String name) {
-        if (dir != null && !name.equals(dir))
-            return dir + "_" + name;
-        return name;
-    }
-
     // Add resource to map
-    public static void addResource(String name, Resource resource) { resources.put(name, resource); }
+    public static void addResource(String name, Object resource) { resources.put(name, resource); }
 
     // Add resource to map w/ file
-    public static void addResource(File file, String dir) {
-        try {
-            // Grab file info
-            String type = FileUtil.getType(file);
-            String fileName = FileUtil.getName(file);
-            String id = createId(dir, fileName);
-            
-            // Add resource by type
-            switch (type) {
-                case "image":
-                    addResource(id, new Resource(Resource.Type.IMAGE, file.getAbsolutePath()));
-                    break;
-                default:
-                    break;
-            }
-        } catch (IOException e) { return; }
-        catch (NullPointerException e) { return; }
+    public static void addResource(String path, Class<?> type) {
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        try { lookup.ensureInitialized(type); }
+        catch (IllegalAccessException e) { }
+        resources.put(path, loaders.get(type).apply(loadFileAsInputStream(path)));
     }
 
     // Load resource from map
-    public static Object loadResource(String name) { return resources.get(name).load(); }
-
-    // Load resource from map w/ type
-    public static <T> T loadResource(String name, Class<T> type) { return type.cast(resources.get(name).load()); }
-
-    /* ================ [ SCANNER ] ================ */
-
-    // Scan assets folder
-    public static void scanFolder(String path) { scanFolder(path, null); }
-
-    // Scan subfolders
-    public static void scanFolder(String path, String dir) {
-        File root = loadFile(path);
-        File[] contents = root.listFiles();
-
-        // Check contents
-        if (contents != null) {
-            for (File file : contents) {
-                // Scan child folders
-                if (dir == null && file.isDirectory()) 
-                    scanFolder(file.getAbsolutePath(), file.getName());
-                // Add resource to game
-                else addResource(file, dir);
-            }
-        }
+    public static <T> T loadResource(String path, Class<T> type) {
+        if (!resources.containsKey(path)) addResource(path, type);
+        Object o = resources.get(path);
+        if (o == null) throw new RuntimeException("Unable to load resource: "+path);
+        return type.cast(o);
     }
 
-    public static final File loadFile(String path) {
-        try { return new File(Resource.class.getClassLoader().getResource(path).toURI()); }
-        catch (URISyntaxException e) { throw new RuntimeException("Unable to load resource at "+path); }
+    // Loads a file as an input stream
+    public static final InputStream loadFileAsInputStream(String path) {
+        InputStream output = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+        if (output == null) throw new RuntimeException("Unable to load file: "+path);
+        return output;
     }
     
 }

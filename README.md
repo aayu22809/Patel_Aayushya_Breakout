@@ -1,5 +1,7 @@
 # Project-APCS
 
+## TO RUN THIS: run build.sh or ljaag-1.0.0-jar-with-dependencies.jar
+
 ## Disunity Nodes
 
 **Node** is the base node and has children.

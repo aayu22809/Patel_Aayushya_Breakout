@@ -32,7 +32,7 @@
             <configuration>
                 <archive>
                 <manifest>
-                    <mainClass>com.apcs.ljaag.LJAAG</mainClass>
+
                 </manifest>
                 </archive>
                 <descriptorRefs>

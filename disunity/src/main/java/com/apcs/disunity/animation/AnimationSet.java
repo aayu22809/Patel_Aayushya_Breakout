@@ -31,6 +31,9 @@ public class AnimationSet {
     public String getBase() { return base; }
 
     // Get animation
-    public Animation getAnimation(String name) { return animations.get(name); }
+    public Animation getAnimation(String name) {
+        if (animations.containsKey(name)) return animations.get(name);
+        else throw new RuntimeException("Unable to resolve animation: "+name);
+    }
     
 }
