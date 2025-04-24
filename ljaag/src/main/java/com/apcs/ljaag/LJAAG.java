@@ -83,22 +83,22 @@ public class LJAAG {
         );
     }
     private static Body instantiateCharacter(int clientId) {
-      boolean isPlayer = SyncHandler.getInstance().getEndpointId() == clientId;
-      Body body = new Body(){{owner = clientId;}};
-      body.addChildren(
-          // making sure all instance sends equal amount of bytes
-          isPlayer ? new Camera() : new Node2D(),
-          isPlayer ? new PlayerController() : new Controller(){},
-          new AnimatedSprite(
-              new AnimationSet("player",
-                  new Animation("run",0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
-                  {{owner = clientId;}}
-              )
-          ){{owner = clientId;}},
-          new WalkAction(),
-          new TurnAction()
-      );
-      return body;
+        boolean isPlayer = SyncHandler.getInstance().getEndpointId() == clientId;
+        Body body = new Body();
+        body.addChildren(
+            // making sure all instance sends equal amount of bytes
+            isPlayer ? new Camera() : new Node2D(),
+            isPlayer ? new PlayerController() : new Controller(){},
+            new AnimatedSprite(
+                new AnimationSet("player",
+                    new Animation("run",0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
+                )
+            ),
+            new WalkAction(),
+            new TurnAction()
+        );
+        own(body, clientId);
+        return body;
     }
     private static void registerNodeRecursive(Node<?> node) {
      SyncHandler.getInstance().register(node);
@@ -106,4 +106,10 @@ public class LJAAG {
        registerNodeRecursive(child);
      }
    }
+    private static void own(Node<?> node, int clientId) {
+        node.owner = clientId;
+        for(Node<?> child: node.getChildren()) {
+            own(child, clientId);
+        }
+    }
 }

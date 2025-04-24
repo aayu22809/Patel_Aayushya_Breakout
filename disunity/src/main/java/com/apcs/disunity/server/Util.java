@@ -5,16 +5,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import static java.lang.Byte.SIZE;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
+import java.util.stream.Stream;
 
-import static com.apcs.disunity.server.SyncableInt.decodeInt;
-import static com.apcs.disunity.server.SyncableInt.encodeInt;
+import static com.apcs.disunity.server.CODEC.*;
 
 /**
  * 
@@ -25,9 +24,7 @@ import static com.apcs.disunity.server.SyncableInt.encodeInt;
  */
 public final class Util {
 
-    public static final int PACKET_HEADER_SIZE = Integer.BYTES;
-
-    public static final byte[] pack(byte[] bytes) {
+    public static byte[] pack(byte[] bytes) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         encodeInt(bytes.length,out);
         try {
@@ -38,7 +35,7 @@ public final class Util {
         return out.toByteArray();
     }
 
-    public static final byte[] unpack(InputStream data) {
+    public static byte[] unpack(InputStream data) {
         try {
         int packetSize = decodeInt(data);
         byte[] packet = new byte[packetSize];
@@ -50,7 +47,7 @@ public final class Util {
         }
     }
 
-    public static final Object[] flatten(Object o) {
+    public static Object[] flatten(Object o) {
         List<Object> objs = new LinkedList<>();
         if (o.getClass().isArray()) {
             objs.addAll(Arrays.asList((Object[]) o));
@@ -84,45 +81,13 @@ public final class Util {
         }
     }
 
-    public static final Map<Class<?>,Function<InputStream,?>> decoders = new HashMap<>();
-    static {
-        decoders.put(Boolean.class, SyncableBoolean::decodeBoolean);
-        decoders.put(Byte.class, SyncableByte::decodeByte);
-        decoders.put(Character.class, SyncableChar::decodeChar);
-        decoders.put(Double.class, SyncableDouble::decodeDouble);
-        decoders.put(Float.class, SyncableFloat::decodeFloat);
-        decoders.put(Integer.class, SyncableInt::decodeInt);
-        decoders.put(Long.class, SyncableLong::decodeLong);
-        decoders.put(Short.class, SyncableShort::decodeShort);
+    public static Stream<Field> getAnnotatedFields(Class<?> cls, Class<? extends Annotation> annotation) {
+        if (cls == null) return Stream.empty();
+        return Stream.concat(
+            Arrays.stream(cls.getDeclaredFields())
+                .filter(f -> f.isAnnotationPresent(annotation))
+                .peek(field -> field.setAccessible(true)),
+            getAnnotatedFields(cls.getSuperclass(), annotation)
+        );
     }
-
-    public static final Map<Class<?>,BiConsumer<Object, OutputStream>> encoders = new HashMap<>();
-    static {
-        encoders.put(Boolean.class, (val, in) -> SyncableBoolean.encodeBoolean((boolean)val,in));
-        encoders.put(Byte.class, (val, in) -> SyncableByte.encodeByte((byte)val,in));
-        encoders.put(Character.class, (val, in) -> SyncableChar.encodeChar((char)val,in));
-        encoders.put(Double.class, (val, in) -> SyncableDouble.encodeDouble((double)val,in));
-        encoders.put(Float.class, (val, in) -> SyncableFloat.encodeFloat((float)val,in));
-        encoders.put(Integer.class, (val, in) -> SyncableInt.encodeInt((int)val,in));
-        encoders.put(Long.class, (val, in) -> SyncableLong.encodeLong((long)val,in));
-        encoders.put(Short.class, (val, in) -> SyncableShort.encodeShort((short)val,in));
-    }
-
-    public static final Object decodePrimitive(Class<?> type, InputStream in) {
-        for (Map.Entry<Class<?>,Function<InputStream,?>> entry : decoders.entrySet()) {
-            if (type.equals(entry.getKey())) return entry.getValue().apply(in);
-        }
-        throw new RuntimeException("Invalid Type: "+type.getName());
-    }
-
-    public static final void encodePrimitive(Object val, OutputStream out) {
-        for (Map.Entry<Class<?>,BiConsumer<Object, OutputStream>> entry : encoders.entrySet()) {
-            if (val.getClass().equals(entry.getKey())) {
-                entry.getValue().accept(val, out);
-                return;
-            }
-        }
-        throw new RuntimeException("Invalid Type: "+val.getClass().getName());
-    }
-
 }

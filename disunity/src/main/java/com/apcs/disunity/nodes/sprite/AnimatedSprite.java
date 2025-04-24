@@ -1,18 +1,16 @@
 package com.apcs.disunity.nodes.sprite;
 
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 import com.apcs.disunity.Game;
 import com.apcs.disunity.animation.AnimationSet;
-import com.apcs.disunity.annotations.SyncedField;
+import com.apcs.disunity.annotations.syncedfield.SyncedObject;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
 import com.apcs.disunity.nodes.controller.Controllable;
 import com.apcs.disunity.resources.Image;
 import com.apcs.disunity.resources.Resources;
-import com.apcs.disunity.server.SyncHandler;
 import com.apcs.disunity.server.SyncedString;
 import com.apcs.disunity.signals.Signals;
 
@@ -32,7 +30,7 @@ public class AnimatedSprite extends Node2D implements Controllable {
     private AnimationSet animations;
 
     // Current animation
-    @SyncedField
+    @SyncedObject
     private SyncedString animation = new SyncedString("");
 
     // Previous frame time

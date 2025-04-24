@@ -1,15 +1,13 @@
 package com.apcs.disunity.server.test;
 
 import com.apcs.disunity.server.Host;
-import com.apcs.disunity.server.Util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static com.apcs.disunity.server.SyncableLong.decodeLong;
-import static com.apcs.disunity.server.SyncableLong.encodeLong;
+import static com.apcs.disunity.server.CODEC.*;
 
 public class PingTestServer {
     public static void main(String[] args) {

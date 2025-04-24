@@ -1,15 +1,13 @@
 package com.apcs.disunity.server.test;
 
 import com.apcs.disunity.server.Client;
-import com.apcs.disunity.server.Util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static com.apcs.disunity.server.SyncableLong.decodeLong;
-import static com.apcs.disunity.server.SyncableLong.encodeLong;
+import static com.apcs.disunity.server.CODEC.*;
 
 @SuppressWarnings("CallToPrintStackTrace")
 public class PingTestClient {
@@ -23,7 +21,7 @@ public class PingTestClient {
             port = s.nextInt();
         }
         try (Client c = new Client(host, port)) {
-            System.out.printf("Identifier: ",c.getStringIdentifier());
+            System.out.printf("Identifier: %s\n",c.getStringIdentifier());
             for (int i = 0; i < 100; i++) {
                 
                 //synchronize

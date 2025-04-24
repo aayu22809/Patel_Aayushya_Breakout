@@ -1,7 +1,5 @@
 package com.apcs.disunity.nodes;
 
-import com.apcs.disunity.server.Syncable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;

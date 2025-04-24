@@ -3,7 +3,7 @@ package com.apcs.disunity.server;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class SyncableWrapper<T> implements Syncable<SyncableWrapper<T>> {
+public class SyncableWrapper<T> implements SelfCodec<SyncableWrapper<T>> {
     private final Encoder<T> encoder;
     private final Decoder<T> decoder;
     private T value;
@@ -14,16 +14,16 @@ public class SyncableWrapper<T> implements Syncable<SyncableWrapper<T>> {
     }
 
     public T value() {return value;}
-    public void setValue(T value) {this.value = value;};
+    public void setValue(T value) {this.value = value;}
 
     @Override
-    public void supply(int recipient, OutputStream packetOut) {
-        encoder.encode(value, packetOut);
+    public void encode(OutputStream out) {
+        encoder.encode(this.value,out);
     }
 
     @Override
-    public SyncableWrapper<T> receive(int sender, InputStream packetIn) {
-        value = decoder.decode(packetIn);
+    public SyncableWrapper<T> decode(InputStream in) {
+        value = decoder.decode(this.value, in);
         return this;
     }
 }

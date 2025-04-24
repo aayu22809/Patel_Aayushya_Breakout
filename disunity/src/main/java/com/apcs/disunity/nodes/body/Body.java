@@ -1,9 +1,9 @@
 package com.apcs.disunity.nodes.body;
 
 import com.apcs.disunity.annotations.Requires;
+import com.apcs.disunity.annotations.syncedfield.SyncedObject;
 import com.apcs.disunity.appliable.TransformAppliable;
 import com.apcs.disunity.appliable.VelocityAppliable;
-import com.apcs.disunity.annotations.SyncedField;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node;
@@ -25,7 +25,7 @@ public class Body extends Node2D {
     private int controller;
 
     // Velocity
-    @SyncedField
+    @SyncedObject
     private Vector2 vel = Vector2.ZERO;
 
     // Constructors

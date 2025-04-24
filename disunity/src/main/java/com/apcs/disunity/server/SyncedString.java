@@ -1,11 +1,9 @@
 package com.apcs.disunity.server;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.apcs.disunity.server.SyncableChar.decodeChar;
-import static com.apcs.disunity.server.SyncableChar.encodeChar;
+import static com.apcs.disunity.server.CODEC.*;
 
 /// # \0 IS RESERVED FOR NETWORK PURPOSE. DO NOT USE \0 IN A VALUE.
 /// # IMPLEMENTED CODEC DOES NOT SUPPORT SENDING NULL.
@@ -26,7 +24,7 @@ public class SyncedString extends SyncableWrapper<String> {
             encodeChar('\0', out);
         }
     }
-    public static String decodeString(InputStream in) {
+    public static String decodeString(String __, InputStream in) {
         StringBuilder builder = new StringBuilder();
         for(char c = decodeChar(in); c != '\0'; c = decodeChar(in)) {
             builder.append(c);

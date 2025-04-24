@@ -25,3 +25,26 @@
 **PlayerController** is a Controller that is controlled by player inputs.
 
 **WalkAction** is a MoveAction that allows directional movement.
+
+# Networking
+To synchronize an object between server/client, register
+it to a SyncHandler with `SyncHandler::register(Object)`.
+## Codec
+codec is predefined for primitives and objects with
+annotated fields. If you want to sync classes you can
+not modify, use `SyncableWrapper<T>`. If you want to
+use a different codec for classes you can modify,
+implement `SelfCodec<T>`.
+### Predefined Codec
+By annotating a field in a class with annotations in
+`disunity.annotations.syncedfield`, you can specify
+which fields should be included in the packet. 
+### Defining Codec
+by implementing `SelfCodec<T>`, you can override the
+codec being used. There are primitive codecs available
+in `CODEC` enum. Codec implementations are expected
+to append and consume equal amounts of bytes after
+encoding decoding.
+`<T> T decode(T, InputStream)` is expected to return a
+decoded value, which can also be the first argument
+with mutated fields.

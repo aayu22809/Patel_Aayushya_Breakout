@@ -19,13 +19,13 @@ public class ClientSideSyncHandler extends SyncHandler implements Closeable {
 
         recieverThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
-                distribute(Syncable.HOST, transceiver.recieve());
+                distribute(HOST_ID, transceiver.recieve());
             }
         });
 
         senderThread = new ThrottledLoopThread(
             Options.getMSPP(),
-            () -> transceiver.send(poll(client.id())),
+            () -> transceiver.send(poll()),
             ()->{}
         );
     }

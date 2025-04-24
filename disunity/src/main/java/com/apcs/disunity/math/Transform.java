@@ -1,29 +1,27 @@
 package com.apcs.disunity.math;
 
-import com.apcs.disunity.server.Syncable;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import static com.apcs.disunity.server.SyncableDouble.decodeDouble;
-import static com.apcs.disunity.server.SyncableDouble.encodeDouble;
+import com.apcs.disunity.annotations.syncedfield.SyncedDouble;
+import com.apcs.disunity.annotations.syncedfield.SyncedObject;
 
 /**
  * Contains position, scale, and rotation information
  * 
  * @author Qinzhao Li
  */
-public class Transform implements Syncable<Transform> {
+public class Transform {
 
     /* ================ [ FIELDS ] ================ */
 
     // Position
+    @SyncedObject
     public final Vector2 pos;
 
     // Scale
+    @SyncedObject
     public final Vector2 scale;
 
     // Rotation
+    @SyncedDouble
     public final double rot;
 
     // Constructors
@@ -60,20 +58,4 @@ public class Transform implements Syncable<Transform> {
 
     @Override
     public String toString() { return "pos: " + pos + ", scale: " + scale + ", rot: " + rot; }
-
-    @Override
-    public void supply(int recipient, OutputStream packetOut) {
-        pos.supply(recipient, packetOut);
-        scale.supply(recipient, packetOut);
-        encodeDouble(rot, packetOut);
-    }
-
-    @Override
-    public Transform receive(int sender, InputStream packetIn) {
-        return new Transform(
-            pos.receive(sender, packetIn),
-            scale.receive(sender, packetIn),
-            decodeDouble(packetIn)
-        );
-    }
 }

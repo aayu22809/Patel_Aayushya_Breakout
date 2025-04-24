@@ -1,11 +1,11 @@
 package com.apcs.disunity.math;
 
+import com.apcs.disunity.server.SelfCodec;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.apcs.disunity.server.Syncable;
-import static com.apcs.disunity.server.SyncableInt.decodeInt;
-import static com.apcs.disunity.server.SyncableInt.encodeInt;
+import static com.apcs.disunity.server.CODEC.*;
 
 /**
  * A 2D vector with x and y components
@@ -13,7 +13,7 @@ import static com.apcs.disunity.server.SyncableInt.encodeInt;
  * @author Qinzhao Li
  * @author Sharvil Phadke
  */
-public class Vector2 implements Syncable<Vector2> {
+public class Vector2 /* */ implements SelfCodec<Vector2> /**/ {
 
     /* ================ [ CONSTANTS ] ================ */
 
@@ -84,17 +84,16 @@ public class Vector2 implements Syncable<Vector2> {
     @Override
     public String toString() { return "(" + x + ", " + y + ")"; }
 
-
-    /* =============== [ SYNCABLE ] ================== */
-
     @Override
-    public void supply(int recipient, OutputStream packetOut) {
-      encodeInt(xi, packetOut);
-      encodeInt(yi, packetOut);
+    public void encode(OutputStream out) {
+        encodeDouble(x,out);
+        encodeDouble(y,out);
     }
 
     @Override
-    public Vector2 receive(int sender, InputStream packetIn) {
-        return Vector2.of(decodeInt(packetIn),decodeInt(packetIn));
+    public Vector2 decode(InputStream in) {
+        var x = decodeDouble(in);
+        var y = decodeDouble(in);
+        return Vector2.of(x,y);
     }
 }

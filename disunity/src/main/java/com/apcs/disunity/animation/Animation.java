@@ -1,7 +1,7 @@
 package com.apcs.disunity.animation;
 
-import com.apcs.disunity.annotations.SyncedField;
-import com.apcs.disunity.server.SyncableInt;
+
+import com.apcs.disunity.annotations.syncedfield.SyncedInt;
 
 /**
  * Handles one animation with frames
@@ -9,9 +9,6 @@ import com.apcs.disunity.server.SyncableInt;
  * @author Qinzhao Li
  */
 public class Animation {
-
-    // MUST DO: remove this
-    public int owner;
 
     /* ================ [ FIELDS ] ================ */
 
@@ -22,8 +19,8 @@ public class Animation {
     private final AnimationFrame[] frames;
 
     // Current frame
-    @SyncedField
-    private SyncableInt frame = new SyncableInt(0);
+    @SyncedInt
+    private int frame = 0;
 
     // Constructors
     public Animation(String name, double... frameDurations) {
@@ -42,9 +39,9 @@ public class Animation {
     public String getName() { return name; }
 
     // Next frame
-    public void nextFrame() { frame.setValue((frame.value() + 1) % frames.length); }
+    public void nextFrame() { frame = (frame + 1) % frames.length; }
 
     // Get current frame
-    public AnimationFrame getFrame() { return frames[frame.value()]; }
+    public AnimationFrame getFrame() { return frames[frame]; }
     
 }
