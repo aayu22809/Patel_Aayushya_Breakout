@@ -72,7 +72,7 @@ public class AnimatedSprite extends Node2D implements Controllable {
     public void update(double delta) {
         // Update frame
         if (animation != null) {
-            if (System.nanoTime() - prevFrame >= animations.getAnimation(animation).getFrame().duration * 1000000000) {
+            if (System.nanoTime() - prevFrame >= animations.getAnimation(animation).getFrameDuration() * 1000000000) {
                 prevFrame = System.nanoTime();
                 animations.getAnimation(animation).nextFrame();
             }
@@ -84,8 +84,21 @@ public class AnimatedSprite extends Node2D implements Controllable {
 
     @Override
     public void draw(Transform offset) {
-        String imgPath = animation == null ? animations.getBase() : animations.getAnimation(animation).getFrame().image;
-        BufferedImage img = Resources.loadResource(imgPath, Image.class).getBuffer();
+        BufferedImage img;
+        if (animation == null) {
+            // Default sprite fallback
+            img = Resources.loadResource(animations.getBase(), Image.class).getBuffer();
+        } else {
+            // Load current frame
+            img = Resources.loadResource(animations.getAnimation(animation).getPath(), Image.class).getBuffer();
+            
+            // Crop image to current frame
+            int w = img.getWidth() / animations.getAnimation(animation).getFrameCount();
+            img = img.getSubimage(
+                w * animations.getAnimation(animation).getFrame(), 0,
+                w, img.getHeight()
+            );
+        }
             
         // Draw image to buffer
         Game.getInstance().getBuffer().drawImage(img, transform.apply(offset));
