@@ -1,5 +1,8 @@
 package com.apcs.disunity.math;
 
+import com.apcs.disunity.annotations.syncedfield.SyncedDouble;
+import com.apcs.disunity.annotations.syncedfield.SyncedObject;
+
 /**
  * Contains position, scale, and rotation information
  * 
@@ -10,12 +13,15 @@ public class Transform {
     /* ================ [ FIELDS ] ================ */
 
     // Position
+    @SyncedObject
     public final Vector2 pos;
 
     // Scale
+    @SyncedObject
     public final Vector2 scale;
 
     // Rotation
+    @SyncedDouble
     public final double rot;
 
     // Constructors
@@ -52,5 +58,5 @@ public class Transform {
 
     @Override
     public String toString() { return "pos: " + pos + ", scale: " + scale + ", rot: " + rot; }
-    
+
 }

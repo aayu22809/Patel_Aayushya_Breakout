@@ -1,6 +1,6 @@
 package com.apcs.disunity.nodes;
 
-import com.apcs.disunity.annotations.SyncedField;
+import com.apcs.disunity.annotations.syncedfield.SyncedObject;
 import com.apcs.disunity.math.Transform;
 
 /**
@@ -13,7 +13,7 @@ public class Node2D extends DrawnNode {
     /* ================ [ FIELDS ] ================ */
     
     // Transform
-    @SyncedField
+    @SyncedObject
     public Transform transform = new Transform();
 
     // Constructors
@@ -28,22 +28,4 @@ public class Node2D extends DrawnNode {
         // Draw children relative to this
         super.draw(transform.apply(offset));
     }
-
-    /* ================ [ SYNCED ] ================ */
-
-    // TODO: Fix these with transform implementation
-
-    @Override
-    public byte[] supply(int recipient) {
-        return new byte[0];
-        // return transform.getBytes();
-    }
-
-    @Override
-    public int receive(int sender, byte[] data) {
-        return 0;
-        // pos = Vector2.of(Util.getInt(data, 0), Util.getInt(data, Integer.BYTES));
-        // return Integer.BYTES * 2;
-    }
-
 }

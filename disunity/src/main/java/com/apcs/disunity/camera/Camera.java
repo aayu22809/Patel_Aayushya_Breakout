@@ -30,17 +30,4 @@ public class Camera extends Node2D {
         super.update(delta);
     }
 
-    /* ================ [ SYNCED ] ================ */
-
-    @Override
-    public byte[] supply(int recipient) {
-        // return pos.getBytes();
-        return new byte[0];
-    }
-
-    @Override
-    public int receive(int sender, byte[] data) {
-        // pos = Vector2.of(Util.getInt(data, 0), Util.getInt(data, Integer.BYTES));
-        return 0;
-    }
 }

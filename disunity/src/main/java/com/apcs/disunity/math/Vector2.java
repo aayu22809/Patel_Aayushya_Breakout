@@ -1,7 +1,11 @@
 package com.apcs.disunity.math;
 
-import com.apcs.disunity.server.Syncable;
-import com.apcs.disunity.server.Util;
+import com.apcs.disunity.server.SelfCodec;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import static com.apcs.disunity.server.CODEC.*;
 
 /**
  * A 2D vector with x and y components
@@ -9,7 +13,7 @@ import com.apcs.disunity.server.Util;
  * @author Qinzhao Li
  * @author Sharvil Phadke
  */
-public class Vector2 implements Syncable {
+public class Vector2 implements SelfCodec<Vector2> {
 
     /* ================ [ CONSTANTS ] ================ */
 
@@ -50,7 +54,7 @@ public class Vector2 implements Syncable {
 
     // Multiply by a scalar
     public Vector2 mul(double v) { return new Vector2(x * v, y * v); }
-    
+
     // Multiply component-wise
     public Vector2 mul(Vector2 v) { return new Vector2(x * v.x, y * v.y); }
 
@@ -75,29 +79,22 @@ public class Vector2 implements Syncable {
     // Check if vectors are equal
     public boolean equals(Vector2 v) { return x == v.x && y == v.y; }
 
-    // Convert to bytes
-    public byte[] getBytes() {
-        byte[] bytes = new byte[Integer.BYTES * 2];
-        System.arraycopy(Util.getBytes(xi), 0, bytes, 0, Integer.BYTES);
-        System.arraycopy(Util.getBytes(yi), 0, bytes, Integer.BYTES, Integer.BYTES);
-        return bytes;
-    }
-
     /* ================ [ OBJECT ] ================ */
 
     @Override
     public String toString() { return "(" + x + ", " + y + ")"; }
 
-    /* =============== [SYNCABLE] ================== */
-    
-    // TODO: decide on how this should be implemented.
+    /* ================ [ CODEC ] ================ */
     @Override
-    public byte[] supply(int recipient) {
-        return new byte[0];
+    public void encode(OutputStream out) {
+        encodeDouble(x,out);
+        encodeDouble(y,out);
     }
 
     @Override
-    public int receive(int sender, byte[] data) {
-        return 0;
+    public Vector2 decode(InputStream in) {
+        var x = decodeDouble(in);
+        var y = decodeDouble(in);
+        return Vector2.of(x,y);
     }
 }

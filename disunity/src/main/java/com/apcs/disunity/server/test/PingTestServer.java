@@ -1,10 +1,13 @@
 package com.apcs.disunity.server.test;
 
 import com.apcs.disunity.server.Host;
-import com.apcs.disunity.server.Util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
+
+import static com.apcs.disunity.server.CODEC.*;
 
 public class PingTestServer {
     public static void main(String[] args) {
@@ -26,7 +29,9 @@ public class PingTestServer {
                 System.out.println("Sync time: "+(System.currentTimeMillis() - t));
 
                 //test
-                h.send(identifier, Util.getBytes(System.currentTimeMillis()));
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                encodeLong(System.currentTimeMillis(),out);
+                h.send(identifier, out.toByteArray());
 
             }
             h.send(identifier, new byte[0]);
@@ -40,7 +45,7 @@ public class PingTestServer {
                 System.out.println("Sync time: "+(System.currentTimeMillis() - t));
 
                 //test
-                System.out.println("Ping: "+(System.currentTimeMillis() - Util.getLong(h.recieve(identifier))));
+                System.out.println("Ping: "+(System.currentTimeMillis() - decodeLong(new ByteArrayInputStream(h.recieve(identifier)))));
 
             }
         } catch (IOException e) {

@@ -1,5 +1,8 @@
 package com.apcs.disunity.animation;
 
+
+import com.apcs.disunity.annotations.syncedfield.SyncedInt;
+
 /**
  * Handles one animation with frames
  * 
@@ -17,6 +20,7 @@ public class Animation {
     private final double[] frameDurations;
 
     // Current frame
+    @SyncedInt
     private int frame = 0;
 
     // Constructors
@@ -45,5 +49,5 @@ public class Animation {
 
     // Get frame count
     public int getFrameCount() { return frameDurations.length; }
-    
+
 }

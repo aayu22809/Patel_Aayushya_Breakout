@@ -28,7 +28,7 @@ public class PlayerController extends Controller {
         if (walkDir.length() > 0) {
             Signals.trigger(Signals.getSignal(getId(), "animate"), "run");
         } else {
-            Signals.trigger(Signals.getSignal(getId(), "animate"), null);
+            Signals.trigger(Signals.getSignal(getId(), "animate"), "");
         }
     }
     

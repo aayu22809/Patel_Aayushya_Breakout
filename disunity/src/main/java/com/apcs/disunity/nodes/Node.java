@@ -1,7 +1,5 @@
 package com.apcs.disunity.nodes;
 
-import com.apcs.disunity.server.Syncable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,9 +14,10 @@ import com.apcs.disunity.annotations.Requires;
  * 
  * @author Qinzhao Li
  * @author Toshiki Takeuchi
- * TODO: remove Syncable from Node
  */
-public abstract class Node<T extends Node<?>> implements Syncable {
+public abstract class Node<T extends Node<?>> {
+    // MUST DO: remove this
+    public int owner;
 
     /* ================ [ FIELDS ] ================ */
 
@@ -39,6 +38,13 @@ public abstract class Node<T extends Node<?>> implements Syncable {
     public void addChild(T node) {
         children.add(node);
         isInitialized = false;
+    }
+
+    @SafeVarargs
+    public final void addChildren(T... nodes) {
+        for(T child: nodes) {
+            addChild(child);
+        }
     }
 
     // Remove child
@@ -112,14 +118,6 @@ public abstract class Node<T extends Node<?>> implements Syncable {
         // Update children
         for (T node : children) node.tick(delta);
     }
-
-    /* ================ [ SYNCED ] ================ */
-
-    @Override
-    public byte[] supply(int recipient) { return new byte[0]; }
-
-    @Override
-    public int receive(int sender, byte[] data) { return 0; }
 
     /* ================ [ PRINTING ] ================ */
 

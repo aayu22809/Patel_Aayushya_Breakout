@@ -31,7 +31,7 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
                     for(TranscieverThread tt: threads) {
                         // prevent sending back to packet source
                         if(tt != Thread.currentThread()) {
-                            tt.TRANCIEVER.send(poll(Syncable.HOST));
+                            tt.TRANCIEVER.send(poll());
                         }
                     }
                 }
@@ -40,6 +40,7 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
         }
     }
 
+    @Override
     public void start() {
         host.start();
     }
@@ -52,8 +53,8 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
     }
 
     @Override
-    public int getEndpointId() {
-        return Syncable.HOST;
-    }
+    public int getEndpointId() { return HOST_ID; }
 
+    public int getPort() {return host.getPort();}
+    public String getAddress() {return host.getAddress();}
 }
