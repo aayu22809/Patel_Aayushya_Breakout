@@ -20,6 +20,9 @@ public class Node2D extends DrawnNode {
     public Node2D() { super(); }
     public Node2D(Node<?>... children) { super(children); }
     public Node2D(Transform transform, Node<?>... children) { super(children); this.transform = transform; }
+    public Node2D(boolean visible) { super(visible); }
+    public Node2D(boolean  visible, Node<?>... children) { super(visible, children); }
+    public Node2D(Transform transform, boolean visible, Node<?>... children) { super(visible, children); this.transform = transform; }
     
     /* ================ [ NODE ] ================ */
 

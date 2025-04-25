@@ -1,5 +1,9 @@
 package com.apcs.ljaag;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.BindException;
+
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
 import com.apcs.disunity.animation.Animation;
@@ -16,15 +20,10 @@ import com.apcs.disunity.nodes.sprite.Sprite;
 import com.apcs.disunity.scenes.Scenes;
 import com.apcs.disunity.server.ClientSideSyncHandler;
 import com.apcs.disunity.server.HostSideSyncHandler;
-import com.apcs.disunity.server.SingletonViolationException;
 import com.apcs.disunity.server.SyncHandler;
 import com.apcs.ljaag.nodes.action.TurnAction;
 import com.apcs.ljaag.nodes.action.WalkAction;
 import com.apcs.ljaag.nodes.controller.PlayerController;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.BindException;
 
 /**
  * Untitled game
@@ -39,22 +38,26 @@ public class LJAAG {
     /* ================ [ DRIVER ] ================ */
     public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
         SyncHandler handler;
+        boolean viewable = true;
         try {
             handler = new HostSideSyncHandler();
+            viewable = false;
         } catch (BindException e) {
             Field instanceField = SyncHandler.class.getDeclaredField("instance");
             instanceField.setAccessible(true);
             instanceField.set(null, null);
             handler = new ClientSideSyncHandler("0:0:0:0:0:0:0:0", 3000);
         }
-        runApp();
+        runApp(NUM_PLAYERS, viewable);
         handler.start();
     }
+
+    public static final int NUM_PLAYERS = 8;
 
     public static class Server {
         public static void main(String[] args) throws IOException {
             HostSideSyncHandler host = new HostSideSyncHandler();
-            runApp();
+            runApp(NUM_PLAYERS, false);
             host.start();
         }
     }
@@ -62,12 +65,12 @@ public class LJAAG {
     public static class Client {
         public static void main(String[] args) throws IOException {
             ClientSideSyncHandler client = new ClientSideSyncHandler("0:0:0:0:0:0:0:0", 3000);
-            runApp();
+            runApp(NUM_PLAYERS, true);
             client.start();
         }
     }
 
-    private static void runApp() {
+    private static void runApp(int players, boolean viewable) {
 
         // Import keybinds from a JSON file
         Inputs.fromJSON("keybinds.json");
@@ -78,7 +81,7 @@ public class LJAAG {
         ));
 
         Scenes.setScene("test");
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= players+1; i++) {
             Scenes.getScene().addChildren(instantiateCharacter(i));
         }
 
@@ -86,14 +89,21 @@ public class LJAAG {
 
         int endpointId = SyncHandler.getInstance().getEndpointId();
         // Create game application
-        new App(
-            endpointId == 0 ? "[SERVER]" : "[CLIENT_" + endpointId + "]",
-            800, 450,
-            new Game(
-                Vector2.of(480, 270),
-                "test"
-            )
+
+        Game game = new Game(
+            Vector2.of(480, 270),
+            "test"
         );
+
+        if (viewable) {
+            new App(
+                endpointId == 0 ? "[SERVER]" : "[CLIENT_" + endpointId + "]",
+                800, 
+                450,
+                game);
+        }
+
+        game.start();
 
     }
 
@@ -105,7 +115,8 @@ public class LJAAG {
             new AnimatedSprite(
                 new AnimationSet("player/player.png",
                     new Animation("run", "player/run.png", 0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
-                )
+                ),
+                isPlayer
             ),
             isPlayer ? new PlayerController() : new Controller() {
             },

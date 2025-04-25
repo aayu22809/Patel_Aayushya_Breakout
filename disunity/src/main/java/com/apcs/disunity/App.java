@@ -41,9 +41,6 @@ public class App extends JFrame {
         setLocationRelativeTo(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
-
-        // Start game
-        game.start();
         
     }
     

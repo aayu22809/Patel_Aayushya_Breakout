@@ -37,9 +37,12 @@ public class AnimatedSprite extends Node2D implements Controllable {
     private long prevFrame = System.nanoTime();
 
     // Constructors
-    public AnimatedSprite(AnimationSet animations) { this.animations = animations; }
+    public AnimatedSprite(AnimationSet animations) { super(); this.animations = animations; }
     public AnimatedSprite(AnimationSet animations, Node<?>... children) { super(children); this.animations = animations; }
     public AnimatedSprite(AnimationSet animations, Transform transform, Node<?>... children) { super(transform, children); this.animations = animations; }
+    public AnimatedSprite(AnimationSet animations, boolean visible) { super(visible); this.animations = animations; }
+    public AnimatedSprite(AnimationSet animations, boolean visible, Node<?>... children) { super(visible, children); this.animations = animations; }
+    public AnimatedSprite(AnimationSet animations, Transform transform, boolean visible, Node<?>... children) { super(transform, visible, children); this.animations = animations; }
     
     /* ================ [ CONTROLLABLE ] ================ */
 
@@ -87,6 +90,7 @@ public class AnimatedSprite extends Node2D implements Controllable {
 
     @Override
     public void draw(Transform offset) {
+
         BufferedImage img;
         if (animation.value().isEmpty()) {
             // Default sprite fallback

@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.apcs.disunity.server.CODEC.*;
+import static com.apcs.disunity.server.CODEC.decodeInt;
 
 public abstract class SyncHandler {
     public static final int HOST_ID = 0;
@@ -75,6 +75,10 @@ public abstract class SyncHandler {
         } catch (IOException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public final boolean isClient() {
+        return getEndpointId() == HOST_ID;
     }
 
     public abstract int getEndpointId();
