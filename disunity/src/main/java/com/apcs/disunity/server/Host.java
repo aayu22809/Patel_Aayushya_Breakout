@@ -2,12 +2,12 @@ package com.apcs.disunity.server;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,12 +39,13 @@ public class Host implements Closeable {
     private int clientId = 0;
 
     public Host() throws IOException {
-        this(DEFAULT_PORT);
+        this(0);
     }
     
     public Host(int port) throws IOException {
-        server = new ServerSocket();
-        server.bind(new InetSocketAddress(InetAddress.getLocalHost(), port));
+        server = new ServerSocket(0);
+        System.out.println(Arrays.toString(server.getInetAddress().getAddress()));
+        System.out.println(server.getLocalPort());
         listenerThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -59,7 +60,9 @@ public class Host implements Closeable {
                     for (Consumer<Integer> action : onJoinActions) {
                         action.accept(id);
                     }
-                } catch (IOException ioe) { }
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
             }
         });
     }
@@ -88,19 +91,20 @@ public class Host implements Closeable {
 
     public String getAddress() {
         Enumeration<NetworkInterface> interfaces;
-        System.out.println(server.getLocalPort());
-        // everything in this try catch is copied from the internet
         try {
             interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = interfaces.nextElement();
-                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                NetworkInterface nInterface = interfaces.nextElement();
+                Enumeration<InetAddress> addresses = nInterface.getInetAddresses();
                 while (addresses.hasMoreElements()) {
                     InetAddress address = addresses.nextElement();
-                    return address.getHostAddress();
+                    if (address instanceof Inet4Address && !address.isAnyLocalAddress()) {
+                        return address.getHostAddress();
+                    }
                 }
             }
-        } catch (SocketException e) {}
+        } catch (IOException e) {
+        }
         return server.getInetAddress().getHostAddress();
     }
 

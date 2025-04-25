@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import static java.lang.Byte.SIZE;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -13,7 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.apcs.disunity.server.CODEC.*;
+import static com.apcs.disunity.server.CODEC.decodeInt;
+import static com.apcs.disunity.server.CODEC.encodeInt;
 
 /**
  * 
@@ -37,11 +37,8 @@ public final class Util {
 
     public static byte[] unpack(InputStream data) {
         try {
-        int packetSize = decodeInt(data);
-        byte[] packet = new byte[packetSize];
-        int numRead = data.read(packet);
-        if(numRead < packetSize) throw new RuntimeException("packet size larger than stream length");
-        return packet;
+            int packetSize = decodeInt(data);
+            return data.readNBytes(packetSize);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }

@@ -2,7 +2,6 @@ package com.apcs.ljaag;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
@@ -39,10 +38,9 @@ public class LJAAG {
 
     /* ================ [ DRIVER ] ================ */
     public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
-        String input = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\nWould you like to start or join a session? (s/j)");
+        String input = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\n\nWould you like to start or join a session? (s/j)");
+        if (input == null) System.exit(0);
         if (input.startsWith("s") || input.startsWith("S")) {
-            JOptionPane.showMessageDialog(null,"DISUNITY STARTUP WIZARD\\n" + //
-                                "Your Server instance is running.");
             Server.main(args);
         } else {
             Client.main(args);
@@ -56,25 +54,30 @@ public class LJAAG {
             HostSideSyncHandler host = new HostSideSyncHandler();
             runApp(NUM_PLAYERS, false);
             host.start();
+            JOptionPane.showMessageDialog(null, String.format("DISUNITY STARTUP WIZARD\n\nServer running on address %s on port %d\n\nClose this window to stop the server", host.getAddress(), host.getPort()));
+            System.exit(0);
         }
     }
 
     public static class Client {
         public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
             SyncHandler handler;
-            try (Scanner s = new Scanner(System.in)) {
-                while (true) {
-                    String str = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\nEnter the Server address. Leave blank for your local Server instance.");
-                    if (str.isBlank()) str = "0:0:0:0:0:0:0:0";
-                    try {
-                        Field instanceField = SyncHandler.class.getDeclaredField("instance");
-                        instanceField.setAccessible(true);
-                        instanceField.set(null, null);
-                        handler = new ClientSideSyncHandler(str, 3000);
-                        break;
-                    } catch (IOException ioe) {
-                        JOptionPane.showMessageDialog(null, "DISUNITY STARTUP WIZARD\nCould not connect to this Server");
-                    }
+            while (true) {
+                String address = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\n\nEnter the Server address. Leave blank for your local Server instance.");
+                if (address == null) System.exit(0);
+                String port = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\n\nEnter the Server port.");
+                if (port == null) System.exit(0);
+                if (address.isBlank()) address = "0:0:0:0:0:0:0:0";
+                try {
+                    Field instanceField = SyncHandler.class.getDeclaredField("instance");
+                    instanceField.setAccessible(true);
+                    instanceField.set(null, null);
+                    handler = new ClientSideSyncHandler(address, (int) Integer.parseInt(port));
+                    System.out.println("able to connect");
+                    break;
+                } catch (IOException ioe) {
+                    JOptionPane.showMessageDialog(null, "DISUNITY STARTUP WIZARD\nCould not connect to this Server");
+                    ioe.printStackTrace();
                 }
             }
             runApp(NUM_PLAYERS, true);
