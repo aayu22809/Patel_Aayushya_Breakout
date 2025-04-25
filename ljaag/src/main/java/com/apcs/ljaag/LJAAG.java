@@ -3,6 +3,7 @@ package com.apcs.ljaag;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.BindException;
+import java.util.Scanner;
 
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
@@ -42,11 +43,21 @@ public class LJAAG {
         try {
             handler = new HostSideSyncHandler();
             viewable = false;
-        } catch (BindException e) {
-            Field instanceField = SyncHandler.class.getDeclaredField("instance");
-            instanceField.setAccessible(true);
-            instanceField.set(null, null);
-            handler = new ClientSideSyncHandler("0:0:0:0:0:0:0:0", 3000);
+        } catch (BindException be) {
+            try (Scanner s = new Scanner(System.in)) {
+                while (true) {
+                    System.out.println("Enter the Server Address");
+                    String str = s.nextLine();
+                    if (str.isBlank()) str = "0:0:0:0:0:0:0:0";
+                    try {
+                        Field instanceField = SyncHandler.class.getDeclaredField("instance");
+                        instanceField.setAccessible(true);
+                        instanceField.set(null, null);
+                        handler = new ClientSideSyncHandler(str, 3000);
+                        break;
+                    } catch (IOException ioe) {}
+                }
+            }
         }
         runApp(NUM_PLAYERS, viewable);
         handler.start();
@@ -63,10 +74,24 @@ public class LJAAG {
     }
 
     public static class Client {
-        public static void main(String[] args) throws IOException {
-            ClientSideSyncHandler client = new ClientSideSyncHandler("0:0:0:0:0:0:0:0", 3000);
+        public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+            SyncHandler handler;
+            try (Scanner s = new Scanner(System.in)) {
+                while (true) {
+                    System.out.println("Enter the Server Address");
+                    String str = s.nextLine();
+                    if (str.isBlank()) str = "0:0:0:0:0:0:0:0";
+                    try {
+                        Field instanceField = SyncHandler.class.getDeclaredField("instance");
+                        instanceField.setAccessible(true);
+                        instanceField.set(null, null);
+                        handler = new ClientSideSyncHandler(str, 3000);
+                        break;
+                    } catch (IOException ioe) {}
+                }
+            }
             runApp(NUM_PLAYERS, true);
-            client.start();
+            handler.start();
         }
     }
 
