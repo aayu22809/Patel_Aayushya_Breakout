@@ -14,7 +14,7 @@
     </modules>
 
     <properties>
-        <maven.compiler.release>23</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <maven.compier.plugin.version>3.14.0</maven.compier.plugin.version>
     </properties>
 

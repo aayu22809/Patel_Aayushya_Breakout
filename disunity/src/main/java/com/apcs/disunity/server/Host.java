@@ -7,7 +7,6 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,8 +43,6 @@ public class Host implements Closeable {
     
     public Host(int port) throws IOException {
         server = new ServerSocket(0);
-        System.out.println(Arrays.toString(server.getInetAddress().getAddress()));
-        System.out.println(server.getLocalPort());
         listenerThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {

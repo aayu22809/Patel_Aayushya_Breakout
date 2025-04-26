@@ -73,7 +73,6 @@ public class LJAAG {
                     instanceField.setAccessible(true);
                     instanceField.set(null, null);
                     handler = new ClientSideSyncHandler(address, (int) Integer.parseInt(port));
-                    System.out.println("able to connect");
                     break;
                 } catch (IOException ioe) {
                     JOptionPane.showMessageDialog(null, "DISUNITY STARTUP WIZARD\nCould not connect to this Server");

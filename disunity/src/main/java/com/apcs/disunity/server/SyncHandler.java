@@ -66,7 +66,7 @@ public abstract class SyncHandler {
                     Field ownerField = sync.getClass().getField("owner");
                     int owner = (int) ownerField.get(sync);
                     if(owner == getEndpointId() || getEndpointId() == HOST_ID && sender != owner) continue;
-                } catch (NoSuchFieldException _) {}
+                } catch (NoSuchFieldException nsfe) {}
 
                 ByteArrayInputStream packetStream = new ByteArrayInputStream(nodePacket);
                 CODEC.decodeObject(sync, packetStream);
