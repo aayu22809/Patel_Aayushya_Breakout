@@ -15,7 +15,7 @@
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
-        <maven.compier.plugin.version>3.14.0</maven.compier.plugin.version>
+        <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     </properties>
 
     <dependencies>
@@ -39,7 +39,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compier.plugin.version}</version>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <annotationProcessors>
                         com.apcs.disunity.annotations.FieldTypeEnforcer

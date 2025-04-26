@@ -1,6 +1,8 @@
 package com.apcs.ljaag;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 
 import javax.swing.JOptionPane;
@@ -37,7 +39,7 @@ import com.apcs.ljaag.nodes.controller.PlayerController;
 public class LJAAG {
 
     /* ================ [ DRIVER ] ================ */
-    public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
+    public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException, InterruptedException {
         String input = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\n\nWould you like to start or join a session? (s/j)");
         if (input == null) System.exit(0);
         if (input.startsWith("s") || input.startsWith("S")) {
@@ -50,11 +52,42 @@ public class LJAAG {
     public static final int NUM_PLAYERS = 8;
 
     public static class Server {
-        public static void main(String[] args) throws IOException {
+        public static void main(String[] args) throws IOException, InterruptedException {
             HostSideSyncHandler host = new HostSideSyncHandler();
+
+            String lastLine = null;
+            Process process = null;
+
+            boolean forward = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\n\nWould you like to expose to the internet in addition to LAN?\n Doing so requires bash and ssh, but allows players on different networks to join. (y/n)").startsWith("y");
+            if (forward) {
+                int localPort = host.getPort();
+                process = new ProcessBuilder("bash", "-c",
+                    "ssh -o StrictHostKeyChecking=no -R 0:localhost:" + localPort + " serveo.net")
+                    .redirectErrorStream(true).start();
+
+                
+
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    int i = 0;
+                    while ((line = reader.readLine()) != null) {
+                        if (++i == 3) {
+                            lastLine = line;
+                            break;
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                lastLine = host.getAddress()+":"+host.getPort();
+            }
+   
             runApp(NUM_PLAYERS, false);
             host.start();
-            JOptionPane.showMessageDialog(null, String.format("DISUNITY STARTUP WIZARD\n\nServer running on address %s on port %d\n\nClose this window to stop the server", host.getAddress(), host.getPort()));
+            JOptionPane.showMessageDialog(null, String.format("JOIN INFORMATION:\n\nAddress: %s\nPort: %s\n\nClose this window to end the instance", lastLine.substring(Math.max(lastLine.lastIndexOf(' '),0)).split(":")));
+            if (process != null) process.destroy();
+            host.close();
             System.exit(0);
         }
     }
