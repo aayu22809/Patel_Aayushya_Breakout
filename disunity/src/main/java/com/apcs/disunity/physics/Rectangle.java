@@ -4,6 +4,7 @@ import com.apcs.disunity.math.Vector2;
 
 /**
  * A rectangle for collision detection
+ * @author Aayushya Patel
  */
 public class Rectangle {
 
