@@ -1,19 +1,18 @@
 package com.apcs.disunity;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
-import javax.swing.JPanel;
-
 import com.apcs.disunity.input.InputHandler;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.physics.PhysicsManager;
 import com.apcs.disunity.rendering.ScalableBuffer;
 import com.apcs.disunity.scenes.Scenes;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import javax.swing.JPanel;
 
 /**
  * Renders the current scene to the screen
- * 
+ *
  * @author Qinzhao Li
  */
 public class Game extends JPanel {
@@ -49,13 +48,13 @@ public class Game extends JPanel {
     public Game(Vector2 dimensions, String scene, boolean isHost) {
         // Set host status
         this.isHost = isHost;
-        
+
         // Game dimensions
         this.dimensions = dimensions;
 
         // Panel background
         setBackground(Color.BLACK);
-        
+
         // Double buffering
         buffer = new ScalableBuffer(dimensions);
 
@@ -78,30 +77,50 @@ public class Game extends JPanel {
     }
 
     /* ================ [ METHODS ] ================ */
-    
+
     // Start game thread
     public void start() {
         game = new ThrottledLoopThread(
             Options.getMSPF(),
-            () -> Scenes.updateScene(Options.getSPF()),
-            this::repaint);
+            this::update,
+            this::repaint
+        );
         game.start();
     }
 
+    // Update game state
+    private void update() {
+        // Update scene
+        Scenes.updateScene(Options.getSPF()); // Delta value from configs
+
+        // Update physics
+        PhysicsManager.getInstance().update(Options.getSPF());
+    }
+
     // Set global transform
-    public void setTransform(Transform transform) { this.transform = transform; }
+    public void setTransform(Transform transform) {
+        this.transform = transform;
+    }
 
     // Set buffer size
-    public void setBufferSize(Vector2 size) { buffer.setSize(size); }
+    public void setBufferSize(Vector2 size) {
+        buffer.setSize(size);
+    }
 
     // Get buffer
-    public ScalableBuffer getBuffer() { return buffer; }
+    public ScalableBuffer getBuffer() {
+        return buffer;
+    }
 
     // Get instance
-    public static Game getInstance() { return instance; }
+    public static Game getInstance() {
+        return instance;
+    }
 
     // Get host status
-    public boolean isHost() { return isHost; }
+    public boolean isHost() {
+        return isHost;
+    }
 
     /* ================ [ JPANEL ] ================ */
 
@@ -122,6 +141,13 @@ public class Game extends JPanel {
         int h = image.getHeight();
 
         // Draw to screen
-        g.drawImage(image, (getWidth() - w) / 2, (getHeight() - h) / 2, w, h, null);
+        g.drawImage(
+            image,
+            (getWidth() - w) / 2,
+            (getHeight() - h) / 2,
+            w,
+            h,
+            null
+        );
     }
 }
