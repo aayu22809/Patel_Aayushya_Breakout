@@ -72,6 +72,7 @@ public class LJAAG {
                     int i = 0;
                     while ((line = reader.readLine()) != null) {
                         if (++i == 3) {
+                            System.out.println(line);
                             lastLine = line;
                             break;
                         }
