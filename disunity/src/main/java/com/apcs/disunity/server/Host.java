@@ -102,7 +102,9 @@ public class Host implements Closeable {
             }
         } catch (IOException e) {
         }
-        return server.getInetAddress().getHostAddress();
+        StringBuilder b = new StringBuilder();
+        for (byte by : server.getInetAddress().getAddress()) b.append(by).append('.');
+        return b.toString().substring(0,b.length()-1);
     }
 
     public int getPort() {

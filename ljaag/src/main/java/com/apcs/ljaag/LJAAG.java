@@ -1,11 +1,6 @@
 package com.apcs.ljaag;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
-
-import javax.swing.JOptionPane;
 
 import com.apcs.disunity.App;
 import com.apcs.disunity.Game;
@@ -21,8 +16,7 @@ import com.apcs.disunity.nodes.controller.Controller;
 import com.apcs.disunity.nodes.sprite.AnimatedSprite;
 import com.apcs.disunity.nodes.sprite.Sprite;
 import com.apcs.disunity.scenes.Scenes;
-import com.apcs.disunity.server.ClientSideSyncHandler;
-import com.apcs.disunity.server.HostSideSyncHandler;
+import com.apcs.disunity.server.MultiplayerLauncher;
 import com.apcs.disunity.server.SyncHandler;
 import com.apcs.ljaag.nodes.action.TurnAction;
 import com.apcs.ljaag.nodes.action.WalkAction;
@@ -40,85 +34,13 @@ public class LJAAG {
 
     /* ================ [ DRIVER ] ================ */
     public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException, InterruptedException {
-        String input = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\n\nWould you like to start or join a session? (s/j)");
-        if (input == null) System.exit(0);
-        if (input.startsWith("s") || input.startsWith("S")) {
-            Server.main(args);
-        } else {
-            Client.main(args);
-        }
+        MultiplayerLauncher launcher = new MultiplayerLauncher(LJAAG::runApp);
+        launcher.lauch();
     }
 
     public static final int NUM_PLAYERS = 8;
 
-    public static class Server {
-        public static void main(String[] args) throws IOException, InterruptedException {
-            HostSideSyncHandler host = new HostSideSyncHandler();
-
-            String lastLine = null;
-            Process process = null;
-
-            boolean forward = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\n\nWould you like to expose to the internet in addition to LAN?\n Doing so requires bash and ssh, but allows players on different networks to join. (y/n)").startsWith("y");
-            if (forward) {
-                int localPort = host.getPort();
-                process = new ProcessBuilder("bash", "-c",
-                    "ssh -o StrictHostKeyChecking=no -R 0:localhost:" + localPort + " serveo.net")
-                    .redirectErrorStream(true).start();
-
-                
-
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                    String line;
-                    int i = 0;
-                    while ((line = reader.readLine()) != null) {
-                        if (++i == 3) {
-                            System.out.println(line);
-                            lastLine = line;
-                            break;
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                lastLine = host.getAddress()+":"+host.getPort();
-            }
-   
-            runApp(NUM_PLAYERS, false);
-            host.start();
-            JOptionPane.showMessageDialog(null, String.format("JOIN INFORMATION:\n\nAddress: %s\nPort: %s\n\nClose this window to end the instance", lastLine.substring(Math.max(lastLine.lastIndexOf(' '),0)).split(":")));
-            if (process != null) process.destroy();
-            host.close();
-            System.exit(0);
-        }
-    }
-
-    public static class Client {
-        public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-            SyncHandler handler;
-            while (true) {
-                String address = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\n\nEnter the Server address. Leave blank for your local Server instance.");
-                if (address == null) System.exit(0);
-                String port = JOptionPane.showInputDialog("DISUNITY STARTUP WIZARD\n\nEnter the Server port.");
-                if (port == null) System.exit(0);
-                if (address.isBlank()) address = "0:0:0:0:0:0:0:0";
-                try {
-                    Field instanceField = SyncHandler.class.getDeclaredField("instance");
-                    instanceField.setAccessible(true);
-                    instanceField.set(null, null);
-                    handler = new ClientSideSyncHandler(address, (int) Integer.parseInt(port));
-                    break;
-                } catch (IOException ioe) {
-                    JOptionPane.showMessageDialog(null, "DISUNITY STARTUP WIZARD\nCould not connect to this Server");
-                    ioe.printStackTrace();
-                }
-            }
-            runApp(NUM_PLAYERS, true);
-            handler.start();
-        }
-    }
-
-    private static void runApp(int players, boolean viewable) {
+    private static void runApp(boolean isServer) {
 
         // Import keybinds from a JSON file
         Inputs.fromJSON("keybinds.json");
@@ -129,7 +51,7 @@ public class LJAAG {
         ));
 
         Scenes.setScene("test");
-        for (int i = 1; i <= players+1; i++) {
+        for (int i = 1; i <= NUM_PLAYERS+1; i++) {
             Scenes.getScene().addChildren(instantiateCharacter(i));
         }
 
@@ -143,7 +65,7 @@ public class LJAAG {
             "test"
         );
 
-        if (viewable) {
+        if (!isServer) {
             new App(
                 endpointId == 0 ? "[SERVER]" : "[CLIENT_" + endpointId + "]",
                 800, 

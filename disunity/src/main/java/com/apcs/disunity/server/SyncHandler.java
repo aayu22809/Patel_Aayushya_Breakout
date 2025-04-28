@@ -2,6 +2,7 @@ package com.apcs.disunity.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 import static com.apcs.disunity.server.CODEC.decodeInt;
 
-public abstract class SyncHandler {
+public abstract class SyncHandler implements Closeable {
     public static final int HOST_ID = 0;
     private static SyncHandler instance;
 
