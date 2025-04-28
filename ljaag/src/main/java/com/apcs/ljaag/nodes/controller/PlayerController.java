@@ -6,7 +6,7 @@ import com.apcs.disunity.nodes.controller.Controller;
 import com.apcs.disunity.signals.Signals;
 
 /** 
- * A controller that is controlled by player inputs
+ * A Controller that is controlled by player inputs
  * 
  * @author Qinzhao Li
  */
@@ -14,6 +14,11 @@ public class PlayerController extends Controller {
 
     /* ================ [ NODE ] ================ */
 
+    /**
+     * Updates the node and triggers all necessary actions
+     * 
+     * @param delta The time since the last update
+     */
     @Override
     public void update(double delta) {
         // Trigger walking

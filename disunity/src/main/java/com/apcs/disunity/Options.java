@@ -7,11 +7,21 @@ package com.apcs.disunity;
  */
 public class Options {
 
-    // Frame rate
+    /** The frame rate of the game */
     public static final double FPS = 60.0;
-    // Seconds per frame
+
+    /**
+     * Get the number of seconds per frame
+     *
+     * @return The number of seconds per frame
+     */
     public static final double getSPF() { return 1.0 / FPS; }
-    // Milliseconds per frame
+    
+    /**
+     * Get the number of milliseconds per frame
+     *
+     * @return The number of milliseconds per frame
+     */
     public static final double getMSPF() { return 1000.0 / FPS; }
 
     // packet rate
@@ -20,4 +30,5 @@ public class Options {
     public static final double getSPP() { return 1.0 / PPS; }
     // Milliseconds per frame
     public static final double getMSPP() { return 1000.0 / PPS; }
+
 }

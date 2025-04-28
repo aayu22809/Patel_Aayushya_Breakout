@@ -33,6 +33,7 @@ import com.apcs.ljaag.nodes.controller.PlayerController;
 public class LJAAG {
 
     /* ================ [ DRIVER ] ================ */
+    
     public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException, InterruptedException {
         MultiplayerLauncher launcher = new MultiplayerLauncher(LJAAG::runApp);
         launcher.lauch();

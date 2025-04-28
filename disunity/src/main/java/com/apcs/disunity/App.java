@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import com.apcs.disunity.math.Vector2;
 
 /**
- * Creates an app window with a game
+ * An app window that holds a game
  * 
  * @author Qinzhao Li
  */
@@ -16,9 +16,14 @@ public class App extends JFrame {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Constructors
+    /**
+     * Creates a new App with dimensions and a game
+     * 
+     * @param width The width of the window
+     * @param height The height of the window
+     * @param game The game to display
+     */
     public App(String title, int width, int height, Game game) {
-
         // Window setup
         setTitle(title);
         setSize(width, height);
@@ -41,7 +46,6 @@ public class App extends JFrame {
         setLocationRelativeTo(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
-        
     }
     
 }

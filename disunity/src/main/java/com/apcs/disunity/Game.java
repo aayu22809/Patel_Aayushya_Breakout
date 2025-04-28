@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
- * Renders the current scene to the screen
+ * Contains and displays a scene on a loop
  *
  * @author Qinzhao Li
  */
@@ -19,46 +19,54 @@ public class Game extends JPanel {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Singleton instance
+    /** Whether this game is the host instance   */
+    public final boolean isHost;
+
+    /** The singleton instance of the game */
     private static Game instance;
 
-    // Game thread
-    private Thread game;
+    /** The thread that the game runs on */
+    private GameThread game;
 
-    // Game dimensions
+    /** The dimensions of the game buffer */
     private Vector2 dimensions;
 
-    // Buffer for scaling the game
-    private ScalableBuffer buffer;
-
-    // Handles keystrokes from user
-    private InputHandler input;
-
-    // Is the host
-    private boolean isHost;
-
-    // Global transform to control viewport
+    /** The global transform of the viewport */
     private Transform transform = new Transform();
 
-    // Constructors
-    public Game(Vector2 dimensions, String scene) {
-        this(dimensions, scene, true);
-    }
+    /** The buffer that draws and scales the game */
+    private ScalableBuffer buffer;
 
+    /** Handles keystrokes from user */
+    private InputHandler input;
+
+    /**
+     * Creates a new Game with the given dimensions and scene ID
+     * 
+     * @param dimensions The dimensions of the game buffer
+     * @param scene The scene ID
+     */
+    public Game(Vector2 dimensions, String scene) { this(dimensions, scene, true); }
+
+    /**
+     * Creates a new Game with the given dimensions, scene ID, and host status
+     *
+     * @param dimensions The dimensions of the game buffer
+     * @param scene The scene ID
+     * @param isHost Whether this game is the host instance
+     */
     public Game(Vector2 dimensions, String scene, boolean isHost) {
-        // Set host status
+        // Set host status and dimensions
         this.isHost = isHost;
-
-        // Game dimensions
         this.dimensions = dimensions;
 
-        // Panel background
+        // Clear panel background
         setBackground(Color.BLACK);
 
-        // Double buffering
+        // Initialize scalable buffer
         buffer = new ScalableBuffer(dimensions);
 
-        // Focus window for input
+        // Focus window to capture inputs
         setFocusable(true);
         requestFocusInWindow();
 
@@ -72,23 +80,24 @@ public class Game extends JPanel {
         // Set current scene
         Scenes.setScene(scene);
 
+        // Create game thread
+        game = new GameThread(
+            this::update,
+            this::draw
+        );
+
         // Set singleton instance
         instance = this;
     }
 
-    /* ================ [ METHODS ] ================ */
+    /* ================ [ GAME ] ================ */
 
-    // Start game thread
+    /** Start the game loop */
     public void start() {
-        game = new ThrottledLoopThread(
-            Options.getMSPF(),
-            this::update,
-            this::repaint
-        );
         game.start();
     }
 
-    // Update game state
+    /** Update the game */
     private void update() {
         // Update scene
         Scenes.updateScene(Options.getSPF()); // Delta value from configs
@@ -96,34 +105,57 @@ public class Game extends JPanel {
         // Update physics
         PhysicsManager.getInstance().update(Options.getSPF());
     }
+    
+    /** Draw the game */
+    private void draw() {
+        repaint();
+    }
 
-    // Set global transform
+    /* ================ [ METHODS ] ================ */
+    
+    /**
+     * Set the global transform of the viewport
+     * 
+     * @param transform The new transform
+     */
     public void setTransform(Transform transform) {
         this.transform = transform;
     }
 
-    // Set buffer size
+    /**
+     * Set the size of the game buffer
+     * 
+     * @param size The new size
+     */
     public void setBufferSize(Vector2 size) {
         buffer.setSize(size);
     }
 
-    // Get buffer
+    /**
+     * Get the game buffer for drawing
+     * 
+     * @return The game buffer
+     */
     public ScalableBuffer getBuffer() {
         return buffer;
     }
 
-    // Get instance
+    /**
+     * Get the singleton instance of the game
+     * 
+     * @return The game instance
+     */
     public static Game getInstance() {
         return instance;
     }
 
-    // Get host status
-    public boolean isHost() {
-        return isHost;
-    }
-
     /* ================ [ JPANEL ] ================ */
 
+    /**
+     * Draw the game from the buffer
+     * 
+     * @param g The graphics context
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -145,8 +177,7 @@ public class Game extends JPanel {
             image,
             (getWidth() - w) / 2,
             (getHeight() - h) / 2,
-            w,
-            h,
+            w, h,
             null
         );
     }

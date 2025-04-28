@@ -3,12 +3,13 @@ package com.apcs.disunity.physics;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.nodes.Node;
 import com.apcs.disunity.nodes.Node2D;
+import com.apcs.disunity.nodes.UndrawnNode;
 
 /**
  * A component that adds collision detection ability to a Node2D
  * @author Aayushya Patel
  */
-public class Collider extends Node<Node<?>> {
+public class Collider extends UndrawnNode {
 
     private Vector2 size;
     private Vector2 offset = Vector2.ZERO;

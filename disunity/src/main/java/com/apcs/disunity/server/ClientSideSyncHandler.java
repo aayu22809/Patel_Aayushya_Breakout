@@ -1,7 +1,7 @@
 package com.apcs.disunity.server;
 
 import com.apcs.disunity.Options;
-import com.apcs.disunity.ThrottledLoopThread;
+import com.apcs.disunity.GameThread;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class ClientSideSyncHandler extends SyncHandler implements Closeable {
             }
         });
 
-        senderThread = new ThrottledLoopThread(
+        senderThread = new GameThread(
             Options.getMSPP(),
             () -> transceiver.send(poll()),
             ()->{}
