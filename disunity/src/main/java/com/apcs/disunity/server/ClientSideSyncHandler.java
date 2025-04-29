@@ -24,9 +24,8 @@ public class ClientSideSyncHandler extends SyncHandler implements Closeable {
         });
 
         senderThread = new GameThread(
-            Options.getMSPP(),
+            ()->{},
             () -> transceiver.send(poll()),
-            ()->{}
         );
     }
 
