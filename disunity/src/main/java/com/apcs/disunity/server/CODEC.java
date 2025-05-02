@@ -157,12 +157,6 @@ public enum CODEC {
         else for(CODEC codec: values()) {
             for(Field field: Util.getAnnotatedFields(self.getClass(), codec.ANNOTATION).toList()) {
                 try {
-                    if(SyncHandler.getInstance().getEndpointId() == 1 && field.getName().equals("numFrame") ) {
-                        System.out.println("foo");
-                    }
-                    if(SyncHandler.getInstance().getEndpointId() == 1 && self instanceof AnimationSprite as) {
-                        System.out.println("bar");
-                    }
                     field.set(self, codec.DECODER.decode(field.get(self), in));
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
