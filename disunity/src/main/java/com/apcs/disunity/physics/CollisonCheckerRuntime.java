@@ -35,7 +35,7 @@ public class CollisonCheckerRuntime {
                 node.getChildren()
                     .forEach(n -> searchColldier(
                         n,
-                        absPos.add(node2D.transform.pos),
+                        absPos.add(node2D.getPos()),
                         infos));
             } else {
                 node.getChildren()

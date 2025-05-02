@@ -40,7 +40,7 @@ public abstract class Body extends Node2D<Node<?>> {
     /* ================ [ NODE ] ================ */
 
     public void update(double delta) {
-        transform = transform.move(vel.mul(delta));
+        addPos(vel.mul(delta));
 
         super.update(delta);
     }

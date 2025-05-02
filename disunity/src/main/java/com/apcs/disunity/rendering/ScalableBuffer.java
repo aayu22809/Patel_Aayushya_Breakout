@@ -79,7 +79,7 @@ public class ScalableBuffer {
         Vector2 offset = Vector2.of(imgWidth, imgHeight)
             .mul(transform.scale)
             .mul(-0.5);
-        Transform _transform = transform.move(offset);
+        Transform _transform = transform.addPos(offset);
 
         // Drawing inputs
         int xPos = (int) Math.round(_transform.pos.x * xScale);

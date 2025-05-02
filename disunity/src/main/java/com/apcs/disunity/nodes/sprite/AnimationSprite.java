@@ -76,7 +76,7 @@ public class AnimationSprite extends Node2D<Node<?>> implements Indexed<String> 
         );
 
         // Draw image to buffer
-        Game.getInstance().getBuffer().drawImage(img, transform.apply(offset));
+        Game.getInstance().getBuffer().drawImage(img, getTransform().apply(offset));
 
         // Draw children
         super.draw(offset);

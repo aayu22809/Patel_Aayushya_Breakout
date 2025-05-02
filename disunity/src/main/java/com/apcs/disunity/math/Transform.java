@@ -34,13 +34,8 @@ public class Transform {
 
     /* ================ [ METHODS ] ================ */
 
-    // Basic setters
-    public Transform setPos(Vector2 pos) { return new Transform(pos, scale, rot); }
-    public Transform setScale(Vector2 scale) { return new Transform(pos, scale, rot); }
-    public Transform setRot(double rot) { return new Transform(pos, scale, rot); }
-
     // Move by an amount
-    public Transform move(Vector2 amt) { return new Transform(pos.add(amt), scale, rot); }
+    public Transform addPos(Vector2 amt) { return new Transform(pos.add(amt), scale, rot); }
 
     // Scale by a scalar
     public Transform scale(double amt) { return new Transform(pos, scale.mul(amt), rot); }

@@ -23,7 +23,9 @@ public class Camera extends Node2D<Node<?>> {
     @Override
     public void update(double delta) {
         // Update global transform
-        Game.getInstance().setTransform(transform);
+        // TODO: need to get global transform
+        // currently sets to local transform, so camera does not follow the player
+        Game.getInstance().setTransform(getTransform());
 
         // Update children
         super.update(delta);

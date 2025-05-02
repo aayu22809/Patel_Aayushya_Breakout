@@ -165,7 +165,7 @@ public class Game extends JPanel {
 
         // Update buffer
         Scenes.drawScene(
-            transform.move(dimensions.mul(0.5)) // Center on camera
+            transform.addPos(dimensions.mul(0.5)) // Center on camera
         );
 
         BufferedImage image = buffer.getImage();

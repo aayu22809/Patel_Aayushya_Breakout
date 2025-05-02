@@ -2,6 +2,7 @@ package com.apcs.disunity.nodes;
 
 import com.apcs.disunity.annotations.syncedfield.SyncedObject;
 import com.apcs.disunity.math.Transform;
+import com.apcs.disunity.math.Vector2;
 
 /**
  * A base class for 2D nodes with position
@@ -14,7 +15,7 @@ public class Node2D<T extends Node<?>> extends Node<T> {
     
     // Transform
     @SyncedObject
-    public Transform transform;
+    private Transform transform;
 
     // Constructors
     public Node2D(T... children) { this(new Transform(), children); }
@@ -27,4 +28,14 @@ public class Node2D<T extends Node<?>> extends Node<T> {
         // Draw children relative to this
         super.draw(transform.apply(offset));
     }
+
+    public void setPos(Vector2 pos) { transform = new Transform(pos, transform.scale, transform.rot); }
+    public void addPos(Vector2 vel) { transform = transform.addPos(vel); }
+    public void setScale(Vector2 scale) { transform = new Transform(transform.pos, scale, transform.rot); }
+    public void setRot(double rot) { transform = new Transform(transform.pos, transform.scale, transform.rot); }
+
+    public Vector2 getPos() { return transform.pos; }
+    public Vector2 getScale() { return transform.pos; }
+    public double getRot() { return transform.rot; }
+    public Transform getTransform(){ return transform; }
 }

@@ -28,7 +28,7 @@ public class LJCharacter extends Body {
     public LJCharacter(Vector2 pos, int owner) {
         super(new Collider(8,20));
         LJAAG.own(this, owner);
-        transform = transform.setPos(pos);
+        setPos(pos);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class LJCharacter extends Body {
         }
 
         if(Math.abs(getVel().x) >= 0.1 ){
-            transform = transform.setScale(
+            setScale(
                 Vector2.of(getVel().x > 0 ? 1 : -1, 1)
             );
         }
@@ -56,17 +56,14 @@ public class LJCharacter extends Body {
 
     @Override
     public void onCollision(CollisionInfo info) {
-        setVel(getVel().mul(-1));
-        super.update(info.delta);
-        setVel(getVel().mul(-1));
+        Vector2 vel = getVel().mul(info.delta);
+        addPos(vel.mul(-1));
 
-        while (getVel().length() > 0) {
-            setVel(getVel().mul(0.5));
-            super.update(info.delta);
+        while (vel.length() > 0) {
+            vel = vel.mul(0.5);
+            addPos(vel);
             if(info.isColliding()) {
-                setVel(getVel().mul(-1));
-                super.update(info.delta);
-                setVel(getVel().mul(-1));
+                addPos(vel.mul(-1));
             }
         }
         spriteSelector.select("stand");

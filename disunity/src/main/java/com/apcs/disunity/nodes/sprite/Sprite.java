@@ -43,7 +43,7 @@ public class Sprite extends Node2D<Node<?>> {
         BufferedImage img = Resources.loadResource(getImage(), Image.class).getBuffer();
 
         // Draw image to buffer
-        Game.getInstance().getBuffer().drawImage(img, transform.apply(offset));
+        Game.getInstance().getBuffer().drawImage(img, getTransform().apply(offset));
 
         // Draw children
         super.draw(offset);
