@@ -14,7 +14,7 @@ import com.apcs.disunity.resources.Resources;
  * 
  * @author Qinzhao Li
  */
-public class Sprite extends Node2D {
+public class Sprite extends Node2D<Node<?>> {
 
     /* ================ [ FIELDS ] ================ */
 
@@ -25,9 +25,6 @@ public class Sprite extends Node2D {
     public Sprite(String image) { super(); this.image = image; }
     public Sprite(String image, Node<?>... children) { super(children); this.image = image; }
     public Sprite(String image, Transform transform, Node<?>... children) { super(transform, children); this.image = image; }
-    public Sprite(String image, boolean visible) { super(visible); this.image = image; }
-    public Sprite(String image, boolean visible, Node<?>... children) { super(visible, children); this.image = image; }
-    public Sprite(String image, Transform transform, boolean visible, Node<?>... children) { super(transform, visible, children); this.image = image; }
 
     /* ================ [ METHODS ] ================ */
 

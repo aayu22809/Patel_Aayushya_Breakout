@@ -1,17 +1,37 @@
 package com.apcs.disunity.nodes.selector;
 
+import com.apcs.disunity.annotations.syncedfield.SyncedObject;
+import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.nodes.Node;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class SelectorNode<K, T extends Node<?> & Indexed<K>> extends Node<T> {
+
     private final T fallback;
-    private HashMap<K, T> children = new HashMap<>();
+    protected final HashMap<K, T> children = new HashMap<>();
+
+    @SyncedObject
     private K index;
 
-    public SelectorNode(T fallback) {
+    public SelectorNode(T fallback, T... children) {
+        super();
         this.fallback = fallback;
+        this.index = fallback.index();
+        addChild(fallback);
+        addChildren(children);
+    }
+
+    // stop update propagation
+    @Override
+    public void update(double delta) {
+        getSelected().update(delta);
+    }
+
+    @Override
+    public void draw(Transform transform) {
+        getSelected().draw(transform);
     }
 
     @Override
@@ -20,7 +40,7 @@ public class SelectorNode<K, T extends Node<?> & Indexed<K>> extends Node<T> {
     }
 
     @Override
-    public List<T> getChildren() {
+    public List<T> getDynamicChildren() {
         return children.values().stream().toList();
     }
 

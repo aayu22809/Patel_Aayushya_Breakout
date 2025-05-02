@@ -1,6 +1,7 @@
 package com.apcs.disunity.server;
 
 import com.apcs.disunity.annotations.syncedfield.*;
+import com.apcs.disunity.nodes.sprite.AnimationSprite;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,6 +52,11 @@ public enum CODEC {
         CODEC::encodeDouble,
         CODEC::decodeDouble,
         SyncedDouble.class
+    ),
+    STRING(
+        CODEC::encodeString,
+        CODEC::decodeString,
+        SyncedString.class
     ),
     OBJECT(
         CODEC::encodeObject,
@@ -114,6 +120,26 @@ public enum CODEC {
     public static double decodeDouble(InputStream in) { return Double.longBitsToDouble(decodeLong(in)); }
     public static double decodeDouble(Object __, InputStream in) { return decodeDouble(in); }
 
+    public static void encodeString(String val, OutputStream out) {
+        if(val == null) {
+            throw new RuntimeException("null is not supported.");
+        } else {
+            for(char c: val.toCharArray()) {
+                encodeChar(c, out);
+            }
+            encodeChar('\0', out);
+        }
+    }
+    public static void encodeString(Object val, OutputStream out) { encodeString((String) val, out); }
+    public static String decodeString(InputStream in) {
+        StringBuilder builder = new StringBuilder();
+        for(char c = decodeChar(in); c != '\0'; c = decodeChar(in)) {
+            builder.append(c);
+        }
+        return builder.toString();
+    }
+    public static String decodeString(Object __, InputStream in) { return decodeString(in); }
+
     public static void encodeObject(Object val, OutputStream out) {
         if(val instanceof SelfCodec<?>) ((SelfCodec<?>) val).encode(out);
         else for(CODEC codec: values()) {
@@ -131,6 +157,12 @@ public enum CODEC {
         else for(CODEC codec: values()) {
             for(Field field: Util.getAnnotatedFields(self.getClass(), codec.ANNOTATION).toList()) {
                 try {
+                    if(SyncHandler.getInstance().getEndpointId() == 1 && field.getName().equals("numFrame") ) {
+                        System.out.println("foo");
+                    }
+                    if(SyncHandler.getInstance().getEndpointId() == 1 && self instanceof AnimationSprite as) {
+                        System.out.println("bar");
+                    }
                     field.set(self, codec.DECODER.decode(field.get(self), in));
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);

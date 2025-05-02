@@ -1,12 +1,13 @@
 package com.apcs.disunity.nodes;
 
-import com.apcs.disunity.annotations.Requires;
+import com.apcs.disunity.math.Transform;
+import com.apcs.disunity.nodes.selector.Indexed;
+import com.apcs.disunity.server.Util;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * The base class for all nodes in the game
@@ -22,42 +23,16 @@ public abstract class Node<T extends Node<?>> {
     /* ================ [ FIELDS ] ================ */
 
     // List of children
-    private final List<T> children;
-
-    // Parent of node
-    private Node<?> parent;
-
-    // Triggers initialize
-    private boolean isInitialized = false;
+    private final List<T> children = new ArrayList<>();
 
     // Constructors
-    public Node() {
-        this.children = new ArrayList<>();
-    }
-
     @SafeVarargs
-    public Node(T... children) {
-        this.children = new ArrayList<>(Arrays.asList(children));
-    }
+    public Node(T... children) { addChildren(children); }
 
     /* ================ [ METHODS ] ================ */
 
     // Add child
-    public void addChild(T node) {
-        children.add(node);
-        node.setParent(this);
-        isInitialized = false;
-    }
-
-    // Get parent
-    public Node<?> getParent() {
-        return parent;
-    }
-
-    // Set parent
-    public void setParent(Node<?> parent) {
-        this.parent = parent;
-    }
+    public void addChild(T node) { children.add(node); }
 
     @SafeVarargs
     public final void addChildren(T... nodes) {
@@ -68,17 +43,17 @@ public abstract class Node<T extends Node<?>> {
 
     // Remove child
     public void removeChild(T node) {
-        children.remove(node);
+        getChildren().remove(node);
     }
 
     // Clear children
     public void clearChildren() {
-        children.clear();
+        getChildren().clear();
     }
 
     // Get child of a certain type
     public <U extends T> U getChild(Class<U> type) {
-        for (T node : children) {
+        for (T node : getChildren()) {
             if (type.isInstance(node)) {
                 return type.cast(node);
             }
@@ -87,81 +62,51 @@ public abstract class Node<T extends Node<?>> {
     }
 
     // Get children
-    public List<T> getChildren() {
+    public List<T> getDynamicChildren() {
         return children;
     }
-
-    // Get children of a certain type
-    public <U> List<U> getChildren(Class<U> type) {
-        List<U> children = new ArrayList<>();
-        for (T node : getChildren()) {
-            if (type.isInstance(node)) {
-                children.add(type.cast(node));
-            }
-        }
-        return children;
+    public List<T> getFieldChildren() {
+        return Util.getAnnotatedFields(this.getClass(),FieldChild.class)
+            .map(f -> {
+                try {
+                    return (T) f.get(this);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            })
+            .toList();
+    }
+    public List<T> getChildren() {
+        return Stream.concat(
+            getDynamicChildren().stream(),
+            getFieldChildren().stream()
+        ).toList();
     }
 
     /* ================ [ NODE ] ================ */
 
-    // Initialize node
-    public void initialize() {
-        // Check if node meets requirements
-        if (this.getClass().isAnnotationPresent(Requires.class)) {
-            // Grab nodes from annotation
-            Requires requires = this.getClass().getAnnotation(Requires.class);
-            Set<Class<? extends Node>> requirements = new HashSet<>(
-                Arrays.asList(requires.nodes())
-            );
-
-            // Check children
-            for (T node : children) {
-                requirements.removeIf(required ->
-                    required.isAssignableFrom(node.getClass())
-                );
-            }
-
-            // Throw exception if requirements are not met
-            if (!requirements.isEmpty()) {
-                throw new RuntimeException(
-                    "Node " +
-                    this.getClass().getSimpleName() +
-                    " requires " +
-                    requirements.iterator().next().getSimpleName() +
-                    " to be initialized."
-                );
-            }
-        }
-
-        // Set initialized
-        isInitialized = true;
-    }
-
-    // Tick node
-    public final void tick(double delta) {
-        // Re-initialize node
-        if (!isInitialized) initialize();
-
-        // Update node
-        update(delta);
-    }
-
     // Update node
     public void update(double delta) {
         // Update children
-        for (T node : children) node.tick(delta);
+        for (T node : getChildren()) node.update(delta);
     }
+    public void draw(Transform transform) { getChildren().forEach(n -> n.draw(transform)); }
 
     /* ================ [ PRINTING ] ================ */
 
     /// Overload for default behavior of {@link #print(boolean, Function, List)}.
     /// Prints node names in tree structure
     public void print() {
-        print(
-            true,
-            n -> "○ " + n.getClass().getSimpleName(),
-            new ArrayList<>()
+        print(true, Node::defaultLabel, new ArrayList<>()
         );
+    }
+
+    private static String defaultLabel(Node<?> node) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("( ) ");
+        if(node instanceof Indexed<?> indexed) builder.append(indexed.index().toString());
+        else builder.append(node.getClass().getName().substring(node.getClass().getPackageName().length()+1));
+        return builder.toString();
     }
 
     /// method that prints information and children of node recursively in a tree format.
@@ -174,17 +119,17 @@ public abstract class Node<T extends Node<?>> {
         List<String> indent
     ) {
         indent.forEach(System.out::print);
-        System.out.print(isLast ? "└ " : "├ ");
+        System.out.print(isLast ? " '--" : " |--");
         System.out.println(formatter.apply(this));
 
-        if (isLast) indent.add("  ");
-        else indent.add("│ ");
+        if (isLast) indent.add("    ");
+        else indent.add(" |  ");
 
-        for (int i = 0; i < children.size() - 1; i++) {
-            ((Node<?>) children.get(i)).print(false, formatter, indent);
+        for (int i = 0; i < getChildren().size() - 1; i++) {
+            ((Node<?>) getChildren().get(i)).print(false, formatter, indent);
         }
-        if (!children.isEmpty()) {
-            ((Node<?>) children.getLast()).print(true, formatter, indent);
+        if (!getChildren().isEmpty()) {
+            ((Node<?>) getChildren().getLast()).print(true, formatter, indent);
         }
 
         indent.removeLast();

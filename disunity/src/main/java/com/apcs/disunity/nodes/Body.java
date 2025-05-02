@@ -1,0 +1,50 @@
+package com.apcs.disunity.nodes;
+
+import com.apcs.disunity.annotations.syncedfield.SyncedObject;
+import com.apcs.disunity.math.Transform;
+import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.physics.Collider;
+import com.apcs.disunity.physics.CollisionInfo;
+
+/**
+ * A 2d node that can handle movement and collision
+ * 
+ * @author Qinzhao Li
+ */
+public abstract class Body extends Node2D<Node<?>> {
+
+    /* ================ [ FIELDS ] ================ */
+
+    // Velocity
+    @SyncedObject
+    private Vector2 vel = Vector2.ZERO;
+
+    @FieldChild
+    public final Collider collider;
+
+    // Constructors
+    public Body(Collider collider, Node<?>... children) { this(new Transform(), collider, children);}
+    public Body(Transform transform, Collider collider, Node<?>... children) { super(transform, children);
+        this.collider = collider;
+        collider.collisionInfo.connect(this::onCollision);
+    }
+
+    /* ================ [ METHODS ] ================ */
+
+    // Set velocity
+    public void setVel(Vector2 vel) { this.vel = vel; }
+
+    // Get velocity
+    public Vector2 getVel() { return vel; }
+
+    /* ================ [ NODE ] ================ */
+
+    public void update(double delta) {
+        transform = transform.move(vel.mul(delta));
+
+        super.update(delta);
+    }
+
+    public abstract void onCollision(CollisionInfo info);
+
+}

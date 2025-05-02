@@ -79,7 +79,7 @@ public abstract class SyncHandler implements Closeable {
     }
 
     public final boolean isClient() {
-        return getEndpointId() == HOST_ID;
+        return getEndpointId() != HOST_ID;
     }
 
     public abstract int getEndpointId();

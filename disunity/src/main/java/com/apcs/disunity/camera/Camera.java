@@ -10,12 +10,11 @@ import com.apcs.disunity.nodes.Node2D;
  * 
  * @author Qinzhao Li
  */
-public class Camera extends Node2D {
+public class Camera extends Node2D<Node<?>> {
 
     /* ================ [ FIELDS ] ================ */
 
     // Constructors
-    public Camera() { super(); }
     public Camera(Node<?>... children) { super(children); }
     public Camera(Transform transform, Node<?>... children) { super(transform, children); }
 
