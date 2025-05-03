@@ -9,16 +9,10 @@ public class CollisionInfo {
     public final AABB me;
     public final AABB you;
     public final double delta;
-    public final CollisonCheckerRuntime checker;
 
-    public CollisionInfo(AABB self, AABB other, double delta, CollisonCheckerRuntime checker) {
+    public CollisionInfo(AABB self, AABB other, double delta) {
         this.me = self;
         this.you = other;
         this.delta = delta;
-        this.checker = checker;
-    }
-
-    public boolean isColliding() {
-        return checker.isColliding(me,you);
     }
 }

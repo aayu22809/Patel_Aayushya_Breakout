@@ -46,7 +46,7 @@ public class LJCharacter extends Body {
         }
 
         if(Math.abs(getVel().x) >= 0.1 ){
-            setScale(
+            spriteSelector.getSelected().setScale(
                 Vector2.of(getVel().x > 0 ? 1 : -1, 1)
             );
         }
@@ -62,7 +62,7 @@ public class LJCharacter extends Body {
         while (vel.length() > 0) {
             vel = vel.mul(0.5);
             addPos(vel);
-            if(info.isColliding()) {
+            if(info.you.isColliding(info.me.setPos(getPos()))) {
                 addPos(vel.mul(-1));
             }
         }
