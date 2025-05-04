@@ -33,17 +33,10 @@ public class PhysicsEngine {
 
         searchCollider(Scenes.getScene(), Vector2.ZERO, colliders);
 
-        // nC2 loop
-        for (int i = 0; i < colliders.size() - 1; i++) {
-            for (int j = i + 1; j < colliders.size(); j++) {
-                ColliderInfo a = colliders.get(i);
-                ColliderInfo b = colliders.get(j);
-                if (a.AABB.isColliding(b.AABB)) {
-                    // Trigger collision events
-                    a.COLLISION_INFO.emit(new CollisionInfo(a.AABB, b.AABB, delta));
-                    b.COLLISION_INFO.emit(new CollisionInfo(b.AABB, a.AABB, delta));
-//                  Signals.trigger("collision_" + a.getId(), new CollisionInfo(a, b));
-//                  Signals.trigger("collision_" + b.getId(), new CollisionInfo(b, a));
+        for (ColliderInfo c1: colliders) {
+            for (ColliderInfo c2: colliders) {
+                if (c1 != c2 && c1.AABB.isColliding(c2.AABB)) {
+                    c1.COLLISION_INFO.emit(new CollisionInfo(c1.AABB, c2.AABB, delta));
                 }
             }
         }

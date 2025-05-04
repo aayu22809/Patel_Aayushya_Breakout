@@ -10,48 +10,25 @@ import com.apcs.disunity.signals.Signal;
  * @author Aayushya Patel
  */
 public class Collider extends Node2D<Node<?>> {
+    public static final byte DEFAULT_LAYER = 0;
+    public static final int DEFAULT_MASK = 1;
+    public static final int COLLIDE_WITH_ALL = ~0;
 
-    private Vector2 size;
+    public final Vector2 SIZE;
 
-    // Collision floors
-    private int layer = 1;
+    /// Collision layer
+    public final int LAYER;
+    /// bit set representing which layers to collide with
+    public final int MASK;
 
     public Signal<CollisionInfo> collisionInfo = new Signal<>(CollisionInfo.class);
 
-    /**
-     * Create new collider with the given size
-     * @param size Size of the collision box
-     */
-    public Collider(Vector2 size) {
-        this.size = size;
+    /// layers 0-31 can collide with other colliders.
+    /// layers 32- will not collide with anything.
+    public Collider(int w, int h, byte layer, int mask) {
+        SIZE = Vector2.of(w,h);
+        this.LAYER = 1<<layer;
+        this.MASK = mask;
     }
-    public Collider(int w, int h) {
-        this(Vector2.of(w,h));
-    }
-
-    /**
-     * Set the collision layer
-     */
-    public void setLayer(int layer) {
-        this.layer = layer;
-    }
-
-    /**
-     * Get the collision layer
-     */
-    public int getLayer() {
-        return layer;
-    }
-
-    public void setSize(Vector2 size) {
-        this.size = size;
-    }
-
-    /**
-     * Get the size of the collider
-     */
-    public Vector2 getSize() {
-        return size;
-    }
-
+    public Collider(int w, int h) { this(w,h, DEFAULT_LAYER, DEFAULT_MASK); }
 }
