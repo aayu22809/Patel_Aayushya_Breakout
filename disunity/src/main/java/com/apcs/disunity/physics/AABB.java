@@ -10,13 +10,13 @@ public class AABB {
     public final double TOP;
     public final Vector2 SIZE;
     public final Vector2 POS;
-    public final int LAYER;
-    public final int MASK;
+    public final CollisionLayer LAYER;
+    public final CollisionMask MASK;
 
     public AABB(Collider collider, Vector2 absPos) {
         this(collider.SIZE, absPos, collider.LAYER, collider.MASK);
     }
-    public AABB(Vector2 size, Vector2 absPos, int layer, int mask) {
+    public AABB(Vector2 size, Vector2 absPos, CollisionLayer layer, CollisionMask mask) {
         this.LAYER = layer;
         this.SIZE = size;
         this.MASK = mask;
@@ -29,7 +29,7 @@ public class AABB {
 
     public boolean isColliding(AABB that) {
         // Check actual collision
-        return (this.MASK & that.LAYER) != 0 &&
+        return (this.MASK.BITSET & that.LAYER.BITSET) != 0 &&
             Math.max(this.LEFT, that.LEFT) < Math.min(this.RIGHT, that.RIGHT) &&
             Math.max(this.TOP, that.TOP) < Math.min(this.BOTTOM, that.BOTTOM);
     }
