@@ -32,6 +32,7 @@ public class Inputs {
 
     // Mouse position on the screen
     public static Vector2 mousePos = Vector2.of(-1);
+    public static Vector2 mouseVel = Vector2.ZERO;
 
     /* ================ [ METHODS ] ================ */
 

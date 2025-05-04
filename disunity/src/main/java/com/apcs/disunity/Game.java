@@ -1,6 +1,7 @@
 package com.apcs.disunity;
 
 import com.apcs.disunity.input.InputHandler;
+import com.apcs.disunity.input.Inputs;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.physics.PhysicsEngine;
@@ -101,6 +102,9 @@ public class Game extends JPanel {
     private void update() {
         // Update scene
         Scenes.updateScene(Options.getSPF()); // Delta value from configs
+
+        // reset mouse vel
+        Inputs.mouseVel = Vector2.ZERO;
 
         // Update physics
         PhysicsEngine.getInstance().update(Options.getSPF());

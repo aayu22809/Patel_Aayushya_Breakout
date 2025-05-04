@@ -54,7 +54,9 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
         Vector2 pos = Vector2.of(e.getX(), e.getY());
         Vector2 viewDim = Vector2.of(bounds.width, bounds.height);
 
-        Inputs.mousePos = pos.sub(viewDim.div(2)).div(buffer.getScale());
+        Vector2 newPos = pos.sub(viewDim.div(2)).div(buffer.getScale());
+        Inputs.mouseVel = newPos.sub(Inputs.mousePos);
+        Inputs.mousePos = newPos;
     }
 
     /* ================ [ FOCUSLISTENER ] ================ */
