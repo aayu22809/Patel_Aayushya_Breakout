@@ -39,7 +39,7 @@ public class LJAAG {
         Inputs.fromJSON("keybinds.json");
 
         // Create the game scenes
-        Scenes.addScene("test", new Node<Node<?>>(
+        Scenes.addScene("test", new Node<>(
             new Camera(),
             new Sprite("background.png")
         ){});
