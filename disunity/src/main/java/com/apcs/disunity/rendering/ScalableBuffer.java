@@ -22,8 +22,8 @@ public class ScalableBuffer {
     private Graphics2D graphics;
 
     // Scale
-    private Vector2 ratio;
-    private double xScale, yScale;
+    private final Vector2 ratio;
+    private double scale = 1;
 
     // Constructors
     public ScalableBuffer(Vector2 ratio) { this(ratio, ratio); }
@@ -52,8 +52,7 @@ public class ScalableBuffer {
         graphics = image.createGraphics();
 
         // Set scale
-        xScale = size.x / ratio.x;
-        yScale = size.y / ratio.y;
+        scale = size.x / ratio.x;
 
         // White background
         graphics.setBackground(Color.WHITE);
@@ -63,8 +62,7 @@ public class ScalableBuffer {
     public void clear() { graphics.clearRect(0, 0, image.getWidth(), image.getHeight()); }
 
     // Getters
-    public double getXScale() { return xScale; }
-    public double getYScale() { return yScale; }
+    public double getScale() { return scale; }
     public BufferedImage getImage() { return image; }
 
     /* ================ [ GRAPHICS ] ================ */
@@ -72,22 +70,22 @@ public class ScalableBuffer {
     // Draw image
     public void drawImage(Image img, Transform transform) {
         // Image dimensions
-        double imgWidth = img.getWidth(null);
-        double imgHeight = img.getHeight(null);
+        Vector2 imgDim = Vector2.of(
+            img.getWidth(null),
+            img.getHeight(null)
+        );
 
         // Center pivot
-        Vector2 offset = Vector2.of(imgWidth, imgHeight)
+        Vector2 offset = imgDim
             .mul(transform.scale)
             .mul(-0.5);
-        Transform _transform = transform.addPos(offset);
+        transform = transform.addPos(offset);
 
         // Drawing inputs
-        int xPos = (int) Math.round(_transform.pos.x * xScale);
-        int yPos = (int) Math.round(_transform.pos.y * yScale);
-        int width = (int) Math.round(imgWidth * _transform.scale.x * xScale);
-        int height = (int) Math.round(imgHeight * _transform.scale.y * yScale);
+        Vector2 pos = transform.pos.mul(scale);
+        Vector2 dim = imgDim.mul(transform.scale).mul(this.scale);
 
-        graphics.drawImage(img, xPos, yPos, width, height, null);
+        graphics.drawImage(img, pos.xi, pos.yi, dim.xi, dim.yi, null);
     }
 
 }

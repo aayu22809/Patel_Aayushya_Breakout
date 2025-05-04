@@ -10,6 +10,8 @@ import java.util.Set;
 import com.apcs.disunity.input.actions.Action;
 import com.apcs.disunity.input.actions.ActionSet;
 import static com.apcs.disunity.resources.Resources.loadFileAsInputStream;
+
+import com.apcs.disunity.math.Vector2;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,7 +31,7 @@ public class Inputs {
     private static final Set<Input> inputs = new HashSet<>();
 
     // Mouse position on the screen
-    public static int mouseX = 0, mouseY = 0;
+    public static Vector2 mousePos = Vector2.of(-1);
 
     /* ================ [ METHODS ] ================ */
 

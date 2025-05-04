@@ -1,5 +1,10 @@
 package com.apcs.disunity.input;
 
+import com.apcs.disunity.Game;
+import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.rendering.ScalableBuffer;
+
+import java.awt.*;
 import java.awt.event.*;
 
 /**
@@ -44,8 +49,12 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        Inputs.mouseX = e.getX();
-        Inputs.mouseY = e.getY();
+        ScalableBuffer buffer = Game.getInstance().getBuffer();
+        Rectangle bounds = Game.getInstance().getBounds();
+        Vector2 pos = Vector2.of(e.getX(), e.getY());
+        Vector2 viewDim = Vector2.of(bounds.width, bounds.height);
+
+        Inputs.mousePos = pos.sub(viewDim.div(2)).div(buffer.getScale());
     }
 
     /* ================ [ FOCUSLISTENER ] ================ */
