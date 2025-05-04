@@ -26,7 +26,7 @@ public class LJAAG {
 
     /* ================ [ DRIVER ] ================ */
     
-    public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         MultiplayerLauncher launcher = new MultiplayerLauncher(LJAAG::runApp);
         launcher.lauch();
     }

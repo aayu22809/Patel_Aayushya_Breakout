@@ -2,7 +2,7 @@ package com.apcs.disunity.physics;
 
 import com.apcs.disunity.math.Vector2;
 
-// Axis Aligned Bounding Box
+// Axis Aligned Bounding Box, where pos is at the center of the bounding box.
 public class AABB {
     public final double RIGHT;
     public final double BOTTOM;
@@ -19,8 +19,8 @@ public class AABB {
         this.LAYER = layer;
         this.SIZE = size;
         POS = absPos;
-        TOP = absPos.y;
-        LEFT = absPos.x;
+        TOP = absPos.y - SIZE.y/2;
+        LEFT = absPos.x - SIZE.x/2;
         BOTTOM = TOP + SIZE.y;
         RIGHT = LEFT + SIZE.x;
     }
