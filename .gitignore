@@ -11,9 +11,6 @@
 !mvnw.cmd
 !.mvn/wrapper/
 
-### Keep Jars so Mr. Ferrante can run things ###
-!**/*.jar
-
 ### Build Artifacts ###
 **/*.class
 **/*.war
