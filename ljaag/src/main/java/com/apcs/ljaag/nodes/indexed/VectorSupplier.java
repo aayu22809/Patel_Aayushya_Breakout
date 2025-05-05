@@ -1,8 +1,8 @@
 package com.apcs.ljaag.nodes.indexed;
 
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.nodes.Node;
-import com.apcs.disunity.nodes.selector.Indexed;
+import com.apcs.disunity.game.nodes.Node;
+import com.apcs.disunity.game.nodes.selector.Indexed;
 
 import java.util.function.Supplier;
 

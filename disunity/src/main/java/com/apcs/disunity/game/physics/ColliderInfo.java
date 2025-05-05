@@ -1,0 +1,15 @@
+package com.apcs.disunity.game.physics;
+
+import com.apcs.disunity.math.Vector2;
+import com.apcs.disunity.game.nodes.twodim.Collider;
+import com.apcs.disunity.game.nodes.signals.Signal;
+
+public class ColliderInfo {
+    public final AABB AABB;
+    public final Signal<CollisionInfo> COLLISION_INFO;
+
+    public ColliderInfo(Collider collider, Vector2 absPos) {
+        AABB = new AABB(collider,absPos);
+        COLLISION_INFO = collider.collisionInfo;
+    }
+}

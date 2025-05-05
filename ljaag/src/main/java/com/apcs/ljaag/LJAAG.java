@@ -2,16 +2,16 @@ package com.apcs.ljaag;
 
 import java.io.IOException;
 
-import com.apcs.disunity.App;
-import com.apcs.disunity.Game;
-import com.apcs.disunity.camera.Camera;
-import com.apcs.disunity.input.Inputs;
+import com.apcs.disunity.app.App;
+import com.apcs.disunity.game.Game;
+import com.apcs.disunity.game.nodes.twodim.Camera;
+import com.apcs.disunity.app.input.Inputs;
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.nodes.Node;
-import com.apcs.disunity.nodes.sprite.Sprite;
-import com.apcs.disunity.scenes.Scenes;
-import com.apcs.disunity.server.MultiplayerLauncher;
-import com.apcs.disunity.server.SyncHandler;
+import com.apcs.disunity.game.nodes.Node;
+import com.apcs.disunity.game.nodes.sprite.Sprite;
+import com.apcs.disunity.game.nodes.scenes.Scenes;
+import com.apcs.disunity.app.network.MultiplayerLauncher;
+import com.apcs.disunity.app.network.packet.SyncHandler;
 import com.apcs.ljaag.nodes.body.LJCharacter;
 
 /**

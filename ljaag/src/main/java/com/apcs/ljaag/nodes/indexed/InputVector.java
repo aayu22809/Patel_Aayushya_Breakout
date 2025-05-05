@@ -1,6 +1,6 @@
 package com.apcs.ljaag.nodes.indexed;
 
-import com.apcs.disunity.input.Inputs;
+import com.apcs.disunity.app.input.Inputs;
 import com.apcs.disunity.math.Vector2;
 
 public class InputVector extends VectorSupplier {

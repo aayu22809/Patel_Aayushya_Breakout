@@ -1,11 +1,11 @@
 package com.apcs.disunity.math;
 
-import com.apcs.disunity.server.SelfCodec;
+import com.apcs.disunity.app.network.packet.SelfCodec;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.apcs.disunity.server.CODEC.*;
+import static com.apcs.disunity.app.network.packet.CODEC.*;
 
 /**
  * A 2D vector with x and y components

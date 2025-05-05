@@ -1,13 +1,13 @@
 package com.apcs.ljaag.nodes.body;
 
-import com.apcs.disunity.nodes.FieldChild;
-import com.apcs.disunity.nodes.sprite.AnimationSprite;
+import com.apcs.disunity.game.nodes.FieldChild;
+import com.apcs.disunity.game.nodes.sprite.AnimationSprite;
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.nodes.Body;
-import com.apcs.disunity.nodes.selector.SelectorNode;
-import com.apcs.disunity.physics.Collider;
-import com.apcs.disunity.physics.CollisionInfo;
-import com.apcs.disunity.server.SyncHandler;
+import com.apcs.disunity.game.nodes.twodim.Body;
+import com.apcs.disunity.game.nodes.selector.SelectorNode;
+import com.apcs.disunity.game.nodes.twodim.Collider;
+import com.apcs.disunity.game.physics.CollisionInfo;
+import com.apcs.disunity.app.network.packet.SyncHandler;
 import com.apcs.ljaag.LJAAG;
 import com.apcs.ljaag.nodes.indexed.InputVector;
 import com.apcs.ljaag.nodes.indexed.VectorSupplier;

@@ -1,7 +1,7 @@
 package com.apcs.disunity.math;
 
-import com.apcs.disunity.annotations.syncedfield.SyncedDouble;
-import com.apcs.disunity.annotations.syncedfield.SyncedObject;
+import com.apcs.disunity.app.network.packet.annotation.SyncedDouble;
+import com.apcs.disunity.app.network.packet.annotation.SyncedObject;
 
 /**
  * Contains position, scale, and rotation information
