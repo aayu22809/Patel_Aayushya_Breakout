@@ -38,4 +38,10 @@ public class AABB {
     public AABB setPos(Vector2 pos) {
         return new AABB(SIZE, pos, LAYER, MASK);
     }
+
+    /// returns array of doubles that represents the boundary of this AABB, in the order of
+    /// RIGHT, BOTTOM, LEFT, TOP
+    public double[] toArray() {
+        return new double[]{RIGHT, BOTTOM, LEFT, TOP};
+    }
 }
