@@ -1,8 +1,11 @@
 package com.apcs.disunity.game.nodes;
 
 import com.apcs.disunity.game.nodes.selector.Indexed;
+import com.apcs.disunity.game.nodes.signals.SignalBus;
+import com.apcs.disunity.game.physics.PhysicsEngine;
 
 public class Scene extends Node<Node<?>> implements Indexed<String> {
+    public final SignalBus GLOBAL_SIGNAL_BUS = new SignalBus();
     private final String name;
     public Scene(String name, Node<?>... children) {
         super(children);
@@ -11,5 +14,11 @@ public class Scene extends Node<Node<?>> implements Indexed<String> {
     @Override
     public String index() {
         return name;
+    }
+
+    @Override
+    public void update(double delta) {
+        super.update(delta);
+        PhysicsEngine.run(this,delta);
     }
 }

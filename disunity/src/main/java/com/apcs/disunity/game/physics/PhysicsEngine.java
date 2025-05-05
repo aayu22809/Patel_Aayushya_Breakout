@@ -1,6 +1,6 @@
 package com.apcs.disunity.game.physics;
 
-import com.apcs.disunity.game.Game;
+import com.apcs.disunity.game.nodes.Scene;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.game.nodes.twodim.Collider;
 import com.apcs.disunity.game.nodes.Node;
@@ -14,25 +14,13 @@ import java.util.ArrayList;
  */
 public class PhysicsEngine {
 
-    private static final PhysicsEngine instance = new PhysicsEngine();
-
-    // Private constructor to enforce singleton pattern
-    private PhysicsEngine() {}
-
-    /**
-     * Get the singleton instance
-     */
-    public static PhysicsEngine getInstance() {
-        return instance;
-    }
-
     /**
      * Update the physics system
      */
-    public void update(double delta) {
+    public static void run(Scene scene, double delta) {
         ArrayList<ColliderInfo> colliders = new ArrayList<>();
 
-        searchCollider(Game.getInstance().getScene(), Vector2.ZERO, colliders);
+        searchCollider(scene, Vector2.ZERO, colliders);
 
         for (ColliderInfo c1: colliders) {
             for (ColliderInfo c2: colliders) {
@@ -43,7 +31,7 @@ public class PhysicsEngine {
         }
     }
     
-    private void searchCollider(Node<?> node, Vector2 absPos, ArrayList<ColliderInfo> infos) {
+    private static void searchCollider(Node<?> node, Vector2 absPos, ArrayList<ColliderInfo> infos) {
         if(node instanceof Collider collider) {
             infos.add(new ColliderInfo(collider, absPos.add(collider.getPos())));
         } else {
@@ -63,5 +51,4 @@ public class PhysicsEngine {
             }
         }
     }
-
 }

@@ -6,6 +6,7 @@ import com.apcs.disunity.app.input.Inputs;
 import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.nodes.Scene;
 import com.apcs.disunity.game.nodes.selector.SelectorNode;
+import com.apcs.disunity.game.nodes.signals.SignalBus;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.game.physics.PhysicsEngine;
@@ -43,6 +44,8 @@ public class Game extends JPanel {
 
     private final SelectorNode<String, Scene> scenes = new SelectorNode<>(new Scene("default"));
 
+    private SignalBus globalSignal;
+
     /**
      * Creates a new Game with the given dimensions and scene ID
      * 
@@ -54,7 +57,6 @@ public class Game extends JPanel {
      * Creates a new Game with the given dimensions, scene ID, and host status
      *
      * @param dimensions The dimensions of the game buffer
-     * @param scene The scene ID
      * @param isHost Whether this game is the host instance
      */
     public Game(Vector2 dimensions, boolean isHost) {
@@ -157,9 +159,10 @@ public class Game extends JPanel {
     public void addScene(Scene s) { scenes.addChild(s); }
 
     public void setScene(String name) {
-        scenes.select(name);
+        globalSignal = scenes.select(name).GLOBAL_SIGNAL_BUS;
     }
-    public Scene getScene() {return scenes.getSelected();}
+
+    public SignalBus getGlobalSignal() { return globalSignal; }
 
     /* ================ [ JPANEL ] ================ */
 

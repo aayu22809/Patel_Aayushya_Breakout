@@ -23,7 +23,7 @@ public class AnimationSprite extends Sprite implements Indexed<String> {
     private final double[] frameDurations;
 
     // Current frame
-    @SyncedInt
+//    @SyncedInt
     private int frameCount = 0;
 
     public AnimationSprite(String name, ImageLocation imageLocation, double... frameDurations) {

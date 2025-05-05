@@ -11,8 +11,8 @@ import java.util.function.Consumer;
  */
 public class SignalBus extends SelectorNode<Class<?>, Signal<?>> {
 
-    public SignalBus(Signal<?> fallback) {
-        super(fallback);
+    public SignalBus() {
+        super(new Signal<>(Object.class));
     }
 
     /* ================ [ METHODS ] ================ */
