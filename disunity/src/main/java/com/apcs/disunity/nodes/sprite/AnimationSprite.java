@@ -17,13 +17,12 @@ import java.awt.image.BufferedImage;
  * 
  * @author Qinzhao Li
  */
-public class AnimationSprite extends Node2D<Node<?>> implements Indexed<String> {
+public class AnimationSprite extends Sprite implements Indexed<String> {
 
     /* ================ [ FIELDS ] ================ */
 
     // Animation name
     private final String name;
-    private final String path;
     private long prevFrame = System.nanoTime();
 
     // Frame durations list
@@ -33,12 +32,17 @@ public class AnimationSprite extends Node2D<Node<?>> implements Indexed<String> 
     @SyncedInt
     private int frameCount = 0;
 
-    // Constructors
-    public AnimationSprite(String name, String path, double... frameDurations) {
+    public AnimationSprite(String name, ImageLocation imageLocation, double... frameDurations) {
+        super(imageLocation);
         this.name = name;
-        this.path = path;
         this.frameDurations = frameDurations;
     }
+
+    public AnimationSprite(String name, String path, double... frameDurations) {
+        this(name, new ImageLocation(path), frameDurations);
+    }
+
+    // Constructors
 
     /* ================ [ METHODS ] ================ */
 
@@ -64,21 +68,14 @@ public class AnimationSprite extends Node2D<Node<?>> implements Indexed<String> 
     }
 
     @Override
-    public void draw(Transform offset) {
-        // Load current frame
-        BufferedImage img = Resources.loadResource(path, Image.class).getBuffer();
+    protected BufferedImage getImage() {
+        BufferedImage img = super.getImage();
 
         // Crop image to current frame
         int w = img.getWidth() / length();
-        img = img.getSubimage(
+        return img.getSubimage(
             w * frameCount, 0,
             w, img.getHeight()
         );
-
-        // Draw image to buffer
-        Game.getInstance().getBuffer().drawImage(img, getTransform().apply(offset));
-
-        // Draw children
-        super.draw(offset);
     }
 }
