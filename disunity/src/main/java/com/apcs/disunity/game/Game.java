@@ -3,11 +3,13 @@ package com.apcs.disunity.game;
 import com.apcs.disunity.app.Options;
 import com.apcs.disunity.app.input.InputHandler;
 import com.apcs.disunity.app.input.Inputs;
+import com.apcs.disunity.game.nodes.Node;
+import com.apcs.disunity.game.nodes.Scene;
+import com.apcs.disunity.game.nodes.selector.SelectorNode;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.game.physics.PhysicsEngine;
 import com.apcs.disunity.app.rendering.ScalableBuffer;
-import com.apcs.disunity.game.nodes.scenes.Scenes;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
@@ -39,16 +41,14 @@ public class Game extends JPanel {
     /** The buffer that draws and scales the game */
     private ScalableBuffer buffer;
 
-    /** Handles keystrokes from user */
-    private InputHandler input;
+    private final SelectorNode<String, Scene> scenes = new SelectorNode<>(new Scene("default"));
 
     /**
      * Creates a new Game with the given dimensions and scene ID
      * 
      * @param dimensions The dimensions of the game buffer
-     * @param scene The scene ID
      */
-    public Game(Vector2 dimensions, String scene) { this(dimensions, scene, true); }
+    public Game(Vector2 dimensions) { this(dimensions, true); }
 
     /**
      * Creates a new Game with the given dimensions, scene ID, and host status
@@ -57,7 +57,7 @@ public class Game extends JPanel {
      * @param scene The scene ID
      * @param isHost Whether this game is the host instance
      */
-    public Game(Vector2 dimensions, String scene, boolean isHost) {
+    public Game(Vector2 dimensions, boolean isHost) {
         // Set host status and dimensions
         this.isHost = isHost;
         this.dimensions = dimensions;
@@ -73,14 +73,11 @@ public class Game extends JPanel {
         requestFocusInWindow();
 
         // Attach input handler
-        input = new InputHandler();
+        InputHandler input = new InputHandler();
         addKeyListener(input);
         addMouseListener(input);
         addMouseMotionListener(input);
         addFocusListener(input);
-
-        // Set current scene
-        Scenes.setScene(scene);
 
         // Create game thread
         game = new GameThread(
@@ -102,7 +99,7 @@ public class Game extends JPanel {
     /** Update the game */
     private void update() {
         // Update scene
-        Scenes.updateScene(Options.getSPF()); // Delta value from configs
+        scenes.getSelected().update(Options.getSPF());// Delta value from configs
 
         // reset mouse vel
         Inputs.mouseVel = Vector2.ZERO;
@@ -154,6 +151,16 @@ public class Game extends JPanel {
         return instance;
     }
 
+    public void addScene(String name, Node<?>... children) {
+        scenes.addChild(new Scene(name, children));
+    }
+    public void addScene(Scene s) { scenes.addChild(s); }
+
+    public void setScene(String name) {
+        scenes.select(name);
+    }
+    public Scene getScene() {return scenes.getSelected();}
+
     /* ================ [ JPANEL ] ================ */
 
     /**
@@ -169,7 +176,7 @@ public class Game extends JPanel {
         buffer.clear();
 
         // Update buffer
-        Scenes.drawScene(
+        scenes.getSelected().draw(
             transform.addPos(dimensions.mul(0.5)) // Center on camera
         );
 

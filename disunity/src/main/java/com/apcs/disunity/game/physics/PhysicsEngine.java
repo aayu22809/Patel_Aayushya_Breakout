@@ -1,10 +1,10 @@
 package com.apcs.disunity.game.physics;
 
+import com.apcs.disunity.game.Game;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.game.nodes.twodim.Collider;
 import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.nodes.twodim.Node2D;
-import com.apcs.disunity.game.nodes.scenes.Scenes;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class PhysicsEngine {
     public void update(double delta) {
         ArrayList<ColliderInfo> colliders = new ArrayList<>();
 
-        searchCollider(Scenes.getScene(), Vector2.ZERO, colliders);
+        searchCollider(Game.getInstance().getScene(), Vector2.ZERO, colliders);
 
         for (ColliderInfo c1: colliders) {
             for (ColliderInfo c2: colliders) {

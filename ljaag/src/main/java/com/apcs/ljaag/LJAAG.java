@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import com.apcs.disunity.app.App;
 import com.apcs.disunity.game.Game;
+import com.apcs.disunity.game.nodes.Scene;
 import com.apcs.disunity.game.nodes.twodim.Camera;
 import com.apcs.disunity.app.input.Inputs;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.nodes.sprite.Sprite;
-import com.apcs.disunity.game.nodes.scenes.Scenes;
 import com.apcs.disunity.app.network.MultiplayerLauncher;
 import com.apcs.disunity.app.network.packet.SyncHandler;
 import com.apcs.ljaag.nodes.body.LJCharacter;
@@ -39,26 +39,24 @@ public class LJAAG {
         Inputs.fromJSON("keybinds.json");
 
         // Create the game scenes
-        Scenes.addScene("test", new Node<>(
+        Scene scene = new Scene("test",
             new Camera(),
             new Sprite("background.png")
-        ){});
-
-        Scenes.setScene("test");
-        for (int i = 1; i <= NUM_PLAYERS; i++) {
-            Scenes.getScene().addChild(new LJCharacter(30*i-30, 0, i));
-        }
-
-        registerNodeRecursive(Scenes.getScene());
-
-        int endpointId = SyncHandler.getInstance().getEndpointId();
-        // Create game application
-
-        Game game = new Game(
-            Vector2.of(480, 270),
-            "test"
         );
 
+        for (int i = 1; i <= NUM_PLAYERS; i++) {
+            scene.addChild(new LJCharacter(30*i-30, 0, i));
+        }
+
+        registerNodeRecursive(scene);
+
+
+        // Create game application
+        Game game = new Game(Vector2.of(480, 270));
+        game.addScene(scene);
+        game.setScene("test");
+
+        int endpointId = SyncHandler.getInstance().getEndpointId();
         if (!isServer) {
             new App(
                 endpointId == 0 ? "[SERVER]" : "[CLIENT_" + endpointId + "]",
