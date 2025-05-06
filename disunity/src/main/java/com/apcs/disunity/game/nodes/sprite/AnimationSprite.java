@@ -1,7 +1,6 @@
 package com.apcs.disunity.game.nodes.sprite;
 
 
-import com.apcs.disunity.app.network.packet.annotation.SyncedInt;
 import com.apcs.disunity.game.nodes.selector.Indexed;
 
 import java.awt.image.BufferedImage;
@@ -18,18 +17,20 @@ public class AnimationSprite extends Sprite implements Indexed<String> {
     // Animation name
     private final String name;
     private long prevFrame = System.nanoTime();
+    private final ImageLocation baseImage;
 
     // Frame durations list
     private final double[] frameDurations;
 
     // Current frame
-//    @SyncedInt
     private int frameCount = 0;
 
     public AnimationSprite(String name, ImageLocation imageLocation, double... frameDurations) {
         super(imageLocation);
+        baseImage = imageLocation;
         this.name = name;
         this.frameDurations = frameDurations;
+        updateFrame();
     }
 
     public AnimationSprite(String name, String path, double... frameDurations) {
@@ -57,19 +58,21 @@ public class AnimationSprite extends Sprite implements Indexed<String> {
         if (System.nanoTime() - prevFrame >= frameDuration() * 1e9) {
             prevFrame = System.nanoTime();
             frameCount++;
-            frameCount %= length();
+            updateFrame();
         }
     }
 
-    @Override
-    protected BufferedImage getImage() {
-        BufferedImage img = super.getImage();
+    public void updateFrame() {
+        frameCount %= length();
 
-        // Crop image to current frame
+        BufferedImage img = baseImage.getImage();
+
         int w = img.getWidth() / length();
-        return img.getSubimage(
-            w * frameCount, 0,
+        setImageLocation(new ImageLocation(
+            baseImage.PATH,
+            w*frameCount, 0,
             w, img.getHeight()
-        );
+        ));
     }
+
 }

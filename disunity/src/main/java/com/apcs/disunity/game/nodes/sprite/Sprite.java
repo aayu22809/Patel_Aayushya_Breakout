@@ -3,6 +3,7 @@ package com.apcs.disunity.game.nodes.sprite;
 import java.awt.image.BufferedImage;
 
 import com.apcs.disunity.game.Game;
+import com.apcs.disunity.game.nodes.FieldChild;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.nodes.twodim.Node2D;
@@ -19,7 +20,8 @@ public class Sprite extends Node2D<Node<?>> {
     /* ================ [ FIELDS ] ================ */
 
     // Sprite image id
-    private final ImageLocation imageLocation;
+    @FieldChild
+    private  ImageLocation imageLocation;
 
     // Constructors
     public Sprite(ImageLocation imageLocation) {
@@ -31,25 +33,19 @@ public class Sprite extends Node2D<Node<?>> {
 
     /* ================ [ NODE ] ================ */
 
-    protected BufferedImage getImage() {
-        BufferedImage img = Resources.loadResource(imageLocation.PATH, Image.class).getBuffer();
-        if(imageLocation.POS == null || imageLocation.SIZE == null) {
-            return img;
-        } else {
-            return img.getSubimage(
-                imageLocation.POS.xi,
-                imageLocation.POS.yi,
-                imageLocation.SIZE.xi,
-                imageLocation.SIZE.yi
-            );
-        }
+    public ImageLocation getImageLocation() {
+        return imageLocation;
+    }
+
+    public void setImageLocation(ImageLocation imageLocation) {
+        this.imageLocation = imageLocation;
     }
 
     @Override
     public void draw(Transform offset) {
 
         // Load sprite image
-        BufferedImage img = getImage();
+        BufferedImage img = imageLocation.getImage();
 
         // Draw image to buffer
         Game.getInstance().getBuffer().drawImage(img, getTransform().apply(offset));

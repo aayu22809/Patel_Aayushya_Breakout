@@ -1,8 +1,13 @@
 package com.apcs.disunity.game.nodes.sprite;
 
+import com.apcs.disunity.app.resources.Image;
+import com.apcs.disunity.app.resources.Resources;
+import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.math.Vector2;
 
-public class ImageLocation {
+import java.awt.image.BufferedImage;
+
+public class ImageLocation extends Node<Node<?>> {
     public final String PATH;
     public final Vector2 POS;
     public final Vector2 SIZE;
@@ -16,5 +21,19 @@ public class ImageLocation {
     public ImageLocation(String path) {
         PATH = path;
         POS = SIZE = null;
+    }
+
+    public BufferedImage getImage() {
+        BufferedImage img = Resources.loadResource(PATH, Image.class).getBuffer();
+        if(POS == null || SIZE == null) {
+            return img;
+        } else {
+            return img.getSubimage(
+                POS.xi,
+                POS.yi,
+                SIZE.xi,
+                SIZE.yi
+            );
+        }
     }
 }
