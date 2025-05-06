@@ -1,8 +1,8 @@
 package com.apcs.disunity.game.nodes;
 
 import com.apcs.disunity.game.nodes.selector.Indexed;
-import com.apcs.disunity.game.nodes.signals.SignalBus;
 import com.apcs.disunity.game.physics.PhysicsEngine;
+import com.apcs.disunity.game.signals.SignalBus;
 
 public class Scene extends Node<Node<?>> implements Indexed<String> {
     public final SignalBus GLOBAL_SIGNAL_BUS = new SignalBus();

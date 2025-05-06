@@ -1,13 +1,12 @@
-package com.apcs.disunity.game.nodes.signals;
+package com.apcs.disunity.game.signals;
 
-import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.nodes.selector.Indexed;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Signal<T> extends Node<Node<?>> implements Indexed<Class<?>> {
+public class Signal<T> implements Indexed<Class<?>> {
     private final Class<T> type;
     private final List<Consumer<T>> connections = new ArrayList<>();
 

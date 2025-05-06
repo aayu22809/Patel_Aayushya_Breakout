@@ -1,26 +1,20 @@
 package com.apcs.disunity.game.nodes.selector;
 
 import com.apcs.disunity.app.network.packet.annotation.SyncedObject;
+import com.apcs.disunity.game.Selector;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.game.nodes.Node;
 
-import java.util.HashMap;
 import java.util.List;
 
-public class SelectorNode<K, T extends Node<?> & Indexed<K>> extends Node<T> {
-
-    private final T fallback;
-    protected final HashMap<K, T> children = new HashMap<>();
+public class SelectorNode<K, V extends Node<?> & Indexed<K>> extends Node<V> {
 
     @SyncedObject
-    private K index;
+    private final Selector<K, V> children;
 
-    public SelectorNode(T fallback, T... children) {
+    public SelectorNode(V fallback, V... children) {
         super();
-        this.fallback = fallback;
-        this.index = fallback.index();
-        addChild(fallback);
-        addChildren(children);
+        this.children = new Selector<>(fallback,children);
     }
 
     // stop update propagation
@@ -35,18 +29,15 @@ public class SelectorNode<K, T extends Node<?> & Indexed<K>> extends Node<T> {
     }
 
     @Override
-    public void addChild(T node) {
-        children.put(node.index(), node);
-    }
+    public void addChild(V node) { children.add(node); }
 
     @Override
-    public List<T> getDynamicChildren() {
+    public List<V> getDynamicChildren() {
         return children.values().stream().toList();
     }
 
-    public T getSelected() { return children.getOrDefault(index, fallback); }
-    public T select(K index) {
-        this.index = index;
-        return getSelected();
+    public V getSelected() { return children.getSelected(); }
+    public V select(K index) {
+        return children.select(index);
     }
 }

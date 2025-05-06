@@ -5,7 +5,7 @@ import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.physics.CollisionInfo;
 import com.apcs.disunity.game.physics.CollisionLayer;
 import com.apcs.disunity.game.physics.CollisionMask;
-import com.apcs.disunity.game.nodes.signals.Signal;
+import com.apcs.disunity.game.signals.Signal;
 
 /**
  * A component that adds collision detection ability to a Node2D

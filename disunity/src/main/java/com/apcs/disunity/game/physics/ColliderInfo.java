@@ -2,7 +2,7 @@ package com.apcs.disunity.game.physics;
 
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.game.nodes.twodim.Collider;
-import com.apcs.disunity.game.nodes.signals.Signal;
+import com.apcs.disunity.game.signals.Signal;
 
 public class ColliderInfo {
     public final AABB AABB;

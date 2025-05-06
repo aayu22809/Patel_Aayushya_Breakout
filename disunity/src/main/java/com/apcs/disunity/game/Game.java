@@ -5,11 +5,9 @@ import com.apcs.disunity.app.input.InputHandler;
 import com.apcs.disunity.app.input.Inputs;
 import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.nodes.Scene;
-import com.apcs.disunity.game.nodes.selector.SelectorNode;
-import com.apcs.disunity.game.nodes.signals.SignalBus;
+import com.apcs.disunity.game.signals.SignalBus;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
-import com.apcs.disunity.game.physics.PhysicsEngine;
 import com.apcs.disunity.app.rendering.ScalableBuffer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -42,7 +40,7 @@ public class Game extends JPanel {
     /** The buffer that draws and scales the game */
     private ScalableBuffer buffer;
 
-    private final SelectorNode<String, Scene> scenes = new SelectorNode<>(new Scene("default"));
+    private final Selector<String, Scene> scenes = new Selector<>(new Scene("default"));
 
     private SignalBus globalSignal;
 
@@ -105,9 +103,6 @@ public class Game extends JPanel {
 
         // reset mouse vel
         Inputs.mouseVel = Vector2.ZERO;
-
-        // Update physics
-        PhysicsEngine.getInstance().update(Options.getSPF());
     }
     
     /** Draw the game */
@@ -154,9 +149,9 @@ public class Game extends JPanel {
     }
 
     public void addScene(String name, Node<?>... children) {
-        scenes.addChild(new Scene(name, children));
+        addScene(new Scene(name, children));
     }
-    public void addScene(Scene s) { scenes.addChild(s); }
+    public void addScene(Scene s) { scenes.add(s); }
 
     public void setScene(String name) {
         globalSignal = scenes.select(name).GLOBAL_SIGNAL_BUS;
