@@ -6,7 +6,7 @@
 **/dependency-reduced-pom.xml
 **/.mvn/timing.properties
 
-### Maven Wrapper (keep these) ###
+### Maven Wrapper (kept) ###
 !mvnw
 !mvnw.cmd
 !.mvn/wrapper/
