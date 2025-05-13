@@ -1,7 +1,7 @@
 package com.apcs.disunity.app.resources;
 
-import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -18,7 +18,11 @@ public class Resources {
 
     // Maps resource ids to resources
     private static final Map<String, Object> resources = new HashMap<>();
-    public static final Map<Class<?>,Function<InputStream,?>> loaders = new HashMap<>();
+    public static final Map<Class<?>,Function<URL,?>> loaders = new HashMap<>();
+    static {
+        loaders.put(Image.class, Image::new);
+        loaders.put(Sound.class, Sound::new);
+    }
 
     /* ================ [ METHODS ] ================ */
 
@@ -30,7 +34,7 @@ public class Resources {
         MethodHandles.Lookup lookup = MethodHandles.lookup();
         try { lookup.ensureInitialized(type); }
         catch (IllegalAccessException e) { }
-        resources.put(path, loaders.get(type).apply(loadFileAsInputStream(path)));
+        resources.put(path, loaders.get(type).apply(Resources.class.getClassLoader().getResource(path)));
     }
 
     // Load resource from map
@@ -40,12 +44,4 @@ public class Resources {
         if (o == null) throw new RuntimeException("Unable to load resource: "+path);
         return type.cast(o);
     }
-
-    // Loads a file as an input stream
-    public static final InputStream loadFileAsInputStream(String path) {
-        InputStream output = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
-        if (output == null) throw new RuntimeException("Unable to load file: "+path);
-        return output;
-    }
-    
 }

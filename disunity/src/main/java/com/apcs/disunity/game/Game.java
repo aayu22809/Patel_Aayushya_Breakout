@@ -3,6 +3,7 @@ package com.apcs.disunity.game;
 import com.apcs.disunity.app.Options;
 import com.apcs.disunity.app.input.InputHandler;
 import com.apcs.disunity.app.input.Inputs;
+import com.apcs.disunity.app.resources.Sound;
 import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.nodes.Scene;
 import com.apcs.disunity.game.selector.Selector;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
  * @author Qinzhao Li
  */
 public class Game extends JPanel {
+    static { Sound.init(); }
 
     /* ================ [ FIELDS ] ================ */
 

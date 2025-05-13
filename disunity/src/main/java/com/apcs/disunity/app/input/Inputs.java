@@ -9,7 +9,6 @@ import java.util.Set;
 
 import com.apcs.disunity.app.input.actions.Action;
 import com.apcs.disunity.app.input.actions.ActionSet;
-import static com.apcs.disunity.app.resources.Resources.loadFileAsInputStream;
 
 import com.apcs.disunity.math.Vector2;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -66,7 +65,7 @@ public class Inputs {
     // Load from a JSON file
     public static void fromJSON(String path) {
         try {
-            InputStream file = loadFileAsInputStream(path);
+            InputStream file = Inputs.class.getClassLoader().getResourceAsStream(path);
             ObjectMapper om = new ObjectMapper();
             actions = om.readValue(file, new TypeReference<Map<String, ActionSet>>() {});
         } catch (IOException e) { e.printStackTrace(); }
