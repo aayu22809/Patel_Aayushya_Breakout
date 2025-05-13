@@ -1,6 +1,6 @@
 package com.apcs.disunity.game.signals;
 
-import com.apcs.disunity.game.nodes.selector.Indexed;
+import com.apcs.disunity.game.selector.Indexed;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.apcs.disunity.game.signals;
 
-import com.apcs.disunity.game.Selector;
+import com.apcs.disunity.game.selector.Selector;
 
 import java.util.function.Consumer;
 

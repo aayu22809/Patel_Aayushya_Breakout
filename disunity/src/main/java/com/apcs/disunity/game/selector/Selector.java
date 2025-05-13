@@ -1,7 +1,6 @@
-package com.apcs.disunity.game;
+package com.apcs.disunity.game.selector;
 
 import com.apcs.disunity.app.network.packet.annotation.SyncedObject;
-import com.apcs.disunity.game.nodes.selector.Indexed;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +23,10 @@ public class Selector<K,V extends Indexed<K>> {
     public void add(V value) { indexedValues.put(value.index(), value); }
     public void addAll(V... values) { for(V value: values) add(value);}
 
-    public V getSelected() { return indexedValues.getOrDefault(index, fallback); }
+    public V getSelected() {
+        if(index.equals(fallback.index())) return fallback;
+        return indexedValues.getOrDefault(index, fallback);
+    }
     public V select(K index) {
         this.index = index;
         return getSelected();

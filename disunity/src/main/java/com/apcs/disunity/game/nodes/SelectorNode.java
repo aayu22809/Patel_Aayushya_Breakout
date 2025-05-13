@@ -1,8 +1,8 @@
-package com.apcs.disunity.game.nodes.selector;
+package com.apcs.disunity.game.nodes;
 
 import com.apcs.disunity.app.network.packet.annotation.SyncedObject;
-import com.apcs.disunity.game.nodes.Node;
-import com.apcs.disunity.game.Selector;
+import com.apcs.disunity.game.selector.Indexed;
+import com.apcs.disunity.game.selector.Selector;
 import com.apcs.disunity.math.Transform;
 
 import java.util.List;

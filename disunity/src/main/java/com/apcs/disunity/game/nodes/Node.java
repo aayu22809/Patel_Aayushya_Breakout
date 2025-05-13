@@ -1,7 +1,7 @@
 package com.apcs.disunity.game.nodes;
 
 import com.apcs.disunity.math.Transform;
-import com.apcs.disunity.game.nodes.selector.Indexed;
+import com.apcs.disunity.game.selector.Indexed;
 import com.apcs.disunity.app.network.Util;
 
 import java.util.ArrayList;

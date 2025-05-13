@@ -4,13 +4,12 @@ import com.apcs.disunity.game.nodes.FieldChild;
 import com.apcs.disunity.game.nodes.sprite.AnimationSprite;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.game.nodes.twodim.Body;
-import com.apcs.disunity.game.nodes.selector.SelectorNode;
+import com.apcs.disunity.game.nodes.SelectorNode;
 import com.apcs.disunity.game.nodes.twodim.Collider;
 import com.apcs.disunity.game.physics.CollisionInfo;
 import com.apcs.disunity.app.network.packet.SyncHandler;
 import com.apcs.ljaag.LJAAG;
 import com.apcs.ljaag.nodes.indexed.InputVector;
-import com.apcs.ljaag.nodes.indexed.VectorSupplier;
 
 /// base character of LJAAG. can be controlled by player.
 /// demo of disunity
@@ -20,11 +19,8 @@ public class LJCharacter extends Body {
         new AnimationSprite("stand", "player/player.png", Double.MAX_VALUE),
         new AnimationSprite("run", "player/run.png", 0.15, 0.15, 0.15, 0.15, 0.15, 0.15)
     );
-    @FieldChild
-    private final SelectorNode<String, VectorSupplier> vectorSelector = new SelectorNode<>(
-        VectorSupplier.ZERO,
-        new InputVector("input")
-    );
+
+    private final InputVector input = new InputVector("input");
 
     public LJCharacter(int x, int y, int owner) { this(Vector2.of(x,y), owner); }
     public LJCharacter(Vector2 pos, int owner) {
@@ -37,7 +33,7 @@ public class LJCharacter extends Body {
     public void update(double delta) {
         // movement
         if(isPlayer()) {
-            setVel(vectorSelector.select("input").get());
+            setVel(input.get());
         }
 
         // sprite

@@ -1,6 +1,6 @@
 package com.apcs.disunity.game.nodes;
 
-import com.apcs.disunity.game.nodes.selector.Indexed;
+import com.apcs.disunity.game.selector.Indexed;
 import com.apcs.disunity.game.physics.PhysicsEngine;
 import com.apcs.disunity.game.signals.SignalBus;
 
