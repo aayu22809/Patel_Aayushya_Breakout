@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+/// subclass of SyncHandler, which specializes in notifying client what their states
+/// should be
 public class HostSideSyncHandler extends SyncHandler implements Closeable {
 
     private final Host host;

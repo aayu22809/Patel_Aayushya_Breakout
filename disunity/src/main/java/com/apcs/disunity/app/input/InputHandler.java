@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Listens for inputs and updates them
+ * Listens for inputs on the App, and saves it on Inputs
  * 
  * @author Qinzhao Li
  */

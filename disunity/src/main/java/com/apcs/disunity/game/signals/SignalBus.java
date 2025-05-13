@@ -1,12 +1,11 @@
 package com.apcs.disunity.game.signals;
 
-import com.apcs.disunity.app.network.packet.annotation.SyncedObject;
 import com.apcs.disunity.game.Selector;
 
 import java.util.function.Consumer;
 
 /**
- * Handles node communication through signals
+ * bundles multiple signals into one object to communicate various information
  * 
  * @author Qinzhao Li
  */

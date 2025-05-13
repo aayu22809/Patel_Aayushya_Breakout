@@ -16,9 +16,7 @@ import static com.apcs.disunity.app.network.packet.CODEC.decodeInt;
 import static com.apcs.disunity.app.network.packet.CODEC.encodeInt;
 
 /**
- * 
- * A utility class for converting data to and from byte arrays.
- * 
+ * A utility class for networking code
  * @author Sharvil Phadke
  * 
  */

@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * A set of keybinds for an action
+ * defines a flag that can be triggered by multiple Actions.
+ * in other words, takes an || on all Actions
  * 
  * @author Qinzhao Li
  */

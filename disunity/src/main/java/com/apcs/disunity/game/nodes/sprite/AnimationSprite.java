@@ -6,7 +6,8 @@ import com.apcs.disunity.game.nodes.selector.Indexed;
 import java.awt.image.BufferedImage;
 
 /**
- * Handles one animation with frames
+ * sprite that renders timed cyclic animation, created by
+ * splicing a base image that contains equal width frames horizontally
  * 
  * @author Qinzhao Li
  */

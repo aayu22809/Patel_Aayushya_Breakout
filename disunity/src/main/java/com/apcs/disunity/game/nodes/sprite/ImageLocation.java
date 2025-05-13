@@ -7,6 +7,7 @@ import com.apcs.disunity.math.Vector2;
 
 import java.awt.image.BufferedImage;
 
+/// a composite location determined by image path and how to slice it
 public class ImageLocation extends Node<Node<?>> {
     public final String PATH;
     public final Vector2 POS;

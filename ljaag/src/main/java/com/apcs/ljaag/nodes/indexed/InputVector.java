@@ -3,6 +3,7 @@ package com.apcs.ljaag.nodes.indexed;
 import com.apcs.disunity.app.input.Inputs;
 import com.apcs.disunity.math.Vector2;
 
+/// converts user inputs to wasd/arrow vectors
 public class InputVector extends VectorSupplier {
     private final String name;
 

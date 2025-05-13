@@ -12,6 +12,7 @@ import java.util.List;
 
 import static com.apcs.disunity.app.network.packet.CODEC.decodeInt;
 
+/// represents a list of objects to be synced across TCP connection.
 public abstract class SyncHandler implements Closeable {
     public static final int HOST_ID = 0;
     private static SyncHandler instance;

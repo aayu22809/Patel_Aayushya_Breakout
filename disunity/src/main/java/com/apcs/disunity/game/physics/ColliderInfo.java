@@ -4,6 +4,7 @@ import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.game.nodes.twodim.Collider;
 import com.apcs.disunity.game.signals.Signal;
 
+/// information of collider that is needed to process collision
 public class ColliderInfo {
     public final AABB AABB;
     public final Signal<CollisionInfo> COLLISION_INFO;

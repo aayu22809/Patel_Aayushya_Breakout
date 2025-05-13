@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 import javax.swing.JOptionPane;
 
+/// a launcher that allows the game to be synced across network
 public class MultiplayerLauncher implements Closeable {
 
     public final Consumer<Boolean> initNodes;

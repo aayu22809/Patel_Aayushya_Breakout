@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
- * Contains and displays a scene on a loop
+ * runs the selected scene, and render it
  *
  * @author Qinzhao Li
  */

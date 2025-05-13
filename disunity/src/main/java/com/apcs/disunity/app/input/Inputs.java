@@ -16,7 +16,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /** 
- * Handles all player inputs recieved
+ * records most recent user input as a static value.
  * 
  * @author Qinzhao Li
  */

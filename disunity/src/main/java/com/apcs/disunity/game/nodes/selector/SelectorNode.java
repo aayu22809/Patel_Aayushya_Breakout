@@ -1,12 +1,13 @@
 package com.apcs.disunity.game.nodes.selector;
 
 import com.apcs.disunity.app.network.packet.annotation.SyncedObject;
+import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.Selector;
 import com.apcs.disunity.math.Transform;
-import com.apcs.disunity.game.nodes.Node;
 
 import java.util.List;
 
+/// Node that selects one of its children to be updated or drawn.
 public class SelectorNode<K, V extends Node<?> & Indexed<K>> extends Node<V> {
 
     @SyncedObject

@@ -4,6 +4,8 @@ import com.apcs.disunity.game.nodes.selector.Indexed;
 import com.apcs.disunity.game.physics.PhysicsEngine;
 import com.apcs.disunity.game.signals.SignalBus;
 
+/// a root node that the {@link com.apcs.disunity.game.Game} controls.
+/// propagation of update and draw starts from this node.
 public class Scene extends Node<Node<?>> implements Indexed<String> {
     public final SignalBus GLOBAL_SIGNAL_BUS = new SignalBus();
     private final String name;

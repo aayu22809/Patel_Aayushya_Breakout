@@ -8,7 +8,7 @@ import com.apcs.disunity.game.physics.CollisionMask;
 import com.apcs.disunity.game.signals.Signal;
 
 /**
- * A component that adds collision detection ability to a Node2D
+ * A node that represents a colliding boundary
  * @author Aayushya Patel
  */
 public class Collider extends Node2D<Node<?>> {
@@ -24,8 +24,6 @@ public class Collider extends Node2D<Node<?>> {
 
     public Signal<CollisionInfo> collisionInfo = new Signal<>(CollisionInfo.class);
 
-    /// layers 0-31 can collide with other colliders.
-    /// layers 32- will not collide with anything.
     public Collider(int w, int h, CollisionLayer layer, CollisionMask mask) {
         SIZE = Vector2.of(w,h);
         this.LAYER = layer;

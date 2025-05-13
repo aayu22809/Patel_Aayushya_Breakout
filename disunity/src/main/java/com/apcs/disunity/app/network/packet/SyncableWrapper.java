@@ -3,6 +3,7 @@ package com.apcs.disunity.app.network.packet;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/// wrapper that binds predefined classes with homemade codec
 public class SyncableWrapper<T> implements SelfCodec<SyncableWrapper<T>> {
     private final Encoder<T> encoder;
     private final Decoder<T> decoder;

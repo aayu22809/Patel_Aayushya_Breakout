@@ -7,6 +7,8 @@ import com.apcs.disunity.app.network.packet.SyncHandler;
 import java.io.Closeable;
 import java.io.IOException;
 
+/// subclass of SyncHandler, which specializes in sending changes in current runtime and
+/// applying changes made in other runtimes
 public class ClientSideSyncHandler extends SyncHandler implements Closeable {
 
     private final PacketTransceiver transceiver;

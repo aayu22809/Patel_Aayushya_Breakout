@@ -9,7 +9,7 @@ import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 
 /**
- * A scalable buffer to draw to
+ * buffer that scales from constructed dimension to current dimension
  * 
  * @author Qinzhao Li
  */

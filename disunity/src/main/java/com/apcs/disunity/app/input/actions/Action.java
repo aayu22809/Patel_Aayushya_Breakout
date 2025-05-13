@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * A single or multi-key binding
- * 
+ * defines a flag that is true only when all the inputs are present.
+ * in other words, this takes an && on every input
+ *
  * @author Qinzhao Li
  */
 public class Action {

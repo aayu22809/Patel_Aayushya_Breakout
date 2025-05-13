@@ -12,6 +12,8 @@ import com.apcs.ljaag.LJAAG;
 import com.apcs.ljaag.nodes.indexed.InputVector;
 import com.apcs.ljaag.nodes.indexed.VectorSupplier;
 
+/// base character of LJAAG. can be controlled by player.
+/// demo of disunity
 public class LJCharacter extends Body {
     @FieldChild
     private final SelectorNode<String, AnimationSprite> spriteSelector = new SelectorNode<>(

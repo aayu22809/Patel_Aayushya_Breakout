@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 import static com.apcs.disunity.app.network.Util.decodeBits;
 import static com.apcs.disunity.app.network.Util.encodeBits;
 
-/// defines codec for primitives.
+/// defines default codecs used in {@link  SyncHandler} by binding codec to annotations
 public enum CODEC {
     BOOLEAN(
         CODEC::encodeBoolean,

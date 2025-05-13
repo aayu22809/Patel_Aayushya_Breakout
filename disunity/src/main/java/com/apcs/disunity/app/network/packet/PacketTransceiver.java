@@ -23,6 +23,10 @@ public class PacketTransceiver {
         this.out = out;
     }
 
+    /**
+     * sends a packet formed from packet content
+     * @param bytes packet content
+     */
     public void send(byte[] bytes) {
         try {
             byte[] packet = Util.pack(bytes);
@@ -32,6 +36,10 @@ public class PacketTransceiver {
         }
     }
 
+    /**
+     * gets a packet content from recieved packet
+     * @return packet content
+     */
     public byte[] recieve() {
         return Util.unpack(in);
     }

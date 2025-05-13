@@ -3,7 +3,7 @@ package com.apcs.disunity.game.physics;
 import com.apcs.disunity.math.Vector2;
 import com.apcs.disunity.game.nodes.twodim.Collider;
 
-// Axis Aligned Bounding Box, where pos is at the center of the bounding box.
+/// Axis Aligned Bounding Box, where pos is at the center of the bounding box.
 public class AABB {
     public final double RIGHT;
     public final double BOTTOM;
