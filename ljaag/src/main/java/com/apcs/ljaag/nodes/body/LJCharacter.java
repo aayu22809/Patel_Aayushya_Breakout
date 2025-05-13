@@ -1,5 +1,6 @@
 package com.apcs.ljaag.nodes.body;
 
+import com.apcs.disunity.app.resources.Sound;
 import com.apcs.disunity.game.nodes.FieldChild;
 import com.apcs.disunity.game.nodes.sprite.AnimationSprite;
 import com.apcs.disunity.math.Vector2;
@@ -29,8 +30,14 @@ public class LJCharacter extends Body {
         setPos(pos);
     }
 
+    static Sound coinSound = new Sound("smw_coin.wav");
+    boolean collided = false;
+    boolean collidedBefore = false;
+
     @Override
     public void update(double delta) {
+        collidedBefore = collided;
+        collided = false;
         // movement
         if(isPlayer()) {
             setVel(input.get());
@@ -44,7 +51,7 @@ public class LJCharacter extends Body {
         }
 
         if(Math.abs(getVel().x) >= 0.1 ){
-            spriteSelector.getSelected().setScale(
+            setScale(
                 Vector2.of(getVel().x > 0 ? 1 : -1, 1)
             );
         }
@@ -54,6 +61,8 @@ public class LJCharacter extends Body {
 
     @Override
     public void onCollision(CollisionInfo info) {
+        if(!collidedBefore && !collided && isPlayer()) coinSound.play();
+        collided = true;
         Vector2 vel = getVel().mul(info.delta);
         addPos(vel.mul(-1));
 
