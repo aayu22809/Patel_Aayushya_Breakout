@@ -27,13 +27,9 @@ public abstract class SyncHandler implements Closeable {
 
     private final List<Object> syncs = new LinkedList<>();
 
-    public void register(Object obj) {
-        syncs.add(obj);
-    }
+    public void register(Object obj) { syncs.add(obj); }
 
-    public static SyncHandler getInstance() {
-        return instance;
-    }
+    public static SyncHandler getInstance() { return instance; }
 
     protected final byte[] poll() {
         try {
@@ -42,7 +38,7 @@ public abstract class SyncHandler implements Closeable {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ByteArrayOutputStream packetStream = new ByteArrayOutputStream();
             for (Object sync : syncs) {
-                CODEC.encodeObject(sync,packetStream);
+                CODEC.encodeObject(sync, packetStream);
                 out.write(Util.pack(packetStream.toByteArray()));
                 packetStream.reset();
             }
@@ -62,29 +58,32 @@ public abstract class SyncHandler implements Closeable {
                 int size = decodeInt(in);
                 byte[] nodePacket = new byte[size];
                 int numBytes = in.read(nodePacket);
-                if (numBytes == -1 && size != 0) throw new RuntimeException("packet was smaller than expected.");
+                if (numBytes == -1 && size != 0)
+                    throw new RuntimeException("packet was smaller than expected.");
                 // MUST DO: implement proper client reconciliation
                 // client ignores server packet overriding owning nodes
                 // server ignores clients overriding unowned nodes
                 try {
                     Field ownerField = sync.getClass().getField("owner");
                     int owner = (int) ownerField.get(sync);
-                    if(owner == getEndpointId() || getEndpointId() == HOST_ID && sender != owner) continue;
-                } catch (NoSuchFieldException nsfe) {}
+                    if (owner == getEndpointId() || getEndpointId() == HOST_ID && sender != owner)
+                        continue;
+                } catch (NoSuchFieldException nsfe) {
+                }
 
                 ByteArrayInputStream packetStream = new ByteArrayInputStream(nodePacket);
                 CODEC.decodeObject(sync, packetStream);
             }
-            if(in.available() != 0) throw new RuntimeException("reciever did not consume all contents of packet");
+            if (in.available() != 0)
+                throw new RuntimeException("reciever did not consume all contents of packet");
         } catch (IOException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public final boolean isClient() {
-        return getEndpointId() != HOST_ID;
-    }
+    public final boolean isClient() { return getEndpointId() != HOST_ID; }
 
     public abstract int getEndpointId();
+
     public abstract void start();
 }

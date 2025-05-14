@@ -9,6 +9,7 @@ import com.apcs.disunity.game.signals.Signal;
 
 /**
  * A node that represents a colliding boundary
+ * 
  * @author Aayushya Patel
  */
 public class Collider extends Node2D<Node<?>> {
@@ -25,9 +26,10 @@ public class Collider extends Node2D<Node<?>> {
     public Signal<CollisionInfo> collisionInfo = new Signal<>(CollisionInfo.class);
 
     public Collider(int w, int h, CollisionLayer layer, CollisionMask mask) {
-        SIZE = Vector2.of(w,h);
+        SIZE = Vector2.of(w, h);
         this.LAYER = layer;
         this.MASK = mask;
     }
-    public Collider(int w, int h) { this(w,h, DEFAULT_LAYER, DEFAULT_MASK); }
+
+    public Collider(int w, int h) { this(w, h, DEFAULT_LAYER, DEFAULT_MASK); }
 }

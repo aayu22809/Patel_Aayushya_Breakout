@@ -11,22 +11,14 @@ public class Signal<T> implements Indexed<Class<?>> {
     private final Class<T> type;
     private final List<Consumer<T>> connections = new ArrayList<>();
 
-    public Signal(Class<T> type) {
-        this.type = type;
-    }
+    public Signal(Class<T> type) { this.type = type; }
 
-    public void connect(Consumer<T> callable) {
-        connections.add(callable);
-    }
-    public void disconnect(Consumer<T> callable) {
-        connections.remove(callable);
-    }
-    public void emit(T message) {
-        connections.forEach(c -> c.accept(message));
-    }
+    public void connect(Consumer<T> callable) { connections.add(callable); }
+
+    public void disconnect(Consumer<T> callable) { connections.remove(callable); }
+
+    public void emit(T message) { connections.forEach(c -> c.accept(message)); }
 
     @Override
-    public Class<T> index() {
-        return type;
-    }
+    public Class<T> index() { return type; }
 }

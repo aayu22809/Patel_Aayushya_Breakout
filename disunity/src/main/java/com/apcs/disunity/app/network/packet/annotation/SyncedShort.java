@@ -10,5 +10,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @EnforceFieldType(short.class)
-public @interface SyncedShort {
-}
+public @interface SyncedShort {}

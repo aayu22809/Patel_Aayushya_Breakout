@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /// wrapper of map with some extra restrictions
-public class Selector<K,V extends Indexed<K>> {
+public class Selector<K, V extends Indexed<K>> {
     private final V fallback;
     protected final HashMap<K, V> indexedValues = new HashMap<>();
 
@@ -21,12 +21,18 @@ public class Selector<K,V extends Indexed<K>> {
     }
 
     public void add(V value) { indexedValues.put(value.index(), value); }
-    public void addAll(V... values) { for(V value: values) add(value);}
+
+    public void addAll(V... values) {
+        for (V value : values)
+            add(value);
+    }
 
     public V getSelected() {
-        if(index.equals(fallback.index())) return fallback;
+        if (index.equals(fallback.index()))
+            return fallback;
         return indexedValues.getOrDefault(index, fallback);
     }
+
     public V select(K index) {
         this.index = index;
         return getSelected();

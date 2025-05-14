@@ -6,8 +6,9 @@ import java.io.OutputStream;
 public interface Encoder<T> {
     /**
      * encodes the given value
+     * 
      * @param value value to encode
-     * @param out stream to write the encoded packet content
+     * @param out   stream to write the encoded packet content
      */
     void encode(T value, OutputStream out);
 }

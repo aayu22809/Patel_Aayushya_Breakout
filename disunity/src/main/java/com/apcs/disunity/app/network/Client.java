@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * 
  * Sends and recieves packets from/to a socket at a known ip and port.
  * 
  * @author Sharvil Phadke
@@ -27,29 +26,17 @@ public class Client implements Closeable {
         identifier = String.format("%s:%d", socket.getLocalAddress(), socket.getLocalPort());
     }
 
-    public void send(byte[] bytes) {
-        transceiver.send(bytes);
-    }
+    public void send(byte[] bytes) { transceiver.send(bytes); }
 
-    public byte[] recieve() {
-        return transceiver.recieve();
-    }
+    public byte[] recieve() { return transceiver.recieve(); }
 
     @Override
-    public void close() throws IOException {
-        socket.close();
-    }  
+    public void close() throws IOException { socket.close(); }
 
-    public String getStringIdentifier() {
-        return identifier;
-    }
+    public String getStringIdentifier() { return identifier; }
 
-    public byte id() {
-        return (byte) id;
-    }
+    public byte id() { return (byte) id; }
 
-    public PacketTransceiver getTransceiver() {
-        return transceiver;
-    }
-      
+    public PacketTransceiver getTransceiver() { return transceiver; }
+
 }

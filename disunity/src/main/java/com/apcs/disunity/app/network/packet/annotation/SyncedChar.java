@@ -10,5 +10,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @EnforceFieldType(char.class)
-public @interface SyncedChar {
-}
+public @interface SyncedChar {}

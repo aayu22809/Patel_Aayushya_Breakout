@@ -21,11 +21,13 @@ import javax.swing.JPanel;
  * @author Qinzhao Li
  */
 public class Game extends JPanel {
-    static { Sound.init(); }
+    static {
+        Sound.init();
+    }
 
     /* ================ [ FIELDS ] ================ */
 
-    /** Whether this game is the host instance   */
+    /** Whether this game is the host instance */
     public final boolean isHost;
 
     /** The singleton instance of the game */
@@ -58,7 +60,7 @@ public class Game extends JPanel {
      * Creates a new Game with the given dimensions, scene ID, and host status
      *
      * @param dimensions The dimensions of the game buffer
-     * @param isHost Whether this game is the host instance
+     * @param isHost     Whether this game is the host instance
      */
     public Game(Vector2 dimensions, boolean isHost) {
         // Set host status and dimensions
@@ -83,10 +85,7 @@ public class Game extends JPanel {
         addFocusListener(input);
 
         // Create game thread
-        game = new GameThread(
-            this::update,
-            this::draw
-        );
+        game = new GameThread(this::update, this::draw);
 
         // Set singleton instance
         instance = this;
@@ -95,9 +94,7 @@ public class Game extends JPanel {
     /* ================ [ GAME ] ================ */
 
     /** Start the game loop */
-    public void start() {
-        game.start();
-    }
+    public void start() { game.start(); }
 
     /** Update the game */
     private void update() {
@@ -107,58 +104,45 @@ public class Game extends JPanel {
         // reset mouse vel
         Inputs.mouseVel = Vector2.ZERO;
     }
-    
+
     /** Draw the game */
-    private void draw() {
-        repaint();
-    }
+    private void draw() { repaint(); }
 
     /* ================ [ METHODS ] ================ */
-    
+
     /**
      * Set the global transform of the viewport
      * 
      * @param transform The new transform
      */
-    public void setTransform(Transform transform) {
-        this.transform = transform;
-    }
+    public void setTransform(Transform transform) { this.transform = transform; }
 
     /**
      * Set the size of the game buffer
      * 
      * @param size The new size
      */
-    public void setBufferSize(Vector2 size) {
-        buffer.setSize(size);
-    }
+    public void setBufferSize(Vector2 size) { buffer.setSize(size); }
 
     /**
      * Get the game buffer for drawing
      * 
      * @return The game buffer
      */
-    public ScalableBuffer getBuffer() {
-        return buffer;
-    }
+    public ScalableBuffer getBuffer() { return buffer; }
 
     /**
      * Get the singleton instance of the game
      * 
      * @return The game instance
      */
-    public static Game getInstance() {
-        return instance;
-    }
+    public static Game getInstance() { return instance; }
 
-    public void addScene(String name, Node<?>... children) {
-        addScene(new Scene(name, children));
-    }
+    public void addScene(String name, Node<?>... children) { addScene(new Scene(name, children)); }
+
     public void addScene(Scene s) { scenes.add(s); }
 
-    public void setScene(String name) {
-        globalSignal = scenes.select(name).GLOBAL_SIGNAL_BUS;
-    }
+    public void setScene(String name) { globalSignal = scenes.select(name).GLOBAL_SIGNAL_BUS; }
 
     public SignalBus getGlobalSignal() { return globalSignal; }
 
@@ -177,8 +161,7 @@ public class Game extends JPanel {
         buffer.clear();
 
         // Update buffer
-        scenes.getSelected().draw(
-            transform.addPos(dimensions.mul(0.5)) // Center on camera
+        scenes.getSelected().draw(transform.addPos(dimensions.mul(0.5)) // Center on camera
         );
 
         BufferedImage image = buffer.getImage();
@@ -186,12 +169,6 @@ public class Game extends JPanel {
         int h = image.getHeight();
 
         // Draw to screen
-        g.drawImage(
-            image,
-            (getWidth() - w) / 2,
-            (getHeight() - h) / 2,
-            w, h,
-            null
-        );
+        g.drawImage(image, (getWidth() - w) / 2, (getHeight() - h) / 2, w, h, null);
     }
 }

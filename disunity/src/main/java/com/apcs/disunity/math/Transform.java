@@ -26,6 +26,7 @@ public class Transform {
 
     // Constructors
     public Transform() { this(Vector2.ZERO, Vector2.ONE, 0); }
+
     public Transform(Vector2 pos, Vector2 scale, double rot) {
         this.pos = pos;
         this.scale = scale;
@@ -47,7 +48,9 @@ public class Transform {
     public Transform rotate(double amt) { return new Transform(pos, scale, (rot + amt) % 360); }
 
     // Apply another transform
-    public Transform apply(Transform t) { return new Transform(pos.add(t.pos), scale.mul(t.scale), (rot + t.rot) % 360); }
+    public Transform apply(Transform t) {
+        return new Transform(pos.add(t.pos), scale.mul(t.scale), (rot + t.rot) % 360);
+    }
 
     /* ================ [ OBJECT ] ================ */
 

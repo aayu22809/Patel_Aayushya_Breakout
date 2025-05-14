@@ -1,6 +1,5 @@
 package com.apcs.disunity.app.network.test;
 
-
 import com.apcs.disunity.app.network.Client;
 import com.apcs.disunity.app.network.Host;
 
@@ -10,7 +9,7 @@ import java.util.Scanner;
 class SendRecieveTest {
 
     public static void main(String[] args) {
-        try(Host h = new Host()) {
+        try (Host h = new Host()) {
             h.start();
             try (Client c = new Client(h.getAddress(), h.getPort())) {
                 try (Scanner in = new Scanner(System.in)) {
@@ -31,6 +30,7 @@ class SendRecieveTest {
                     } while (in.nextLine().trim().equalsIgnoreCase("y"));
                 }
             }
-        } catch (IOException ex) { }
+        } catch (IOException ex) {
+        }
     }
 }

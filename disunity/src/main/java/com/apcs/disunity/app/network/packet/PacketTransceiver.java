@@ -7,14 +7,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * 
- * A helper class that sends and recieves packets with a size header and body over an input and output stream.
+ * A helper class that sends and recieves packets with a size header and body
+ * over an input and output stream.
  * 
  * @author Sharvil Phadke
- * 
  */
 public class PacketTransceiver {
-    
+
     private final OutputStream out;
     private final InputStream in;
 
@@ -25,6 +24,7 @@ public class PacketTransceiver {
 
     /**
      * sends a packet formed from packet content
+     * 
      * @param bytes packet content
      */
     public void send(byte[] bytes) {
@@ -38,10 +38,9 @@ public class PacketTransceiver {
 
     /**
      * gets a packet content from recieved packet
+     * 
      * @return packet content
      */
-    public byte[] recieve() {
-        return Util.unpack(in);
-    }
+    public byte[] recieve() { return Util.unpack(in); }
 
 }

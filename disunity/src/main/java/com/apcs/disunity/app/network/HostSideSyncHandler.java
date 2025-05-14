@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-/// subclass of SyncHandler, which specializes in notifying client what their states
+/// subclass of SyncHandler, which specializes in notifying client what their
+/// states
 /// should be
 public class HostSideSyncHandler extends SyncHandler implements Closeable {
 
@@ -29,13 +30,14 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
 
     private class TranscieverThread extends Thread {
         public final PacketTransceiver TRANCIEVER;
+
         public TranscieverThread(PacketTransceiver tr, int clientId) {
             super(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     distribute(clientId, tr.recieve());
-                    for(TranscieverThread tt: threads) {
+                    for (TranscieverThread tt : threads) {
                         // prevent sending back to packet source
-                        if(tt != Thread.currentThread()) {
+                        if (tt != Thread.currentThread()) {
                             tt.TRANCIEVER.send(poll());
                         }
                     }
@@ -46,9 +48,7 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
     }
 
     @Override
-    public void start() {
-        host.start();
-    }
+    public void start() { host.start(); }
 
     @Override
     public void close() {
@@ -60,6 +60,7 @@ public class HostSideSyncHandler extends SyncHandler implements Closeable {
     @Override
     public int getEndpointId() { return HOST_ID; }
 
-    public int getPort() {return host.getPort();}
-    public String getAddress() {return host.getAddress();}
+    public int getPort() { return host.getPort(); }
+
+    public String getAddress() { return host.getAddress(); }
 }

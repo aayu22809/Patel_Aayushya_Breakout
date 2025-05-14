@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * defines a flag that is true only when all the inputs are present.
- * in other words, this takes an && on every input
+ * A flag that is true only when all the inputs are present. (AND)
  *
  * @author Qinzhao Li
  */
@@ -14,7 +13,7 @@ public class Action {
 
     /* ================ [ FIELDS ] ================ */
 
-    // Keys
+    // Inputs
     private final Input[] inputs;
 
     // Constructors
@@ -23,8 +22,8 @@ public class Action {
 
     /* ================ [ METHODS ] ================ */
 
-    // Get keys
+    // Get inputs
     @JsonValue
     public Input[] getInputs() { return inputs; }
-    
+
 }

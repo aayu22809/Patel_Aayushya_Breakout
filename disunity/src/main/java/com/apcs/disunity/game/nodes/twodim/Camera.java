@@ -15,6 +15,7 @@ public class Camera extends Node2D<Node<?>> {
 
     // Constructors
     public Camera(Node<?>... children) { super(children); }
+
     public Camera(Transform transform, Node<?>... children) { super(transform, children); }
 
     /* ================ [ NODE ] ================ */

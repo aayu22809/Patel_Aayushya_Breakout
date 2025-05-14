@@ -1,7 +1,7 @@
 package com.apcs.disunity.app;
 
 /**
- * All of the configurable options for the game
+ * A manager than handles all of the customizable options.
  * 
  * @author Qinzhao Li
  */
@@ -16,7 +16,7 @@ public class Options {
      * @return The number of seconds per frame
      */
     public static final double getSPF() { return 1.0 / FPS; }
-    
+
     /**
      * Get the number of milliseconds per frame
      *
@@ -26,8 +26,10 @@ public class Options {
 
     // packet rate
     public static final double PPS = FPS;
+
     // Seconds per frame
     public static final double getSPP() { return 1.0 / PPS; }
+
     // Milliseconds per frame
     public static final double getMSPP() { return 1000.0 / PPS; }
 

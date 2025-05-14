@@ -33,6 +33,7 @@ public class Vector2 implements SelfCodec<Vector2> {
 
     // Constructors
     public Vector2() { this(0, 0); }
+
     public Vector2(double x, double y) {
         this.x = x;
         this.y = y;
@@ -44,6 +45,7 @@ public class Vector2 implements SelfCodec<Vector2> {
 
     // Create a vector2 given values
     public static Vector2 of(double x) { return new Vector2(x, x); }
+
     public static Vector2 of(double x, double y) { return new Vector2(x, y); }
 
     // Add two vectors
@@ -69,7 +71,7 @@ public class Vector2 implements SelfCodec<Vector2> {
 
     // Magnitude of the vector
     public double length() { return Math.sqrt(x * x + y * y); }
-    
+
     // Return the normalized vector
     public Vector2 normalized() {
         double l = length();
@@ -87,14 +89,14 @@ public class Vector2 implements SelfCodec<Vector2> {
     /* ================ [ CODEC ] ================ */
     @Override
     public void encode(OutputStream out) {
-        encodeDouble(x,out);
-        encodeDouble(y,out);
+        encodeDouble(x, out);
+        encodeDouble(y, out);
     }
 
     @Override
     public Vector2 decode(InputStream in) {
         var x = decodeDouble(in);
         var y = decodeDouble(in);
-        return Vector2.of(x,y);
+        return Vector2.of(x, y);
     }
 }

@@ -21,30 +21,31 @@ public class PingTestClient {
             port = s.nextInt();
         }
         try (Client c = new Client(host, port)) {
-            System.out.printf("Identifier: %s\n",c.getStringIdentifier());
+            System.out.printf("Identifier: %s\n", c.getStringIdentifier());
             for (int i = 0; i < 100; i++) {
-                
-                //synchronize
+
+                // synchronize
                 long t = System.currentTimeMillis();
                 c.send(new byte[0]);
                 c.recieve();
-                System.out.println("Sync time: "+(System.currentTimeMillis() - t));
+                System.out.println("Sync time: " + (System.currentTimeMillis() - t));
 
-                //test
-                System.out.println("Ping: "+(System.currentTimeMillis() - decodeLong(new ByteArrayInputStream(c.recieve()))));
-                
+                // test
+                System.out.println(
+                        "Ping: " + (System.currentTimeMillis() - decodeLong(new ByteArrayInputStream(c.recieve()))));
+
             }
             c.send(new byte[0]);
             c.recieve();
             for (int i = 0; i < 100; i++) {
 
-                //synchronize
+                // synchronize
                 long t = System.currentTimeMillis();
                 c.send(new byte[0]);
                 c.recieve();
-                System.out.println("Sync time: "+(System.currentTimeMillis() - t));
+                System.out.println("Sync time: " + (System.currentTimeMillis() - t));
 
-                //test
+                // test
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 encodeLong(System.currentTimeMillis(), out);
                 c.send(out.toByteArray());

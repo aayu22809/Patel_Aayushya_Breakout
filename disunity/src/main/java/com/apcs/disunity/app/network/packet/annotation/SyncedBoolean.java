@@ -10,4 +10,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @EnforceFieldType(boolean.class)
-public @interface SyncedBoolean { }
+public @interface SyncedBoolean {}

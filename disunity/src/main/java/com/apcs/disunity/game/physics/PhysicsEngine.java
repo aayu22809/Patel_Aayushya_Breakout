@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Manages physics and collision detection for all nodes
+ * 
  * @author Aayushya Patel
  */
 public class PhysicsEngine {
@@ -22,32 +23,23 @@ public class PhysicsEngine {
 
         searchCollider(scene, Vector2.ZERO, colliders);
 
-        for (ColliderInfo c1: colliders) {
-            for (ColliderInfo c2: colliders) {
+        for (ColliderInfo c1 : colliders) {
+            for (ColliderInfo c2 : colliders) {
                 if (c1 != c2 && c1.AABB.isColliding(c2.AABB)) {
                     c1.COLLISION_INFO.emit(new CollisionInfo(c1.AABB, c2.AABB, delta));
                 }
             }
         }
     }
-    
+
     private static void searchCollider(Node<?> node, Vector2 absPos, ArrayList<ColliderInfo> infos) {
-        if(node instanceof Collider collider) {
+        if (node instanceof Collider collider) {
             infos.add(new ColliderInfo(collider, absPos.add(collider.getPos())));
         } else {
-            if(node instanceof Node2D<?> node2D) {
-                node.getChildren()
-                    .forEach(n -> searchCollider(
-                        n,
-                        absPos.add(node2D.getPos()),
-                        infos));
+            if (node instanceof Node2D<?> node2D) {
+                node.getChildren().forEach(n -> searchCollider(n, absPos.add(node2D.getPos()), infos));
             } else {
-                node.getChildren()
-                    .forEach(n -> searchCollider(
-                        n,
-                        absPos,
-                        infos
-                    ));
+                node.getChildren().forEach(n -> searchCollider(n, absPos, infos));
             }
         }
     }

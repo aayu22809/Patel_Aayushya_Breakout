@@ -4,9 +4,11 @@ package com.apcs.disunity.game.physics;
 public class CollisionLayer {
     public final int LAYER_ID;
     public final int BITSET;
+
     public CollisionLayer(int layerId) {
-        if(layerId >= Integer.SIZE || layerId < 0) throw new IllegalArgumentException("layerId was out of supported range");
+        if (layerId >= Integer.SIZE || layerId < 0)
+            throw new IllegalArgumentException("layerId was out of supported range");
         this.LAYER_ID = layerId;
-        BITSET = 1<<layerId;
+        BITSET = 1 << layerId;
     }
 }

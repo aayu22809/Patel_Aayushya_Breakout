@@ -15,30 +15,23 @@ public class SelectorNode<K, V extends Node<?> & Indexed<K>> extends Node<V> {
 
     public SelectorNode(V fallback, V... children) {
         super();
-        this.children = new Selector<>(fallback,children);
+        this.children = new Selector<>(fallback, children);
     }
 
     // stop update propagation
     @Override
-    public void update(double delta) {
-        getSelected().update(delta);
-    }
+    public void update(double delta) { getSelected().update(delta); }
 
     @Override
-    public void draw(Transform transform) {
-        getSelected().draw(transform);
-    }
+    public void draw(Transform transform) { getSelected().draw(transform); }
 
     @Override
     public void addChild(V node) { children.add(node); }
 
     @Override
-    public List<V> getDynamicChildren() {
-        return children.values().stream().toList();
-    }
+    public List<V> getDynamicChildren() { return children.values().stream().toList(); }
 
     public V getSelected() { return children.getSelected(); }
-    public V select(K index) {
-        return children.select(index);
-    }
+
+    public V select(K index) { return children.select(index); }
 }

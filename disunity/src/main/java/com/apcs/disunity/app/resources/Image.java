@@ -7,9 +7,8 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
-
 /**
- * An image to be used in the game
+ * An image resource loaded form a file.
  * 
  * @author Qinzhao Li
  * @author Sharvil Phadke
@@ -21,10 +20,13 @@ public class Image {
     public Image(BufferedImage image) { this.buffer = image; }
 
     public Image(URL location) {
-        try (InputStream stream = location.openStream()) { buffer = ImageIO.read(stream); }
-        catch (IOException e) { throw new RuntimeException("Unable to read image files"); }
+        try (InputStream stream = location.openStream()) {
+            buffer = ImageIO.read(stream);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to read image files");
+        }
     }
 
     public BufferedImage getBuffer() { return buffer; }
-    
+
 }

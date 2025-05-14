@@ -42,35 +42,26 @@ public abstract class Node<T extends Node<?>> {
     }
 
     // Remove child
-    public void removeChild(T node) {
-        getChildren().remove(node);
-    }
+    public void removeChild(T node) { getChildren().remove(node); }
 
     // Clear children
-    public void clearChildren() {
-        getChildren().clear();
-    }
+    public void clearChildren() { getChildren().clear(); }
 
     // Get children
-    public List<T> getDynamicChildren() {
-        return children;
-    }
+    public List<T> getDynamicChildren() { return children; }
+
     public List<T> getFieldChildren() {
-        return Util.getAnnotatedFields(this.getClass(),FieldChild.class)
-            .map(f -> {
-                try {
-                    return (T) f.get(this);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            })
-            .toList();
+        return Util.getAnnotatedFields(this.getClass(), FieldChild.class).map(f -> {
+            try {
+                return (T) f.get(this);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }).toList();
     }
+
     public List<T> getChildren() {
-        return Stream.concat(
-            getDynamicChildren().stream(),
-            getFieldChildren().stream()
-        ).toList();
+        return Stream.concat(getDynamicChildren().stream(), getFieldChildren().stream()).toList();
     }
 
     /* ================ [ NODE ] ================ */
@@ -78,42 +69,42 @@ public abstract class Node<T extends Node<?>> {
     // Update node
     public void update(double delta) {
         // Update children
-        for (T node : getChildren()) node.update(delta);
+        for (T node : getChildren())
+            node.update(delta);
     }
+
     public void draw(Transform transform) { getChildren().forEach(n -> n.draw(transform)); }
 
     /* ================ [ PRINTING ] ================ */
 
     /// Overload for default behavior of {@link #print(boolean, Function, List)}.
     /// Prints node names in tree structure
-    public void print() {
-        print(true, Node::defaultLabel, new ArrayList<>()
-        );
-    }
+    public void print() { print(true, Node::defaultLabel, new ArrayList<>()); }
 
     private static String defaultLabel(Node<?> node) {
         StringBuilder builder = new StringBuilder();
         builder.append("( ) ");
-        if(node instanceof Indexed<?> indexed) builder.append(indexed.index().toString());
-        else builder.append(node.getClass().getName().substring(node.getClass().getPackageName().length()+1));
+        if (node instanceof Indexed<?> indexed)
+            builder.append(indexed.index().toString());
+        else
+            builder.append(node.getClass().getName().substring(node.getClass().getPackageName().length() + 1));
         return builder.toString();
     }
 
-    /// method that prints information and children of node recursively in a tree format.
+    /// method that prints information and children of node recursively in a tree
+    /// format.
     /// @param isLast indicates if this node is last child of parent
     /// @param formatter function that formats provided node to printed string
     /// @param indent string used to indent this node
-    private void print(
-        boolean isLast,
-        Function<Node<?>, String> formatter,
-        List<String> indent
-    ) {
+    private void print(boolean isLast, Function<Node<?>, String> formatter, List<String> indent) {
         indent.forEach(System.out::print);
         System.out.print(isLast ? " '--" : " |--");
         System.out.println(formatter.apply(this));
 
-        if (isLast) indent.add("    ");
-        else indent.add(" |  ");
+        if (isLast)
+            indent.add("    ");
+        else
+            indent.add(" |  ");
 
         for (int i = 0; i < getChildren().size() - 1; i++) {
             ((Node<?>) getChildren().get(i)).print(false, formatter, indent);

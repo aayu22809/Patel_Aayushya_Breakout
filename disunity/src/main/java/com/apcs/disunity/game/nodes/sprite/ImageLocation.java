@@ -15,8 +15,8 @@ public class ImageLocation extends Node<Node<?>> {
 
     public ImageLocation(String path, int x, int y, int w, int h) {
         PATH = path;
-        POS = new Vector2(x,y);
-        SIZE = new Vector2(w,h);
+        POS = new Vector2(x, y);
+        SIZE = new Vector2(w, h);
     }
 
     public ImageLocation(String path) {
@@ -26,15 +26,10 @@ public class ImageLocation extends Node<Node<?>> {
 
     public BufferedImage getImage() {
         BufferedImage img = Resources.loadResource(PATH, Image.class).getBuffer();
-        if(POS == null || SIZE == null) {
+        if (POS == null || SIZE == null) {
             return img;
         } else {
-            return img.getSubimage(
-                POS.xi,
-                POS.yi,
-                SIZE.xi,
-                SIZE.yi
-            );
+            return img.getSubimage(POS.xi, POS.yi, SIZE.xi, SIZE.yi);
         }
     }
 }

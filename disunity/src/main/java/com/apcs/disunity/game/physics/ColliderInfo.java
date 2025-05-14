@@ -10,7 +10,7 @@ public class ColliderInfo {
     public final Signal<CollisionInfo> COLLISION_INFO;
 
     public ColliderInfo(Collider collider, Vector2 absPos) {
-        AABB = new AABB(collider,absPos);
+        AABB = new AABB(collider, absPos);
         COLLISION_INFO = collider.collisionInfo;
     }
 }

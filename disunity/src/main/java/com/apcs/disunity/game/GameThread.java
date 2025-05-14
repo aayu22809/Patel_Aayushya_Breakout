@@ -13,7 +13,7 @@ public class GameThread extends Thread {
      * Creates a new GameThread with update and render calls
      * 
      * @param update The update call
-     * @param draw The render call
+     * @param draw   The render call
      */
     public GameThread(Runnable update, Runnable draw) {
         // Create the runnable
@@ -55,5 +55,5 @@ public class GameThread extends Thread {
             }
         });
     }
-    
+
 }

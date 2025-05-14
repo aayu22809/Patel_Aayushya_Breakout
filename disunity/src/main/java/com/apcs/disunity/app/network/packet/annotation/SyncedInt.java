@@ -10,5 +10,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @EnforceFieldType(int.class)
-public @interface SyncedInt {
-}
+public @interface SyncedInt {}

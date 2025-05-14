@@ -9,7 +9,7 @@ import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.math.Vector2;
 
 /**
- * buffer that scales from constructed dimension to current dimension
+ * A buffer that scales from its constructed dimensions.
  * 
  * @author Qinzhao Li
  */
@@ -27,6 +27,7 @@ public class ScalableBuffer {
 
     // Constructors
     public ScalableBuffer(Vector2 ratio) { this(ratio, ratio); }
+
     public ScalableBuffer(Vector2 ratio, Vector2 target) {
         // Set ratio
         this.ratio = ratio;
@@ -39,16 +40,10 @@ public class ScalableBuffer {
 
     // Refresh buffer
     public void setSize(Vector2 size) {
-        size = Vector2.of(
-            Math.min(size.x, size.y * ratio.x / ratio.y),
-            Math.min(size.y, size.x * ratio.y / ratio.x)
-        );
+        size = Vector2.of(Math.min(size.x, size.y * ratio.x / ratio.y), Math.min(size.y, size.x * ratio.y / ratio.x));
 
         // Create buffer
-        image = new BufferedImage(
-            size.xi, size.yi,
-            BufferedImage.TYPE_INT_ARGB
-        );
+        image = new BufferedImage(size.xi, size.yi, BufferedImage.TYPE_INT_ARGB);
         graphics = image.createGraphics();
 
         // Set scale
@@ -63,6 +58,7 @@ public class ScalableBuffer {
 
     // Getters
     public double getScale() { return scale; }
+
     public BufferedImage getImage() { return image; }
 
     /* ================ [ GRAPHICS ] ================ */
@@ -70,15 +66,10 @@ public class ScalableBuffer {
     // Draw image
     public void drawImage(Image img, Transform transform) {
         // Image dimensions
-        Vector2 imgDim = Vector2.of(
-            img.getWidth(null),
-            img.getHeight(null)
-        );
+        Vector2 imgDim = Vector2.of(img.getWidth(null), img.getHeight(null));
 
         // Center pivot
-        Vector2 offset = imgDim
-            .mul(transform.scale)
-            .mul(-0.5);
+        Vector2 offset = imgDim.mul(transform.scale).mul(-0.5);
         transform = transform.addPos(offset);
 
         // Drawing inputs

@@ -1,13 +1,12 @@
 package com.apcs.disunity.game.nodes.sprite;
 
-
 import com.apcs.disunity.game.selector.Indexed;
 
 import java.awt.image.BufferedImage;
 
 /**
- * sprite that renders timed cyclic animation, created by
- * splicing a base image that contains equal width frames horizontally
+ * sprite that renders timed cyclic animation, created by splicing a base image
+ * that contains equal width frames horizontally
  * 
  * @author Qinzhao Li
  */
@@ -49,9 +48,7 @@ public class AnimationSprite extends Sprite implements Indexed<String> {
     protected int length() { return frameDurations.length; }
 
     @Override
-    public String index() {
-        return name;
-    }
+    public String index() { return name; }
 
     @Override
     public void update(double delta) {
@@ -69,11 +66,7 @@ public class AnimationSprite extends Sprite implements Indexed<String> {
         BufferedImage img = baseImage.getImage();
 
         int w = img.getWidth() / length();
-        setImageLocation(new ImageLocation(
-            baseImage.PATH,
-            w*frameCount, 0,
-            w, img.getHeight()
-        ));
+        setImageLocation(new ImageLocation(baseImage.PATH, w * frameCount, 0, w, img.getHeight()));
     }
 
 }

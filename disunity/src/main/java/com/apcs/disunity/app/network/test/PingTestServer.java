@@ -12,7 +12,7 @@ import static com.apcs.disunity.app.network.packet.CODEC.*;
 public class PingTestServer {
     public static void main(String[] args) {
         try (Host h = new Host()) {
-            System.out.printf("Address: %s\n   Port: %d\n",h.getAddress(),h.getPort());
+            System.out.printf("Address: %s\n   Port: %d\n", h.getAddress(), h.getPort());
             h.start();
             System.out.print("Server started. Please wait for Client to join, then type the identifier: ");
             int identifier;
@@ -26,11 +26,11 @@ public class PingTestServer {
                 long t = System.currentTimeMillis();
                 h.send(identifier, new byte[0]);
                 h.recieve(identifier);
-                System.out.println("Sync time: "+(System.currentTimeMillis() - t));
+                System.out.println("Sync time: " + (System.currentTimeMillis() - t));
 
-                //test
+                // test
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
-                encodeLong(System.currentTimeMillis(),out);
+                encodeLong(System.currentTimeMillis(), out);
                 h.send(identifier, out.toByteArray());
 
             }
@@ -42,10 +42,11 @@ public class PingTestServer {
                 long t = System.currentTimeMillis();
                 h.send(identifier, new byte[0]);
                 h.recieve(identifier);
-                System.out.println("Sync time: "+(System.currentTimeMillis() - t));
+                System.out.println("Sync time: " + (System.currentTimeMillis() - t));
 
-                //test
-                System.out.println("Ping: "+(System.currentTimeMillis() - decodeLong(new ByteArrayInputStream(h.recieve(identifier)))));
+                // test
+                System.out.println("Ping: "
+                        + (System.currentTimeMillis() - decodeLong(new ByteArrayInputStream(h.recieve(identifier)))));
 
             }
         } catch (IOException e) {

@@ -10,5 +10,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @EnforceFieldType(float.class)
-public @interface SyncedFloat {
-}
+public @interface SyncedFloat {}

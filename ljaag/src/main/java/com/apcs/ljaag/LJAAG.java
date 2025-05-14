@@ -25,7 +25,7 @@ import com.apcs.ljaag.nodes.body.LJCharacter;
 public class LJAAG {
 
     /* ================ [ DRIVER ] ================ */
-    
+
     public static void main(String[] args) throws IOException {
         MultiplayerLauncher launcher = new MultiplayerLauncher(LJAAG::runApp);
         launcher.lauch();
@@ -39,17 +39,13 @@ public class LJAAG {
         Inputs.fromJSON("keybinds.json");
 
         // Create the game scenes
-        Scene scene = new Scene("test",
-            new Camera(),
-            new Sprite("background.png")
-        );
+        Scene scene = new Scene("test", new Camera(), new Sprite("background.png"));
 
         for (int i = 1; i <= NUM_PLAYERS; i++) {
-            scene.addChild(new LJCharacter(30*i-30, 0, i));
+            scene.addChild(new LJCharacter(30 * i - 30, 0, i));
         }
 
         registerNodeRecursive(scene);
-
 
         // Create game application
         Game game = new Game(Vector2.of(480, 270));
@@ -58,11 +54,7 @@ public class LJAAG {
 
         int endpointId = SyncHandler.getInstance().getEndpointId();
         if (!isServer) {
-            new App(
-                endpointId == 0 ? "[SERVER]" : "[CLIENT_" + endpointId + "]",
-                800, 
-                450,
-                game);
+            new App(endpointId == 0 ? "[SERVER]" : "[CLIENT_" + endpointId + "]", 800, 450, game);
         }
 
         game.start();

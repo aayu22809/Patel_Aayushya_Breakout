@@ -13,14 +13,18 @@ import com.apcs.disunity.game.nodes.Node;
 public class Node2D<T extends Node<?>> extends Node<T> {
 
     /* ================ [ FIELDS ] ================ */
-    
+
     // Transform
     @SyncedObject
     private Transform transform;
 
     // Constructors
     public Node2D(T... children) { this(new Transform(), children); }
-    public Node2D(Transform transform, T... children) { super(children); this.transform = transform; }
+
+    public Node2D(Transform transform, T... children) {
+        super(children);
+        this.transform = transform;
+    }
 
     /* ================ [ NODE ] ================ */
 
@@ -31,12 +35,18 @@ public class Node2D<T extends Node<?>> extends Node<T> {
     }
 
     public void setPos(Vector2 pos) { transform = new Transform(pos, transform.scale, transform.rot); }
+
     public void addPos(Vector2 vel) { transform = transform.addPos(vel); }
+
     public void setScale(Vector2 scale) { transform = new Transform(transform.pos, scale, transform.rot); }
+
     public void setRot(double rot) { transform = new Transform(transform.pos, transform.scale, transform.rot); }
 
     public Vector2 getPos() { return transform.pos; }
+
     public Vector2 getScale() { return transform.pos; }
+
     public double getRot() { return transform.rot; }
-    public Transform getTransform(){ return transform; }
+
+    public Transform getTransform() { return transform; }
 }

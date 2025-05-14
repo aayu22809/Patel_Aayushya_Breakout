@@ -24,8 +24,10 @@ public abstract class Body extends Node2D<Node<?>> {
     public final Collider collider;
 
     // Constructors
-    public Body(Collider collider, Node<?>... children) { this(new Transform(), collider, children);}
-    public Body(Transform transform, Collider collider, Node<?>... children) { super(transform, children);
+    public Body(Collider collider, Node<?>... children) { this(new Transform(), collider, children); }
+
+    public Body(Transform transform, Collider collider, Node<?>... children) {
+        super(transform, children);
         this.collider = collider;
         collider.collisionInfo.connect(this::onCollision);
     }

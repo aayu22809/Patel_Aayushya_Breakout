@@ -11,9 +11,14 @@ import java.util.function.Consumer;
  */
 public class SignalBus {
     private static final Signal<Object> FALLBACK = new Signal<>(Object.class) {
-        @Override public void connect(Consumer<Object> callable) {}
-        @Override public void disconnect(Consumer<Object> callable) {}
-        @Override public void emit(Object message) {}
+        @Override
+        public void connect(Consumer<Object> callable) {}
+
+        @Override
+        public void disconnect(Consumer<Object> callable) {}
+
+        @Override
+        public void emit(Object message) {}
     };
     private final Selector<Class<?>, Signal<?>> SIGNALS = new Selector<>(FALLBACK);
 
@@ -33,13 +38,9 @@ public class SignalBus {
     }
 
     // Disconnect a signal from a function
-    public <T> void disconnect(Class<T> type, Consumer<T> function) {
-        getSignal(type).disconnect(function);
-    }
+    public <T> void disconnect(Class<T> type, Consumer<T> function) { getSignal(type).disconnect(function); }
 
     // Trigger all functions connected to a signal
     @SuppressWarnings("unchecked")
-    public <T> void emit(T message) {
-        ((Signal<T>) getSignal(message.getClass())).emit(message);
-    }
+    public <T> void emit(T message) { ((Signal<T>) getSignal(message.getClass())).emit(message); }
 }

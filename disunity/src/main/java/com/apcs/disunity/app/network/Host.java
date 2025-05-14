@@ -19,11 +19,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 
 /**
- * 
- * Listens for incoming clients sockets and sends and recieves packets to/from clients.
+ * Listens for incoming clients sockets and sends and recieves packets to/from
+ * clients.
  * 
  * @author Sharvil Phadke
- * 
  */
 public class Host implements Closeable {
 
@@ -39,10 +38,8 @@ public class Host implements Closeable {
 
     private int clientId = 0;
 
-    public Host() throws IOException {
-        this(0);
-    }
-    
+    public Host() throws IOException { this(0); }
+
     public Host(int port) throws IOException {
         server = new ServerSocket(0);
         listenerThread = new Thread(() -> {
@@ -52,7 +49,8 @@ public class Host implements Closeable {
                     sockets.add(socket);
                     int id = ++clientId;
                     socket.getOutputStream().write(id);
-                    PacketTransceiver clientTransceiver = new PacketTransceiver(socket.getInputStream(), socket.getOutputStream());
+                    PacketTransceiver clientTransceiver = new PacketTransceiver(socket.getInputStream(),
+                            socket.getOutputStream());
                     String clientIdentifier = getStringIdentifier(socket);
                     ids.put(clientIdentifier, id);
                     clientTransceivers.put(id, clientTransceiver);
@@ -66,9 +64,7 @@ public class Host implements Closeable {
         });
     }
 
-    public void start() {
-        listenerThread.start();
-    }
+    public void start() { listenerThread.start(); }
 
     @Override
     @SuppressWarnings("ConvertToTryWithResources")
@@ -80,13 +76,9 @@ public class Host implements Closeable {
         server.close();
     }
 
-    public byte[] recieve(int id) {
-        return clientTransceivers.get(id).recieve();
-    }
+    public byte[] recieve(int id) { return clientTransceivers.get(id).recieve(); }
 
-    public void send(int id, byte[] bytes) {
-        clientTransceivers.get(id).send(bytes);
-    }
+    public void send(int id, byte[] bytes) { clientTransceivers.get(id).send(bytes); }
 
     public String getAddress() {
         Enumeration<NetworkInterface> interfaces;
@@ -105,32 +97,23 @@ public class Host implements Closeable {
         } catch (IOException e) {
         }
         StringBuilder b = new StringBuilder();
-        for (byte by : server.getInetAddress().getAddress()) b.append(by).append('.');
-        return b.toString().substring(0,b.length()-1);
+        for (byte by : server.getInetAddress().getAddress())
+            b.append(by).append('.');
+        return b.toString().substring(0, b.length() - 1);
     }
 
-    public int getPort() {
-        return server.getLocalPort();
-    }
+    public int getPort() { return server.getLocalPort(); }
 
     public static String getStringIdentifier(Socket socket) {
         return String.format("%s:%d", socket.getInetAddress(), socket.getPort());
     }
 
-    public PacketTransceiver getTransceiver(int id) {
-        return clientTransceivers.get(id);
-    }
+    public PacketTransceiver getTransceiver(int id) { return clientTransceivers.get(id); }
 
-    public int identify(String clientIdentifier) {
-        return ids.get(clientIdentifier);
-    }
+    public int identify(String clientIdentifier) { return ids.get(clientIdentifier); }
 
-    public void attachJoinAction(Consumer<Integer> onJoinAction) {
-        onJoinActions.add(onJoinAction);
-    }
+    public void attachJoinAction(Consumer<Integer> onJoinAction) { onJoinActions.add(onJoinAction); }
 
-    public void removeJoinAction(Consumer<Integer> onJoinAction) {
-        onJoinActions.remove(onJoinAction);
-    }
+    public void removeJoinAction(Consumer<Integer> onJoinAction) { onJoinActions.remove(onJoinAction); }
 
 }

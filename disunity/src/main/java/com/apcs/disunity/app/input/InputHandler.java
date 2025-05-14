@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Listens for inputs on the App, and saves it on Inputs
+ * A listener that detects all inputs in the application.
  * 
  * @author Qinzhao Li
  */
@@ -17,7 +17,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     /* ================ [ KEYLISTENER ] ================ */
 
     @Override
-    public void keyTyped(KeyEvent e) { }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) { Inputs.press(Input.getFromKey(e.getKeyCode())); }
@@ -28,7 +28,7 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     /* ================ [ MOUSELISTENER ] ================ */
 
     @Override
-    public void mouseClicked(MouseEvent e) { }
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
     public void mousePressed(MouseEvent e) { Inputs.press(Input.getFromMouse(e.getButton())); }
@@ -37,15 +37,15 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     public void mouseReleased(MouseEvent e) { Inputs.release(Input.getFromMouse(e.getButton())); }
 
     @Override
-    public void mouseEntered(MouseEvent e) { }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) {}
 
     /* ================ [ MOUSEMOTIONLISTENER ] ================ */
 
     @Override
-    public void mouseDragged(MouseEvent e) { }
+    public void mouseDragged(MouseEvent e) {}
 
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -62,10 +62,8 @@ public class InputHandler implements KeyListener, MouseListener, MouseMotionList
     /* ================ [ FOCUSLISTENER ] ================ */
 
     @Override
-    public void focusGained(FocusEvent e) { }
+    public void focusGained(FocusEvent e) {}
 
     @Override
-    public void focusLost(FocusEvent e) {
-        Inputs.releaseAll();
-    }
+    public void focusLost(FocusEvent e) { Inputs.releaseAll(); }
 }

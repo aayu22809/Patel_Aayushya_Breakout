@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * defines a flag that can be triggered by multiple Actions.
- * in other words, takes an || on all Actions
+ * A flag that is true when any of its actions are true. (OR)
  * 
  * @author Qinzhao Li
  */
@@ -25,5 +24,5 @@ public class ActionSet {
     // Get actions
     @JsonValue
     public Action[] getActions() { return actions; }
-    
+
 }

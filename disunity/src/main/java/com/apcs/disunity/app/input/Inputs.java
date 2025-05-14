@@ -14,8 +14,8 @@ import com.apcs.disunity.math.Vector2;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/** 
- * records most recent user input as a static value.
+/**
+ * A manager that handles all inputs and their actions.
  * 
  * @author Qinzhao Li
  */
@@ -40,6 +40,7 @@ public class Inputs {
 
     // Release an input
     public static void release(Input input) { inputs.remove(input); }
+
     // Release all keys
     public static void releaseAll() { inputs.clear(); }
 
@@ -53,11 +54,15 @@ public class Inputs {
     public static boolean getAction(String name) {
         for (Action action : actions.get(name).getActions()) {
             boolean pressed = true;
-            for (Input input : action.getInputs())
+            for (Input input : action.getInputs()) {
                 pressed = pressed && get(input);
-            
-            if (pressed) return true;
-        } return false;
+            }
+
+            if (pressed) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /* ================ [ LOADER ] ================ */
@@ -68,7 +73,9 @@ public class Inputs {
             InputStream file = Inputs.class.getClassLoader().getResourceAsStream(path);
             ObjectMapper om = new ObjectMapper();
             actions = om.readValue(file, new TypeReference<Map<String, ActionSet>>() {});
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    
+
 }

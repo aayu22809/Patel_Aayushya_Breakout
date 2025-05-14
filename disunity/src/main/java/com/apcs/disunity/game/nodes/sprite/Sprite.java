@@ -7,8 +7,6 @@ import com.apcs.disunity.game.nodes.FieldChild;
 import com.apcs.disunity.math.Transform;
 import com.apcs.disunity.game.nodes.Node;
 import com.apcs.disunity.game.nodes.twodim.Node2D;
-import com.apcs.disunity.app.resources.Image;
-import com.apcs.disunity.app.resources.Resources;
 
 /**
  * A 2d node that renders an image
@@ -21,25 +19,18 @@ public class Sprite extends Node2D<Node<?>> {
 
     // Sprite image id
     @FieldChild
-    private  ImageLocation imageLocation;
+    private ImageLocation imageLocation;
 
     // Constructors
-    public Sprite(ImageLocation imageLocation) {
-        this.imageLocation = imageLocation;
-    }
-    public Sprite(String path) {
-        this.imageLocation = new ImageLocation(path);
-    }
+    public Sprite(ImageLocation imageLocation) { this.imageLocation = imageLocation; }
+
+    public Sprite(String path) { this.imageLocation = new ImageLocation(path); }
 
     /* ================ [ NODE ] ================ */
 
-    public ImageLocation getImageLocation() {
-        return imageLocation;
-    }
+    public ImageLocation getImageLocation() { return imageLocation; }
 
-    public void setImageLocation(ImageLocation imageLocation) {
-        this.imageLocation = imageLocation;
-    }
+    public void setImageLocation(ImageLocation imageLocation) { this.imageLocation = imageLocation; }
 
     @Override
     public void draw(Transform offset) {
